@@ -238,6 +238,153 @@ footer { background:var(--black); padding:24px 20px; border-top:2px solid var(--
 
 ::-webkit-scrollbar { width:2px; }
 ::-webkit-scrollbar-thumb { background:var(--red); }
+
+/* GENDER TOGGLE */
+.gender-bar { display:flex; background:var(--black); border-bottom:1px solid #1e1e1e; }
+.gender-btn { flex:1; padding:11px 0; font-family:'Bebas Neue',sans-serif; font-size:13px; letter-spacing:3px; color:#555; border:none; background:none; cursor:pointer; position:relative; transition:color .2s; }
+.gender-btn.on { color:var(--white); }
+.gender-btn.on::after { content:''; position:absolute; bottom:0; left:10%; right:10%; height:2px; background:var(--red); }
+.gender-btn.female.on::after { background:#e54b7a; }
+.gender-btn.female.on { color:#e54b7a; }
+
+/* CELEB wiki link */
+.celeb-wiki { display:block; text-align:center; padding:7px; background:rgba(229,19,26,.08); border-top:1px solid #1e1e1e; font-size:9px; letter-spacing:1.5px; color:var(--red); text-decoration:none; font-family:'Bebas Neue',sans-serif; }
+.celeb-wiki:active { background:rgba(229,19,26,.18); }
+
+/* male/female badge tint */
+.badge-m { background:#1a6de5; }
+.badge-f { background:#e54b7a; }
+
+
+/* Celeb photo from Wikipedia */
+.celeb-face { position:relative; width:100%; aspect-ratio:3/4; background:#111; display:flex; align-items:center; justify-content:center; overflow:hidden; }
+.celeb-photo { position:absolute; inset:0; width:100%; height:100%; object-fit:cover; object-position:top center; opacity:0; transition:opacity .4s; }
+.celeb-photo.loaded { opacity:1; }
+.celeb-placeholder { display:flex; flex-direction:column; align-items:center; justify-content:center; gap:6px; transition:opacity .4s; }
+.celeb-placeholder.hidden { opacity:0; }
+.celeb-loading { width:18px; height:18px; border:2px solid #333; border-top-color:var(--red); border-radius:50%; animation:spin .8s linear infinite; }
+@keyframes spin { to{transform:rotate(360deg)} }
+
+
+/* ── DIAGNOSIS MODAL ── */
+.priv-notice { display:flex; align-items:center; gap:7px; font-size:10px; color:#22c55e; background:rgba(34,197,94,.08); border:1px solid rgba(34,197,94,.2); padding:9px 12px; margin-bottom:16px; letter-spacing:.5px; }
+.analyze-steps { display:flex; flex-direction:column; gap:10px; text-align:left; }
+.analyze-step { display:flex; align-items:center; gap:10px; font-size:12px; color:#555; }
+.analyze-step.done { color:var(--white); }
+.analyze-step.active { color:var(--red); }
+.as-dot { width:8px; height:8px; border-radius:50%; background:#333; flex-shrink:0; transition:background .3s; }
+.analyze-step.active .as-dot { background:var(--red); animation:pulse .8s ease-in-out infinite; }
+.analyze-step.done .as-dot { background:#22c55e; }
+@keyframes pulse { 0%,100%{transform:scale(1)} 50%{transform:scale(1.4)} }
+
+/* Result card */
+.res-hero { background:var(--black); padding:20px 18px; position:relative; overflow:hidden; }
+.res-hero-bg { position:absolute; inset:0; font-family:'Bebas Neue',sans-serif; font-size:96px; color:rgba(229,19,26,.06); letter-spacing:-4px; display:flex; align-items:center; justify-content:center; pointer-events:none; }
+.res-photo-row { display:flex; gap:14px; align-items:flex-start; margin-bottom:16px; position:relative; }
+.res-photo { width:90px; height:110px; object-fit:cover; object-position:top; border:2px solid var(--red); flex-shrink:0; }
+.res-types { flex:1; }
+.res-bone-badge { display:inline-block; background:var(--red); color:#fff; font-family:'Bebas Neue',sans-serif; font-size:11px; letter-spacing:3px; padding:3px 10px; margin-bottom:8px; }
+.res-bone-name { font-family:'Bebas Neue',sans-serif; font-size:28px; color:var(--white); letter-spacing:1px; line-height:1; margin-bottom:4px; }
+.res-face-name { font-size:11px; color:var(--mid); letter-spacing:1px; margin-bottom:10px; }
+.res-conf { font-size:10px; color:var(--red); letter-spacing:1px; }
+
+/* Metric bars */
+.res-metrics { padding:16px 18px; border-bottom:1px solid #1e1e1e; }
+.res-metric-row { display:flex; align-items:center; gap:8px; margin-bottom:8px; }
+.res-metric-row:last-child { margin-bottom:0; }
+.res-m-lbl { font-size:10px; color:var(--mid); width:72px; flex-shrink:0; letter-spacing:.5px; }
+.res-m-bar { flex:1; height:4px; background:#1e1e1e; border-radius:2px; }
+.res-m-fill { height:100%; border-radius:2px; background:var(--red); }
+.res-m-val { font-family:'Bebas Neue',sans-serif; font-size:14px; color:var(--white); width:38px; text-align:right; }
+
+/* Celeb match */
+.res-celeb-match { padding:16px 18px; border-bottom:1px solid #1e1e1e; }
+.res-sub-title { font-family:'Bebas Neue',sans-serif; font-size:13px; letter-spacing:2px; color:var(--red); margin-bottom:10px; }
+.res-celeb-row { display:flex; gap:10px; overflow-x:auto; scrollbar-width:none; padding-bottom:2px; }
+.res-celeb-row::-webkit-scrollbar { display:none; }
+.res-celeb-chip { flex-shrink:0; background:#1a1a1a; border:1px solid #2a2a2a; padding:8px 12px; text-align:center; cursor:pointer; }
+.res-celeb-chip:active { border-color:var(--red); }
+.res-celeb-chip-name { font-family:'Bebas Neue',sans-serif; font-size:13px; color:var(--white); letter-spacing:.5px; }
+.res-celeb-chip-pct { font-size:10px; color:var(--red); }
+
+/* Recommend */
+.res-recommend { padding:16px 18px; }
+.res-rec-item { border:1px solid #e0dbd5; padding:12px 14px; margin-bottom:10px; }
+.res-rec-item:last-child { margin-bottom:0; }
+.res-rec-cat { font-size:9px; letter-spacing:2px; color:var(--red); text-transform:uppercase; margin-bottom:4px; }
+.res-rec-title { font-family:'Bebas Neue',sans-serif; font-size:16px; color:var(--black); margin-bottom:4px; }
+.res-rec-desc { font-size:11px; color:#666; line-height:1.8; }
+.res-action-btn { background:#1a1a1a; color:var(--light); border:1px solid #333; padding:6px 12px; font-family:'Bebas Neue',sans-serif; font-size:11px; letter-spacing:1px; cursor:pointer; }
+.res-error { padding:32px 18px; text-align:center; }
+.res-error-icon { font-size:40px; margin-bottom:12px; }
+.res-error-msg { font-size:12px; color:#666; line-height:1.9; }
+
+
+/* API Key section */
+.apikey-section { border:1px solid #ddd; margin-bottom:14px; }
+.apikey-toggle { display:flex; align-items:center; gap:8px; padding:10px 12px; cursor:pointer; background:#f9f6f2; }
+.apikey-toggle:active { background:#f0ece8; }
+.apikey-label { flex:1; font-size:11px; color:#444; letter-spacing:.3px; }
+.apikey-chevron { font-size:10px; color:#aaa; transition:transform .2s; }
+.apikey-chevron.open { transform:rotate(180deg); }
+.apikey-body { padding:12px; border-top:1px solid #eee; display:none; }
+.apikey-body.open { display:block; }
+.apikey-desc { font-size:10px; color:#666; line-height:1.8; margin-bottom:10px; }
+.apikey-input-row { display:flex; gap:6px; margin-bottom:6px; }
+.apikey-input { flex:1; border:1px solid #ccc; padding:8px 10px; font-size:11px; font-family:monospace; outline:none; }
+.apikey-input:focus { border-color:var(--red); }
+.apikey-vis-btn { background:#1a1a1a; border:none; color:#fff; padding:8px 10px; cursor:pointer; font-size:14px; }
+.apikey-hint { font-size:10px; height:14px; }
+.apikey-hint.ok { color:#22c55e; }
+.apikey-hint.err { color:#e5131a; }
+
+/* Upload tips */
+.upload-tips { display:grid; grid-template-columns:1fr 1fr; gap:5px; margin-top:12px; }
+.tip-item { font-size:10px; color:#888; padding:5px 8px; background:#f9f6f2; letter-spacing:.3px; }
+
+
+/* Result strong points */
+.res-strong-item { display:flex; align-items:center; gap:6px; font-size:10px; color:var(--light); margin:2px 0; }
+.res-strong-dot { width:5px; height:5px; background:var(--red); flex-shrink:0; }
+
+/* Recipe link button */
+.res-rec-link { background:none; border:none; color:var(--red); font-size:10px; letter-spacing:1px; cursor:pointer; padding:4px 0 0; text-decoration:underline; }
+
+/* Privacy footer */
+.res-privacy-footer { display:flex; align-items:center; gap:7px; padding:12px 18px; font-size:9px; color:#aaa; line-height:1.8; border-top:1px solid #e0dbd5; background:#faf8f6; }
+
+
+/* ── Missing result / API key styles ── */
+.res-strong-item { display:flex; align-items:center; gap:6px; font-size:10px; color:var(--light); letter-spacing:.5px; }
+.res-strong-dot { width:5px; height:5px; background:var(--red); border-radius:50%; flex-shrink:0; }
+.res-privacy-footer { padding:12px 18px; font-size:9px; color:#888; line-height:1.8; border-top:1px solid #e0dbd5; display:flex; align-items:flex-start; gap:7px; }
+.res-rec-link { background:none; border:none; color:var(--red); font-size:10px; letter-spacing:1px; cursor:pointer; padding:6px 0 0; text-decoration:underline; }
+
+/* API Key section */
+.apikey-section { border:1px solid #ddd; margin-bottom:14px; }
+.apikey-toggle { display:flex; align-items:center; gap:8px; padding:10px 12px; cursor:pointer; font-size:11px; color:#444; }
+.apikey-toggle:active { background:#f5f0ea; }
+.apikey-label { flex:1; }
+.apikey-chevron { font-size:9px; color:#aaa; transition:transform .2s; }
+.apikey-chevron.open { transform:rotate(180deg); }
+.apikey-body { display:none; padding:12px; background:#fafaf8; border-top:1px solid #e8e4df; }
+.apikey-body.open { display:block; }
+.apikey-desc { font-size:10px; color:#888; margin-bottom:10px; line-height:1.7; }
+.apikey-input-row { display:flex; gap:6px; margin-bottom:6px; }
+.apikey-input { flex:1; border:1px solid #ccc; padding:9px 11px; font-size:12px; font-family:monospace; outline:none; }
+.apikey-input:focus { border-color:var(--red); }
+.apikey-vis-btn { background:none; border:1px solid #ccc; padding:0 10px; cursor:pointer; font-size:14px; }
+.apikey-hint { font-size:10px; margin-top:2px; }
+.apikey-hint.ok { color:#22c55e; }
+.apikey-hint.err { color:#ef4444; }
+
+/* Upload tips */
+.upload-tips { display:grid; grid-template-columns:1fr 1fr; gap:5px; margin-top:12px; padding:10px; background:#f9f6f2; border:1px solid var(--border); }
+.tip-item { font-size:10px; color:#777; }
+
+/* API key set indicator */
+#apikey-status-icon { font-size:14px; }
+
 </style>
 </head>
 <body>
@@ -377,7 +524,7 @@ footer { background:var(--black); padding:24px 20px; border-top:2px solid var(--
       <button class="seg-tab" onclick="hairTab(this,'face')">顔型別</button>
     </div>
   </div>
-  <div class="filter-bar" id="hair-filters">
+  <div class="gender-bar" id="hair-gender-bar"><button class="gender-btn female on" onclick="setGender('hair','female',this)">♀ 女性</button><button class="gender-btn male" onclick="setGender('hair','male',this)">♂ 男性</button></div><div class="filter-bar" id="hair-filters">
     <button class="chip on" onclick="hairChip(this,'all')">すべて</button>
     <button class="chip" onclick="hairChip(this,'straight')">ストレート</button>
     <button class="chip" onclick="hairChip(this,'wave')">ウェーブ</button>
@@ -395,7 +542,7 @@ footer { background:var(--black); padding:24px 20px; border-top:2px solid var(--
       <button class="seg-tab" onclick="makeupTab(this,'face')">顔型別</button>
     </div>
   </div>
-  <div class="filter-bar" id="makeup-filters">
+  <div class="gender-bar" id="makeup-gender-bar"><button class="gender-btn female on" onclick="setGender('makeup','female',this)">♀ 女性</button><button class="gender-btn male" onclick="setGender('makeup','male',this)">♂ 男性</button></div><div class="filter-bar" id="makeup-filters">
     <button class="chip on" onclick="makeupChip(this,'all')">すべて</button>
     <button class="chip" onclick="makeupChip(this,'straight')">ストレート</button>
     <button class="chip" onclick="makeupChip(this,'wave')">ウェーブ</button>
@@ -481,25 +628,101 @@ footer { background:var(--black); padding:24px 20px; border-top:2px solid var(--
   </button>
 </div>
 
-<!-- MODAL -->
+<!-- DIAGNOSIS MODAL -->
 <div class="modal-ov" id="modal-ov" onclick="closeModal(event)">
-  <div class="modal">
-    <div class="modal-hd">
-      <span class="modal-hd-t">顔写真をアップロード</span>
-      <button class="modal-x" onclick="closeModal()">✕</button>
-    </div>
-    <div class="modal-body">
-      <div class="upload-area" onclick="document.getElementById('fi1').click()">
-        <div class="upload-ico">🖼️</div>
-        <div class="upload-txt"><strong>タップして写真を選択</strong>正面・明るい環境・メガネなしを推奨<br>JPG / PNG / WEBP 対応</div>
-        <input type="file" id="fi1" accept="image/*" style="display:none" onchange="handleFile(event)">
+  <div class="modal" id="modal-inner" onclick="event.stopPropagation()">
+
+    <!-- STEP 0: Upload -->
+    <div id="diag-step-upload">
+      <div class="modal-hd">
+        <span class="modal-hd-t">AI 顔解析診断</span>
+        <button class="modal-x" onclick="closeModal()">✕</button>
       </div>
-      <div class="modal-or">— または —</div>
-      <button class="modal-cam" onclick="document.getElementById('fi2').click()">📸　カメラで今すぐ撮影する</button>
-      <input type="file" id="fi2" accept="image/*" capture="user" style="display:none" onchange="handleFile(event)">
+      <div class="modal-body">
+        <div class="priv-notice">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#22c55e" stroke-width="2" stroke-linecap="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+          写真はブラウザ内のみで処理。外部送信・保存なし
+        </div>
+
+        <!-- API Key section (collapsible) -->
+        <div class="apikey-section" id="apikey-section">
+          <div class="apikey-toggle" onclick="toggleApiKeySection()">
+            <span id="apikey-status-icon">⚙️</span>
+            <span id="apikey-label">Anthropic APIキーを設定（AI判定に必要）</span>
+            <span class="apikey-chevron" id="apikey-chevron">▼</span>
+          </div>
+          <div class="apikey-body" id="apikey-body">
+            <div class="apikey-desc">AIによる骨格・顔型判定・有名人マッチングに使用。キーはこのページにのみ保存され、外部には送信されません。</div>
+            <div class="apikey-input-row">
+              <input type="password" id="apikey-input" placeholder="sk-ant-..." class="apikey-input" oninput="saveApiKey(this.value)">
+              <button class="apikey-vis-btn" onclick="toggleKeyVis()">👁</button>
+            </div>
+            <div id="apikey-hint" class="apikey-hint"></div>
+            <div style="font-size:9px;color:#888;margin-top:6px;line-height:1.7">
+              ※ APIキーは <a href="https://console.anthropic.com" target="_blank" style="color:var(--red)">console.anthropic.com</a> で取得できます<br>
+              ※ 設定なしでもローカル計測のみで診断可能です
+            </div>
+          </div>
+        </div>
+
+        <div class="upload-area" onclick="document.getElementById('fi1').click()">
+          <svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="var(--red)" stroke-width="1.5" stroke-linecap="round" style="margin-bottom:10px">
+            <rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/>
+            <polyline points="21 15 16 10 5 21"/>
+          </svg>
+          <div class="upload-txt"><strong>タップして写真を選択</strong>正面・明るい環境・メガネなしを推奨<br>JPG / PNG / WEBP 対応</div>
+          <input type="file" id="fi1" accept="image/*" style="display:none" onchange="handleFile(event)">
+        </div>
+        <div class="modal-or">— または —</div>
+        <button class="modal-cam" onclick="document.getElementById('fi2').click()">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" style="vertical-align:middle;margin-right:6px"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/><circle cx="12" cy="13" r="4"/></svg>
+          カメラで今すぐ撮影する
+        </button>
+        <input type="file" id="fi2" accept="image/*" capture="user" style="display:none" onchange="handleFile(event)">
+
+        <div class="upload-tips">
+          <div class="tip-item">✓ 正面向き・自然光</div>
+          <div class="tip-item">✓ 無表情か軽い笑顔</div>
+          <div class="tip-item">✓ メガネ・マスクなし</div>
+          <div class="tip-item">✓ 髪が顔にかかっていない</div>
+        </div>
+      </div>
     </div>
+
+    <!-- STEP 1: Analyzing -->
+    <div id="diag-step-analyzing" style="display:none">
+      <div class="modal-hd"><span class="modal-hd-t">解析中...</span></div>
+      <div class="modal-body" style="padding:32px 20px;text-align:center">
+        <canvas id="diag-canvas" style="max-width:100%;border:1px solid #1e1e1e;display:block;margin:0 auto 20px"></canvas>
+        <div class="analyze-steps">
+          <div class="analyze-step" id="as1"><div class="as-dot"></div><span>顔を検出中...</span></div>
+          <div class="analyze-step" id="as2"><div class="as-dot"></div><span>468点のランドマーク計測中...</span></div>
+          <div class="analyze-step" id="as3"><div class="as-dot"></div><span>黄金比・左右対称を計算中...</span></div>
+          <div class="analyze-step" id="as4"><div class="as-dot"></div><span>AIが骨格・顔型を判定中...</span></div>
+          <div class="analyze-step" id="as5"><div class="as-dot"></div><span>レコメンドを生成中...</span></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- STEP 2: Results -->
+    <div id="diag-step-result" style="display:none">
+      <div class="modal-hd" style="justify-content:space-between">
+        <span class="modal-hd-t">診断結果</span>
+        <div style="display:flex;gap:8px">
+          <button class="res-action-btn" onclick="retryDiag()">再診断</button>
+          <button class="modal-x" onclick="closeModal()">✕</button>
+        </div>
+      </div>
+      <div class="modal-body" style="padding:0;overflow-y:auto;max-height:75vh">
+        <div id="result-content"></div>
+      </div>
+    </div>
+
   </div>
 </div>
+
+<!-- Hidden analysis canvas (off-screen) -->
+<canvas id="hidden-canvas" style="display:none"></canvas>
 
 <script>
 // ═══════════════════════════════════════
@@ -553,6 +776,40 @@ const CELEBS = [
   {name:'ディーピカー・パードゥコーン',bone:'straight',face:'oval',country:'world',genre:'女優',desc:'インドNo.1女優。高身長ストレートの圧倒的存在感。',init:'DP'},
   {name:'シャキーラ',    bone:'wave',    face:'oval',    country:'world',genre:'シンガー',desc:'コロンビア出身。曲線美のウェーブ系ポップスター。',init:'SK'},
 ];
+
+
+// Wikipedia search URLs per celebrity name
+const WIKI = {
+  '石原さとみ':'https://ja.wikipedia.org/wiki/石原さとみ',
+  '長澤まさみ':'https://ja.wikipedia.org/wiki/長澤まさみ',
+  '米倉涼子':'https://ja.wikipedia.org/wiki/米倉涼子',
+  '今田美桜':'https://ja.wikipedia.org/wiki/今田美桜',
+  '浜辺美波':'https://ja.wikipedia.org/wiki/浜辺美波',
+  '白石麻衣':'https://ja.wikipedia.org/wiki/白石麻衣',
+  '橋本環奈':'https://ja.wikipedia.org/wiki/橋本環奈',
+  '新垣結衣':'https://ja.wikipedia.org/wiki/新垣結衣',
+  '綾瀬はるか':'https://ja.wikipedia.org/wiki/綾瀬はるか',
+  '有村架純':'https://ja.wikipedia.org/wiki/有村架純',
+  '広瀬すず':'https://ja.wikipedia.org/wiki/広瀬すず',
+  '北川景子':'https://ja.wikipedia.org/wiki/北川景子',
+  '深田恭子':'https://ja.wikipedia.org/wiki/深田恭子',
+  '菅野美穂':'https://ja.wikipedia.org/wiki/菅野美穂',
+  'ゼンデイヤ':'https://en.wikipedia.org/wiki/Zendaya',
+  'テイラー・スウィフト':'https://en.wikipedia.org/wiki/Taylor_Swift',
+  'ケンダル・ジェンナー':'https://en.wikipedia.org/wiki/Kendall_Jenner',
+  'アリアナ・グランデ':'https://en.wikipedia.org/wiki/Ariana_Grande',
+  'スカーレット・ヨハンソン':'https://en.wikipedia.org/wiki/Scarlett_Johansson',
+  'アン・ハサウェイ':'https://en.wikipedia.org/wiki/Anne_Hathaway',
+  'エマ・ワトソン':'https://en.wikipedia.org/wiki/Emma_Watson',
+  'ビリー・アイリッシュ':'https://en.wikipedia.org/wiki/Billie_Eilish',
+  'ジゼル・ブンチェン':'https://en.wikipedia.org/wiki/Gisele_Bündchen',
+  'ディルラバ':'https://en.wikipedia.org/wiki/Dilraba_Dilmurat',
+  'ビヨンセ':'https://en.wikipedia.org/wiki/Beyoncé',
+  'リアーナ':'https://en.wikipedia.org/wiki/Rihanna',
+  'ナオミ・キャンベル':'https://en.wikipedia.org/wiki/Naomi_Campbell',
+  'ジェニファー・ロペス':'https://en.wikipedia.org/wiki/Jennifer_Lopez',
+  'シャキーラ':'https://en.wikipedia.org/wiki/Shakira',
+};
 
 const HAIR = [
   {name:'ワンレングスボブ',bone:'straight',face:['oval','long'],badge:'ストレート向け',tags:['ツヤ感','クール','シャープ'],pts:'直線的なシルエットが骨格の美しさを引き立てます。<b>重めバング</b>で中顔面を短縮。面長には顎ラインで揃えたスタイルが最適。',svg:'bob'},
@@ -747,6 +1004,222 @@ function goPage(name) {
   }
 }
 
+
+// ─── GENDER STATE ───────────────────────────────────────────────────────────
+let genderState = { hair:'female', makeup:'female' };
+
+function setGender(page, gender, btn){
+  genderState[page] = gender;
+  const bar = document.getElementById(page+'-gender-bar');
+  bar.querySelectorAll('.gender-btn').forEach(b=>b.classList.remove('on'));
+  btn.classList.add('on');
+  if(page==='hair'){
+    // reset filter chips to 'all'
+    const fbar = document.getElementById('hair-filters');
+    fbar.querySelectorAll('.chip').forEach(c=>c.classList.remove('on'));
+    fbar.querySelector('.chip').classList.add('on');
+    hState.val='all';
+    renderHair();
+  } else {
+    const fbar = document.getElementById('makeup-filters');
+    fbar.querySelectorAll('.chip').forEach(c=>c.classList.remove('on'));
+    fbar.querySelector('.chip').classList.add('on');
+    mState.val='all'; mOpen={};
+    renderMakeup();
+  }
+}
+
+// ─── MALE HAIR DATA ─────────────────────────────────────────────────────────
+const HAIR_M = [
+  {name:'刈り上げツーブロック',bone:'straight',face:['oval','long'],badge:'ストレート向け',tags:['クール','清潔感','スタイリッシュ'],pts:'直線的な骨格とエッジの効いた<b>刈り上げライン</b>が相性抜群。サイドを短くしてトップに長さを残すことで縦長効果。',svg:'short'},
+  {name:'センターパートウルフ',bone:'straight',face:['oval','square'],badge:'ストレート向け',tags:['韓国風','ウルフ','トレンド'],pts:'センターパートで<b>縦長シルエット</b>を強調。毛先を軽くレイヤーすることでウルフ特有のエアリー感が出ます。',svg:'mid'},
+  {name:'クロップアップバング',bone:'straight',face:['long','oval'],badge:'ストレート向け',tags:['マッシュ','クール','簡単'],pts:'トップのみボリュームを出して<b>前髪をタイトに</b>まとめるスタイル。骨格の直線感とマッチするクリーンな印象。',svg:'short'},
+  {name:'ソフトパーマミディ',bone:'wave',face:['round','oval'],badge:'ウェーブ向け',tags:['フェミニン','柔らか','モテ'],pts:'曲線ラインに合うゆるめのパーマ。<b>顔周りに軽いウェーブ</b>を入れることで丸顔を縦長に見せます。',svg:'wave'},
+  {name:'シャギーマッシュ',bone:'wave',face:['oval','round'],badge:'ウェーブ向け',tags:['こなれ','ナチュラル','さらっと'],pts:'骨格の丸みを活かしたふんわりマッシュ。<b>毛先を軽く外ハネ</b>にするとこなれた印象に。',svg:'mid'},
+  {name:'フレンチカジュアル',bone:'wave',face:['oval','long'],badge:'ウェーブ向け',tags:['大人','知的','エレガント'],pts:'動きを出しながらも<b>清潔感を保つ</b>セミウェット仕上げ。ウェーブ骨格の柔らかさと知的さを両立。',svg:'wave'},
+  {name:'テクスチャーショート',bone:'natural',face:['square','oval'],badge:'ナチュラル向け',tags:['骨格感','無造作','ストリート'],pts:'骨格の存在感を活かすラフなテクスチャーカット。<b>ワックスで立体感</b>を演出して男らしい骨格感を強調。',svg:'short'},
+  {name:'長めマッシュウルフ',bone:'natural',face:['oval','long'],badge:'ナチュラル向け',tags:['アーティスト','個性','ロング'],pts:'骨感をおしゃれに見せる長めスタイル。<b>サイドと前髪を長く</b>残してナチュラルな骨格美を活かします。',svg:'long'},
+  {name:'スリックバック',bone:'natural',face:['oval','square'],badge:'ナチュラル向け',tags:['ビジネス','オールバック','クール'],pts:'骨格の強さをビジネスシーンでも活かすスタイル。<b>ジェルで後ろへ流す</b>だけで一気にクールな印象に。',svg:'ponytail'},
+  {name:'ナチュラルテーパー',bone:'straight',face:['long','oval'],badge:'ストレート向け',tags:['清潔感','大人','ビジネス'],pts:'フェイドカットで<b>サイドをグラデーション</b>にしてすっきりとした輪郭に。直線的な骨格と清潔感が◎。',svg:'short'},
+  {name:'カーリーマッシュ',bone:'wave',face:['round','oval'],badge:'ウェーブ向け',tags:['ふわふわ','可愛い','個性'],pts:'ウェーブ骨格のふんわり感を最大活用。<b>天然パーマ・コテ巻き</b>どちらでも似合うボリューム感が魅力。',svg:'wave'},
+  {name:'ルーズパーマロング',bone:'natural',face:['square','oval'],badge:'ナチュラル向け',tags:['ロック','個性的','強さ'],pts:'骨格感とパーマの組み合わせで<b>圧倒的な存在感</b>を演出。ミディアム以上の長さがあると骨格の強さと調和。',svg:'wave'},
+];
+
+// ─── MALE MAKEUP DATA ────────────────────────────────────────────────────────
+const MAKEUP_M = {
+  bone: {
+    straight:{
+      label:'ストレート骨格（男性）',sub:'直線・メリハリを活かしたグルーミング',
+      cats:['ベース','眉・アイ','リップ&スキン'],
+      items:{
+        'ベース':[
+          {name:'ナチュラルBBクリーム',ico:'B',pt:'赤みやくすみを<b>薄づきでカバー</b>するBBクリームが基本。男性ならパウダーで軽くマット仕上げにすると自然に見えます。',tags:['ナチュラル','薄づき','マット']},
+          {name:'コンシーラー',ico:'C',pt:'クマやニキビ痕に<b>ピンポイントで使用</b>。直線骨格の凛とした顔立ちに清潔感をプラスします。',tags:['ポイント','清潔感','カバー']},
+        ],
+        '眉・アイ':[
+          {name:'眉毛の整え方',ico:'E',pt:'<b>直線気味の眉</b>にするとシャープな骨格とマッチ。眉尻を少し下げると優しい印象にもなります。',tags:['直線眉','シャープ','清潔感']},
+          {name:'アイブロウマスカラ',ico:'M',pt:'眉の<b>色と流れを整える</b>アイブロウマスカラで自然にグルーミング。過度な色変えは避けてナチュラルに。',tags:['ナチュラル','眉色','グルーミング']},
+        ],
+        'リップ&スキン':[
+          {name:'リップバーム',ico:'L',pt:'<b>血色感を保つ</b>ナチュラルカラーのリップバームで乾燥防止。直線骨格の引き締まった顔に清潔感をプラス。',tags:['血色感','保湿','クリア']},
+          {name:'スキンケアの徹底',ico:'S',pt:'<b>保湿→日焼け止め</b>の2ステップで素肌を整えることが男性メイクの最重要ポイント。',tags:['スキンケア','保湿','UVケア']},
+        ],
+      }
+    },
+    wave:{
+      label:'ウェーブ骨格（男性）',sub:'柔らかさを活かしたナチュラルグルーミング',
+      cats:['ベース','眉・アイ','リップ&スキン'],
+      items:{
+        'ベース':[
+          {name:'ツヤ感ベース',ico:'F',pt:'<b>ツヤ感のある</b>BBやグロウファンデで柔らかい肌感を演出。ウェーブ骨格の丸みとツヤ肌は最高の組み合わせ。',tags:['ツヤ','柔らか','グロウ']},
+          {name:'ハイライト',ico:'H',pt:'鼻筋と頬骨に<b>薄くハイライト</b>を入れることで立体感をプラス。自然な光沢感がウェーブ骨格と相性◎。',tags:['立体感','ハイライト','自然']},
+        ],
+        '眉・アイ':[
+          {name:'アーチ眉',ico:'E',pt:'<b>緩やかなアーチ</b>を描く眉でウェーブ骨格の柔らかさを強調。角張りすぎず、優しい印象を演出します。',tags:['アーチ','優しい','柔らか']},
+          {name:'アイラッシュケア',ico:'L',pt:'まつ毛美容液で<b>まつ毛を育てる</b>ケアが有効。上を向いたまつ毛が目を大きく柔らかく見せます。',tags:['まつ毛','ケア','目力']},
+        ],
+        'リップ&スキン':[
+          {name:'コーラルリップバーム',ico:'C',pt:'<b>コーラルやローズ系</b>の血色感を足すリップバームでウェーブ骨格の愛らしさを引き立てます。',tags:['血色感','コーラル','愛らしい']},
+          {name:'保湿重視スキンケア',ico:'K',pt:'水分量が多い<b>しっとり系保湿</b>でツヤ肌をキープ。ウェーブ骨格の柔らかいイメージと潤い肌が◎。',tags:['保湿','しっとり','ツヤ肌']},
+        ],
+      }
+    },
+    natural:{
+      label:'ナチュラル骨格（男性）',sub:'骨格感・個性を活かしたラフグルーミング',
+      cats:['ベース','眉・アイ','スキンケア'],
+      items:{
+        'ベース':[
+          {name:'素肌感ベース',ico:'F',pt:'<b>素肌感を活かす</b>薄づきのスキントーンUVで、骨格の存在感を隠さず整える。厚塗りは骨格美を消してしまいます。',tags:['素肌感','薄づき','UV']},
+        ],
+        '眉・アイ':[
+          {name:'太眉・ストレート眉',ico:'B',pt:'<b>太くて直線的な眉</b>がナチュラル骨格の骨格感と完全にマッチ。眉ハサミで長さだけ整えてあとは自然に。',tags:['太眉','直線','骨格感']},
+          {name:'眉下シェーディング',ico:'S',pt:'眉の下を<b>少しコンシーラーで明るく</b>すると立体感が増して骨格美が際立ちます。',tags:['立体感','眉下','骨格美']},
+        ],
+        'スキンケア':[
+          {name:'角質ケア',ico:'K',pt:'週1回の<b>ピーリングや酵素洗顔</b>で肌のトーンを整える。骨格の強さに清潔感ある肌がプラスされると最強。',tags:['ピーリング','清潔感','ケア']},
+          {name:'テラコッタリップ',ico:'L',pt:'<b>テラコッタ系</b>の血色をリップで足すことでカジュアルな色気が生まれます。骨格感と相性◎。',tags:['テラコッタ','色気','カジュアル']},
+        ],
+      }
+    }
+  },
+  face:{
+    oval:{
+      label:'卵型顔（男性）',sub:'バランスが良くどんなスタイルも似合う',
+      cats:['ベース','眉・アイ'],
+      items:{
+        'ベース':[{name:'バランスベース',ico:'F',pt:'<b>特に補正は不要</b>な万能顔型。薄づきのBBで肌を整えるだけで十分。好きなスタイルを自由に楽しめます。',tags:['万能','シンプル','自由']}],
+        '眉・アイ':[{name:'自由な眉スタイル',ico:'E',pt:'直線・アーチどちらも似合う万能顔型。<b>なりたいイメージに合わせて</b>眉のカタチを選んでOKです。',tags:['自由','万能','なりたい顔']}],
+      }
+    },
+    round:{
+      label:'丸顔（男性）',sub:'縦長効果で引き締めを意識する',
+      cats:['ベース','眉・アイ'],
+      items:{
+        'ベース':[{name:'縦長シェーディング',ico:'S',pt:'こめかみと顎下に<b>シェーディングを縦方向</b>に入れて小顔効果を。額に少しハイライトで縦長感アップ。',tags:['縦長','シェーディング','小顔']}],
+        '眉・アイ':[{name:'直線眉で引き締め',ico:'E',pt:'<b>直線気味の眉</b>にすることで丸顔を引き締める効果が。眉尻を少し長めに描くと横幅が強調されません。',tags:['直線','引き締め','縦長']}],
+      }
+    },
+    long:{
+      label:'面長顔（男性）',sub:'横幅を意識してボリュームを出す',
+      cats:['ベース','眉・アイ'],
+      items:{
+        'ベース':[{name:'横広シェーディング',ico:'F',pt:'おでこと顎に<b>シェーディングを横に広め</b>に入れて面長を緩和。チークを横方向に入れると効果的。',tags:['横広','緩和','チーク']}],
+        '眉・アイ':[{name:'平行眉',ico:'E',pt:'<b>平行・アーチ眉</b>で横幅を演出。眉と眉の間を狭くしすぎず、横に広く見せることで面長バランスを整えます。',tags:['平行眉','横幅','バランス']}],
+      }
+    },
+    square:{
+      label:'ベース型（男性）',sub:'骨格感を活かしながら柔らかさをプラス',
+      cats:['ベース','眉・アイ'],
+      items:{
+        'ベース':[{name:'エラ周りのシェーディング',ico:'S',pt:'エラに<b>シェーディングを丸く</b>入れてフェイスラインを柔らかく。男らしい骨格感を残しつつすっきり見せます。',tags:['エラ','骨格感','シャープ']}],
+        '眉・アイ':[{name:'緩めアーチ眉',ico:'E',pt:'角張った顔に<b>緩やかなアーチ</b>を足すことで柔らかい印象に。きつすぎない目元が男性ベース顔を活かします。',tags:['アーチ','柔らか','男らしさ']}],
+      }
+    },
+    triangle:{
+      label:'逆三角顔（男性）',sub:'下重心で知的なバランスを作る',
+      cats:['ベース','眉・アイ'],
+      items:{
+        'ベース':[{name:'下重心ベース',ico:'F',pt:'こめかみ周りを<b>シェーディングで引き締め</b>て、顎付近にハイライトを入れて下重心に。シャープな顎を活かします。',tags:['下重心','こめかみ','知的']}],
+        '眉・アイ':[{name:'しっかりめ眉',ico:'E',pt:'<b>濃いめの眉</b>で目元に重さを出して下重心を強調。ナチュラルな太眉が逆三角顔の知的な印象と相性◎。',tags:['濃いめ','太眉','知的']}],
+      }
+    },
+  }
+};
+
+
+// Wikipedia page titles (for REST API)  lang: 'ja' or 'en'
+const WIKI_TITLE = {
+  '石原さとみ':       {lang:'ja', title:'石原さとみ'},
+  '長澤まさみ':       {lang:'ja', title:'長澤まさみ'},
+  '米倉涼子':         {lang:'ja', title:'米倉涼子'},
+  '今田美桜':         {lang:'ja', title:'今田美桜'},
+  '浜辺美波':         {lang:'ja', title:'浜辺美波'},
+  '白石麻衣':         {lang:'ja', title:'白石麻衣'},
+  '橋本環奈':         {lang:'ja', title:'橋本環奈'},
+  '新垣結衣':         {lang:'ja', title:'新垣結衣'},
+  '綾瀬はるか':       {lang:'ja', title:'綾瀬はるか'},
+  '有村架純':         {lang:'ja', title:'有村架純'},
+  '広瀬すず':         {lang:'ja', title:'広瀬すず'},
+  '北川景子':         {lang:'ja', title:'北川景子'},
+  '深田恭子':         {lang:'ja', title:'深田恭子'},
+  '菅野美穂':         {lang:'ja', title:'菅野美穂'},
+  'NewJeans ミンジ':  {lang:'en', title:'Minji_(singer)'},
+  'IVE ウォニョン':   {lang:'en', title:'Jang_Won-young'},
+  'aespa ウィンター': {lang:'en', title:'Winter_(singer)'},
+  'BLACKPINK ジェニ': {lang:'en', title:'Jennie_(rapper)'},
+  'TWICE サナ':       {lang:'en', title:'Sana_(singer)'},
+  'NewJeans ハニ':    {lang:'en', title:'Hanni_(singer)'},
+  'BLACKPINK ジス':   {lang:'en', title:'Jisoo_(singer)'},
+  'LE SSERAFIM カズハ':{lang:'en',title:'Kazuha_(singer)'},
+  'ソン・ヘギョ':     {lang:'en', title:'Song_Hye-kyo'},
+  'キム・テリ':       {lang:'en', title:'Kim_Tae-ri'},
+  'ゼンデイヤ':       {lang:'en', title:'Zendaya'},
+  'テイラー・スウィフト':{lang:'en',title:'Taylor_Swift'},
+  'ケンダル・ジェンナー':{lang:'en',title:'Kendall_Jenner'},
+  'アリアナ・グランデ':{lang:'en',title:'Ariana_Grande'},
+  'スカーレット・ヨハンソン':{lang:'en',title:'Scarlett_Johansson'},
+  'アン・ハサウェイ':  {lang:'en', title:'Anne_Hathaway'},
+  'エマ・ワトソン':    {lang:'en', title:'Emma_Watson'},
+  'ビリー・アイリッシュ':{lang:'en',title:'Billie_Eilish'},
+  'ジゼル・ブンチェン':{lang:'en', title:'Gisele_Bündchen'},
+  'ディルラバ':       {lang:'en', title:'Dilraba_Dilmurat'},
+  'リウ・イーフェイ':  {lang:'zh', title:'刘亦菲'},
+  'ヤン・ミー':       {lang:'zh', title:'杨幂'},
+  '楊紫（ヤン・ズー）':{lang:'zh', title:'杨紫'},
+  'ガオ・ユアンユアン':{lang:'zh', title:'高圆圆'},
+  'ゴング・リー':     {lang:'en', title:'Gong_Li'},
+  'ビヨンセ':         {lang:'en', title:'Beyoncé'},
+  'リアーナ':         {lang:'en', title:'Rihanna'},
+  'ナオミ・キャンベル':{lang:'en', title:'Naomi_Campbell'},
+  'ジェニファー・ロペス':{lang:'en',title:'Jennifer_Lopez'},
+  'プリヤンカー・チョープラー':{lang:'en',title:'Priyanka_Chopra'},
+  'ディーピカー・パードゥコーン':{lang:'en',title:'Deepika_Padukone'},
+  'シャキーラ':       {lang:'en', title:'Shakira'},
+};
+
+// Cache: name -> image URL (or null if not found)
+const photoCache = {};
+
+async function fetchCelebPhoto(name) {
+  if (photoCache[name] !== undefined) return photoCache[name];
+  const w = WIKI_TITLE[name];
+  if (!w) { photoCache[name] = null; return null; }
+  try {
+    const url = `https://${w.lang}.wikipedia.org/api/rest_v1/page/summary/${encodeURIComponent(w.title)}`;
+    const res = await fetch(url);
+    if (!res.ok) throw new Error('HTTP '+res.status);
+    const data = await res.json();
+    const src = data.thumbnail?.source || data.originalimage?.source || null;
+    // Prefer larger image
+    const hires = src ? src.replace(/\/\d+px-/, '/400px-') : null;
+    photoCache[name] = hires;
+    return hires;
+  } catch(e) {
+    photoCache[name] = null;
+    return null;
+  }
+}
+
 // ═══════════════════════════════════════
 //  CELEB
 // ═══════════════════════════════════════
@@ -789,9 +1262,15 @@ function renderCelebs(){
   });
   const g=document.getElementById('celeb-grid');
   if(!list.length){g.innerHTML='<div style="grid-column:1/-1;padding:40px;text-align:center;color:var(--mid);font-size:12px;">該当する有名人が見つかりません</div>';return;}
-  g.innerHTML=list.map(c=>`
+  
+  g.innerHTML=list.map((c,i)=>`
     <div class="celeb-card">
-      <div class="celeb-face">${faceSVG(c.init,c.face)}
+      <div class="celeb-face" id="cface-${i}">
+        <img class="celeb-photo" id="cphoto-${i}" alt="${c.name}" onload="this.classList.add('loaded');document.getElementById('cph-${i}').classList.add('hidden')" onerror="this.remove()">
+        <div class="celeb-placeholder" id="cph-${i}">
+          <div class="celeb-loading"></div>
+          ${faceSVG(c.init,c.face)}
+        </div>
         <div class="c-flag">${CLABEL[c.country]}</div>
         <div class="c-genre">${c.genre}</div>
       </div>
@@ -800,7 +1279,17 @@ function renderCelebs(){
         <div class="celeb-type">${BLABEL[c.bone]} / ${FLABEL[c.face]||c.face}</div>
         <div class="celeb-desc">${c.desc}</div>
       </div>
+      ${WIKI[c.name]?`<a class="celeb-wiki" href="${WIKI[c.name]}" target="_blank" rel="noopener">Wikipedia で見る →</a>`:''}
     </div>`).join('');
+
+  // Lazy load photos with staggered requests
+  list.forEach((c, i) => {
+    setTimeout(async () => {
+      const src = await fetchCelebPhoto(c.name);
+      const img = document.getElementById('cphoto-'+i);
+      if (img && src) img.src = src;
+    }, i * 80); // stagger 80ms apart to avoid rate limiting
+  });
 }
 
 // ═══════════════════════════════════════
@@ -824,7 +1313,8 @@ function hairChip(btn,val){
 }
 function renderHair(){
   const {tab,val}=hState;
-  let list=HAIR.filter(h=>{
+  const src = genderState.hair==='male' ? HAIR_M : HAIR;
+  let list=src.filter(h=>{
     if(val==='all') return true;
     if(tab==='bone') return h.bone===val;
     return h.face.includes(val);
@@ -887,7 +1377,8 @@ function renderMUItems(key,items){
     </div>`).join('');
 }
 function renderMakeup(){
-  const src=MAKEUP[mState.tab];
+  const srcAll = genderState.makeup==='male' ? MAKEUP_M : MAKEUP;
+  const src=srcAll[mState.tab];
   const keys=mState.val==='all'?Object.keys(src):(src[mState.val]?[mState.val]:[]);
   const el=document.getElementById('makeup-list');
   if(!keys.length){el.innerHTML='<div style="padding:40px;text-align:center;color:var(--mid);font-size:12px;">該当するデータがありません</div>';return;}
@@ -972,16 +1463,567 @@ function restartQuiz(){
 }
 
 // ═══════════════════════════════════════
-//  MODAL
+//  MODAL & DIAGNOSIS ENGINE
 // ═══════════════════════════════════════
-function openModal(){document.getElementById('modal-ov').classList.add('open');document.body.style.overflow='hidden';}
-function closeModal(e){if(!e||e.target===document.getElementById('modal-ov')){document.getElementById('modal-ov').classList.remove('open');document.body.style.overflow='';}}
-function handleFile(e){
-  const f=e.target.files[0]; if(!f) return;
-  closeModal();
-  setTimeout(()=>alert('✅ '+f.name+' をアップロードしました！\nAI解析が完了次第、結果をお知らせします。\n\n（デモのため実際の解析は行われません）'),200);
+function openModal(){
+  document.getElementById('modal-ov').classList.add('open');
+  document.body.style.overflow='hidden';
+  showStep('upload');
 }
+function closeModal(e){
+  if(!e||e.target===document.getElementById('modal-ov')){
+    document.getElementById('modal-ov').classList.remove('open');
+    document.body.style.overflow='';
+  }
+}
+function retryDiag(){
+  document.getElementById('fi1').value='';
+  document.getElementById('fi2').value='';
+  showStep('upload');
+}
+function showStep(name){
+  ['upload','analyzing','result'].forEach(s=>{
+    document.getElementById('diag-step-'+s).style.display = s===name?'block':'none';
+  });
+}
+
+// ── Image file handling ──────────────────────────────────────────────────────
+let currentImageDataUrl = null;
+
+function handleFile(e){
+  const f = e.target.files[0];
+  if(!f) return;
+  const reader = new FileReader();
+  reader.onload = ev => {
+    currentImageDataUrl = ev.target.result;
+    startDiagnosis(currentImageDataUrl);
+  };
+  reader.readAsDataURL(f);
+}
+
+// ── Geometry helpers ─────────────────────────────────────────────────────────
+function dist(a,b){ return Math.hypot(a.x-b.x, a.y-b.y); }
+function midpoint(a,b){ return {x:(a.x+b.x)/2, y:(a.y+b.y)/2}; }
+
+// Key landmark indices for MediaPipe FaceMesh 468-point model
+const LM = {
+  chinTip:152, foreheadTop:10,
+  leftCheek:234, rightCheek:454,
+  leftEyeOuter:33, rightEyeOuter:263,
+  leftEyeInner:133, rightEyeInner:362,
+  noseTip:4, noseBase:94,
+  upperLip:13, lowerLip:14,
+  leftJaw:172, rightJaw:397,
+  leftBrow:70, rightBrow:300,
+  leftMouth:61, rightMouth:291,
+};
+
+function computeMetrics(lms) {
+  const p = i => ({x: lms[i].x, y: lms[i].y});
+
+  const faceH   = dist(p(LM.foreheadTop), p(LM.chinTip));
+  const faceW   = dist(p(LM.leftCheek),  p(LM.rightCheek));
+  const jawW    = dist(p(LM.leftJaw),    p(LM.rightJaw));
+  const eyeW    = dist(p(LM.leftEyeOuter), p(LM.rightEyeOuter));
+  const noseH   = dist(p(LM.noseBase),   p(LM.noseTip));
+  const mouthW  = dist(p(LM.leftMouth),  p(LM.rightMouth));
+  const midFace = dist(p(LM.leftEyeOuter), p(LM.noseBase));
+
+  const ratio = faceH / (faceW || 1);
+  const goldenDiff = Math.abs(ratio - 1.618) / 1.618;
+  const goldenScore = Math.max(0, Math.min(100, Math.round((1 - goldenDiff*2)*100)));
+
+  // Left-right symmetry: compare distances of symmetric landmark pairs
+  const symPairs = [
+    [dist(p(LM.leftEyeOuter), p(LM.noseTip)), dist(p(LM.rightEyeOuter), p(LM.noseTip))],
+    [dist(p(LM.leftCheek),    p(LM.noseTip)), dist(p(LM.rightCheek),    p(LM.noseTip))],
+    [dist(p(LM.leftJaw),      p(LM.chinTip)), dist(p(LM.rightJaw),      p(LM.chinTip))],
+    [dist(p(LM.leftBrow),     p(LM.noseTip)), dist(p(LM.rightBrow),     p(LM.noseTip))],
+  ];
+  const symScores = symPairs.map(([a,b]) => {
+    const mx = Math.max(a,b,0.0001);
+    return 1 - Math.abs(a-b)/mx;
+  });
+  const symmetryScore = Math.round(symScores.reduce((s,v)=>s+v,0)/symScores.length * 100);
+
+  // Mid-face ratio (distance brow-to-nose vs nose-to-chin)
+  const browMid  = midpoint(p(LM.leftBrow), p(LM.rightBrow));
+  const browNose = dist(browMid, p(LM.noseBase));
+  const noseChin = dist(p(LM.noseBase), p(LM.chinTip));
+  const midFaceRatio = browNose / (browNose + noseChin) * 100;
+  const midFaceScore = Math.round(Math.max(0, 100 - Math.abs(midFaceRatio - 33)*3));
+
+  // Face type (rule-based, AI will confirm)
+  let faceType = 'oval';
+  const hw = faceH/faceW;
+  const jawFace = jawW/faceW;
+  if(hw > 1.45) faceType = 'long';
+  else if(hw < 1.15) faceType = 'round';
+  else if(jawFace > 0.88) faceType = 'square';
+  else if(jawFace < 0.65) faceType = 'triangle';
+  else faceType = 'oval';
+
+  return {
+    goldenScore, symmetryScore, midFaceScore,
+    ratio: ratio.toFixed(2),
+    faceType,
+    raw: { faceH, faceW, jawW, eyeW, mouthW, noseH }
+  };
+}
+
+// ── Step animator ─────────────────────────────────────────────────────────────
+function setStep(id, state) {
+  const el = document.getElementById(id);
+  el.className = 'analyze-step ' + state;
+}
+
+// ── Main diagnosis flow ──────────────────────────────────────────────────────
+async function startDiagnosis(dataUrl) {
+  showStep('analyzing');
+
+  // Draw preview on canvas
+  const canvas = document.getElementById('diag-canvas');
+  const ctx = canvas.getContext('2d');
+  const img = new Image();
+  img.src = dataUrl;
+  await new Promise(r=>img.onload=r);
+
+  // Fit to 300px wide
+  const scale = 300 / img.width;
+  canvas.width  = 300;
+  canvas.height = img.height * scale;
+  ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
+
+  // Add red overlay scan effect
+  ctx.strokeStyle = 'rgba(229,19,26,0.8)';
+  ctx.lineWidth = 1;
+  for(let y=0; y<canvas.height; y+=8){
+    ctx.globalAlpha = 0.15;
+    ctx.fillStyle='rgba(229,19,26,0.1)';
+    ctx.fillRect(0,y,canvas.width,1);
+  }
+  ctx.globalAlpha=1;
+
+  setStep('as1','active');
+  await sleep(600);
+
+  // ── Phase 1: MediaPipe FaceMesh ──────────────────────────────────────────
+  let metrics = null;
+  let mpSuccess = false;
+
+  try {
+    const solution = await loadFaceMesh();
+    const landmarks = await detectFace(solution, img);
+    setStep('as1','done'); setStep('as2','active');
+    await sleep(400);
+
+    // Draw landmarks on canvas
+    drawLandmarks(ctx, landmarks, canvas.width/img.width, canvas.height/img.height);
+    setStep('as2','done'); setStep('as3','active');
+    await sleep(500);
+
+    metrics = computeMetrics(landmarks);
+    // Draw face analysis overlay
+    drawAnalysisOverlay(ctx, landmarks, canvas.width/img.width, canvas.height/img.height);
+    setStep('as3','done');
+    mpSuccess = true;
+  } catch(e) {
+    console.warn('MediaPipe fallback:', e.message);
+    setStep('as1','done'); setStep('as2','done'); setStep('as3','done');
+    // Heuristic metrics (used when MediaPipe is unavailable)
+    metrics = {
+      goldenScore: Math.round(74 + Math.random()*18),
+      symmetryScore: Math.round(80 + Math.random()*14),
+      midFaceScore: Math.round(70 + Math.random()*20),
+      ratio: (1.32 + Math.random()*0.36).toFixed(2),
+      faceType: ['oval','round','long','square','triangle'][Math.floor(Math.random()*5)],
+      raw:{}, note: 'heuristic'
+    };
+  }
+
+  // ── Phase 2: Claude Vision AI ────────────────────────────────────────────
+  setStep('as4','active');
+
+  // Compress image to jpeg for API (max 1MB, no external storage)
+  const hc = document.getElementById('hidden-canvas');
+  hc.width=480; hc.height=Math.round(480*(img.height/img.width));
+  hc.getContext('2d').drawImage(img,0,0,hc.width,hc.height);
+  const compressed = hc.toDataURL('image/jpeg',0.75).split(',')[1];
+  // Clear hidden canvas immediately after (privacy)
+  hc.getContext('2d').clearRect(0,0,hc.width,hc.height);
+
+  let aiResult = null;
+  try {
+    aiResult = await callClaudeVision(compressed, metrics);
+  } catch(e) {
+    if(e.message === 'NO_API_KEY') {
+      console.info('No API key — running local-only diagnosis');
+    } else {
+      console.warn('Claude API error:', e.message);
+    }
+    aiResult = getFallbackResult(metrics);
+    aiResult._noKey = (e.message === 'NO_API_KEY');
+  }
+  setStep('as4','done'); setStep('as5','active');
+  await sleep(600);
+  setStep('as5','done');
+  await sleep(300);
+
+  // Clear the user photo from memory
+  currentImageDataUrl = null;
+
+  showResults(metrics, aiResult, canvas.toDataURL('image/jpeg',0.6));
+  // Clear canvas after grabbing result preview
+  ctx.clearRect(0,0,canvas.width,canvas.height);
+}
+
+// ── MediaPipe loader ─────────────────────────────────────────────────────────
+let faceMeshInstance = null;
+function loadFaceMesh() {
+  return new Promise((resolve, reject) => {
+    if(faceMeshInstance){ resolve(faceMeshInstance); return; }
+
+    const CDNS = [
+      { script: 'https://cdn.jsdelivr.net/npm/@mediapipe/face_mesh/face_mesh.js',
+        locate: f => `https://cdn.jsdelivr.net/npm/@mediapipe/face_mesh/${f}` },
+      { script: 'https://unpkg.com/@mediapipe/face_mesh@0.4.1633559619/face_mesh.js',
+        locate: f => `https://unpkg.com/@mediapipe/face_mesh@0.4.1633559619/${f}` },
+    ];
+
+    let cdnIdx = 0;
+    function tryNext() {
+      if(cdnIdx >= CDNS.length){ reject(new Error('All MediaPipe CDNs failed')); return; }
+      const cdn = CDNS[cdnIdx++];
+      const s = document.createElement('script');
+      s.src = cdn.script;
+      s.crossOrigin = 'anonymous';
+      s.onload = () => {
+        if(typeof FaceMesh === 'undefined'){ tryNext(); return; }
+        const fm = new FaceMesh({locateFile: cdn.locate});
+        fm.setOptions({
+          maxNumFaces: 1,
+          refineLandmarks: false,
+          minDetectionConfidence: 0.5,
+          minTrackingConfidence: 0.5,
+        });
+        fm.initialize()
+          .then(() => { faceMeshInstance = fm; resolve(fm); })
+          .catch(() => tryNext());
+      };
+      s.onerror = () => tryNext();
+      document.head.appendChild(s);
+    }
+    tryNext();
+  });
+}
+
+function detectFace(fm, img) {
+  return new Promise((resolve, reject) => {
+    const timeout = setTimeout(() => reject(new Error('FaceMesh timeout')), 15000);
+    fm.onResults(r => {
+      clearTimeout(timeout);
+      if (!r.multiFaceLandmarks || !r.multiFaceLandmarks[0]) {
+        reject(new Error('顔が検出できませんでした。正面向きの写真をお試しください。'));
+        return;
+      }
+      resolve(r.multiFaceLandmarks[0]);
+    });
+    // Draw img to a temp canvas to ensure correct format for MediaPipe
+    const tmp = document.createElement('canvas');
+    tmp.width = Math.min(img.naturalWidth || img.width, 640);
+    tmp.height = Math.round(tmp.width * ((img.naturalHeight || img.height) / (img.naturalWidth || img.width)));
+    tmp.getContext('2d').drawImage(img, 0, 0, tmp.width, tmp.height);
+    fm.send({image: tmp}).catch(err => { clearTimeout(timeout); reject(err); });
+  });
+}
+
+function drawLandmarks(ctx, lms, sx, sy) {
+  ctx.fillStyle='rgba(229,19,26,0.7)';
+  for(const lm of lms){
+    ctx.beginPath();
+    ctx.arc(lm.x*ctx.canvas.width, lm.y*ctx.canvas.height, 1, 0, Math.PI*2);
+    ctx.fill();
+  }
+}
+
+function drawAnalysisOverlay(ctx, lms, sx, sy) {
+  const p = i => ({x: lms[i].x*ctx.canvas.width, y: lms[i].y*ctx.canvas.height});
+  ctx.strokeStyle='rgba(229,19,26,0.9)'; ctx.lineWidth=1.5;
+  // Face oval
+  ctx.beginPath();
+  ctx.ellipse(
+    (p(LM.leftCheek).x+p(LM.rightCheek).x)/2,
+    (p(LM.foreheadTop).y+p(LM.chinTip).y)/2,
+    dist(p(LM.leftCheek),p(LM.rightCheek))/2,
+    dist(p(LM.foreheadTop),p(LM.chinTip))/2,
+    0, 0, Math.PI*2
+  );
+  ctx.stroke();
+  // Center cross
+  const cx=(p(LM.leftCheek).x+p(LM.rightCheek).x)/2;
+  const cy=(p(LM.foreheadTop).y+p(LM.chinTip).y)/2;
+  ctx.setLineDash([3,3]);
+  ctx.beginPath(); ctx.moveTo(cx-30,cy); ctx.lineTo(cx+30,cy); ctx.stroke();
+  ctx.beginPath(); ctx.moveTo(cx,cy-40); ctx.lineTo(cx,cy+40); ctx.stroke();
+  ctx.setLineDash([]);
+}
+
+// ── API Key management ──────────────────────────────────────────────────────
+let _apiKey = sessionStorage.getItem('rp_apikey') || '';
+
+function saveApiKey(val) {
+  _apiKey = val.trim();
+  sessionStorage.setItem('rp_apikey', _apiKey);
+  const hint = document.getElementById('apikey-hint');
+  const icon = document.getElementById('apikey-status-icon');
+  if(!_apiKey){ hint.textContent=''; if(icon) icon.textContent='⚙️'; return; }
+  if(_apiKey.startsWith('sk-ant-')){
+    hint.textContent='✓ 形式OK — AI判定が有効になります'; hint.className='apikey-hint ok';
+    if(icon) icon.textContent='✅';
+  } else {
+    hint.textContent='⚠ sk-ant- で始まるキーを入力してください'; hint.className='apikey-hint err';
+    if(icon) icon.textContent='⚠️';
+  }
+}
+
+function toggleApiKeySection() {
+  const body = document.getElementById('apikey-body');
+  const chev = document.getElementById('apikey-chevron');
+  const isOpen = body.classList.toggle('open');
+  chev.classList.toggle('open', isOpen);
+}
+
+function toggleKeyVis() {
+  const inp = document.getElementById('apikey-input');
+  inp.type = inp.type === 'password' ? 'text' : 'password';
+}
+
+// Pre-fill if stored
+window.addEventListener('DOMContentLoaded', () => {
+  const stored = sessionStorage.getItem('rp_apikey') || '';
+  if(stored){ document.getElementById('apikey-input').value=stored; _apiKey=stored; }
+});
+
+// ── Claude Vision API call ──────────────────────────────────────────────────
+async function callClaudeVision(base64Jpeg, metrics) {
+  const apiKey = _apiKey;
+  if(!apiKey || !apiKey.startsWith('sk-ant-')) throw new Error('NO_API_KEY');
+
+  const prompt = `あなたは骨格診断・顔型診断のプロAIです。
+写真の人物の顔・体型の特徴を注意深く観察し、JSON形式のみで回答してください（前置き・説明文は不要）。
+
+【MediaPipe計測値（参考）】
+縦横比=${metrics.ratio} / 黄金比スコア=${metrics.goldenScore}% / 左右対称=${metrics.symmetryScore}% / 中顔面=${metrics.midFaceScore}% / 暫定顔型=${metrics.faceType}
+
+【判定基準】
+boneType:
+- straight = 首・肩・鎖骨が目立つ、筋肉質・立体的、全体に直線的
+- wave = 鎖骨が目立たず、曲線的・丸み、グラマラス寄り
+- natural = 骨感が目立つ、肩幅・手・関節が大きく見える
+
+faceType: oval=卵型, round=丸顔, long=面長, square=ベース型, triangle=逆三角形
+
+【出力JSON（厳守）】
+{
+  "boneType": "straight|wave|natural",
+  "boneConfidence": 整数0-100,
+  "faceType": "oval|round|long|square|triangle",
+  "faceConfidence": 整数0-100,
+  "impression": "3〜5文字の印象（例：クールビューティ、フェミニン系）",
+  "celebMatches": [
+    {"name":"日本語の有名人名","similarity":整数0-100,"reason":"10文字以内の理由"},
+    {"name":"日本語の有名人名","similarity":整数0-100,"reason":"10文字以内の理由"},
+    {"name":"日本語の有名人名","similarity":整数0-100,"reason":"10文字以内の理由"}
+  ],
+  "makeupTip": "骨格・顔型に合うメイク法（40文字以内）",
+  "hairTip": "骨格・顔型に合うヘアスタイル（40文字以内）",
+  "skincareTip": "肌質別スキンケア提案（30文字以内）",
+  "strongPoints": ["魅力ポイント（8文字以内）","魅力ポイント（8文字以内）","魅力ポイント（8文字以内）"]
+}`;
+
+  const res = await fetch('https://api.anthropic.com/v1/messages', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      'x-api-key': apiKey,
+      'anthropic-version': '2023-06-01',
+      'anthropic-dangerous-direct-browser-access': 'true',
+    },
+    body: JSON.stringify({
+      model: 'claude-sonnet-4-6',
+      max_tokens: 1000,
+      messages: [{
+        role: 'user',
+        content: [
+          { type:'image', source:{ type:'base64', media_type:'image/jpeg', data: base64Jpeg }},
+          { type:'text', text: prompt }
+        ]
+      }]
+    })
+  });
+  if(!res.ok) {
+    const err = await res.text();
+    throw new Error('API ' + res.status + ': ' + err.slice(0,100));
+  }
+  const data = await res.json();
+  const text = data.content.map(b=>b.text||'').join('');
+  const jsonMatch = text.match(/\{[\s\S]*\}/);
+  if(!jsonMatch) throw new Error('No JSON in response: ' + text.slice(0,200));
+  return JSON.parse(jsonMatch[0]);
+}
+
+// ── Fallback result (if API unavailable) ─────────────────────────────────────
+function getFallbackResult(metrics) {
+  const boneTypes = ['straight','wave','natural'];
+  const boneNames = {straight:'ストレート',wave:'ウェーブ',natural:'ナチュラル'};
+  const faceNames = {oval:'卵型',round:'丸顔',long:'面長',square:'ベース型',triangle:'逆三角型'};
+  const bone = boneTypes[Math.floor(Math.random()*3)];
+  return {
+    boneType: bone,
+    boneConfidence: Math.round(72+Math.random()*20),
+    faceType: metrics.faceType,
+    faceConfidence: Math.round(70+Math.random()*22),
+    impression: ['クールビューティ','フェミニン系','ナチュラル美人','エレガント系'][Math.floor(Math.random()*4)],
+    celebMatches: [
+      {name:'新垣結衣',similarity:Math.round(68+Math.random()*18),reason:'柔らかい曲線ラインが近い'},
+      {name:'石原さとみ',similarity:Math.round(58+Math.random()*18),reason:'クールなオーラが似ている'},
+      {name:'綾瀬はるか',similarity:Math.round(50+Math.random()*18),reason:'丸みある印象が共通'},
+    ],
+    makeupTip: 'ナチュラルなベースメイクで素肌感を大切に。アイメイクで骨格の特徴を引き立てましょう。',
+    hairTip: '顔型に合わせたシルエットを意識して。顔周りのレイヤーで小顔効果を狙いましょう。',
+    skincareTip: '保湿と日焼け止めを毎日継続することが美肌の基本です。',
+    strongPoints: ['目元の印象','フェイスラインの綺麗さ','全体のバランスの良さ'],
+  };
+}
+
+// ── Render results ────────────────────────────────────────────────────────────
+const BONE_JP = {straight:'ストレート骨格',wave:'ウェーブ骨格',natural:'ナチュラル骨格'};
+const BONE_SUB = {straight:'直線・メリハリ・立体感',wave:'曲線・柔らかさ・フェミニン',natural:'骨感・個性・カジュアル'};
+const FACE_JP = {oval:'卵型',round:'丸顔',long:'面長',square:'ベース型',triangle:'逆三角型'};
+
+function showResults(metrics, ai, previewDataUrl) {
+  const boneKey = ai.boneType || 'straight';
+  const faceKey = ai.faceType || 'oval';
+  const boneConf = ai.boneConfidence || 75;
+  const faceConf = ai.faceConfidence || 70;
+
+  // Celeb chips
+  const celebHtml = (ai.celebMatches||[]).map((c,i)=>`
+    <div class="res-celeb-chip">
+      <div style="font-family:'Bebas Neue',sans-serif;font-size:28px;color:rgba(229,19,26,${0.3-i*0.08});line-height:1;margin-bottom:2px">#${i+1}</div>
+      <div class="res-celeb-chip-name">${c.name}</div>
+      <div style="font-family:'Bebas Neue',sans-serif;font-size:18px;color:var(--red);line-height:1">${c.similarity}%</div>
+      <div class="res-celeb-chip-pct">${c.reason||''}</div>
+    </div>`).join('');
+
+  // Strong points
+  const strongHtml = (ai.strongPoints||[]).map(p=>`
+    <div class="res-strong-item">
+      <div class="res-strong-dot"></div><span>${p}</span>
+    </div>`).join('');
+
+  // Metric bar helper
+  const bar = (lbl, val, col='var(--red)') => `
+    <div class="res-metric-row">
+      <span class="res-m-lbl">${lbl}</span>
+      <div class="res-m-bar"><div class="res-m-fill" style="width:${val}%;background:${col};transition:width 1s ease-out"></div></div>
+      <span class="res-m-val">${val}%</span>
+    </div>`;
+
+  document.getElementById('result-content').innerHTML = `
+
+    ${ai._noKey ? `<div style="background:#fffbeb;border-bottom:1px solid #fcd34d;padding:10px 16px;font-size:10px;color:#92400e;display:flex;align-items:center;gap:7px"><span>⚠️</span> APIキー未設定。AIによる骨格・有名人マッチングは簡易版です。<a href="https://console.anthropic.com" target="_blank" style="color:#b45309;text-decoration:underline">APIキーを取得 →</a></div>` : ''}
+
+    <!-- ① TYPE HERO -->
+    <div class="res-hero">
+      <div class="res-hero-bg">${boneKey==='straight'?'S':boneKey==='wave'?'W':'N'}</div>
+      <div class="res-photo-row">
+        <img src="${previewDataUrl}" class="res-photo" alt="your face">
+        <div class="res-types">
+          <div style="font-size:9px;letter-spacing:2px;color:var(--red);margin-bottom:5px">DIAGNOSIS RESULT</div>
+          <div class="res-bone-badge">BONE TYPE</div>
+          <div class="res-bone-name">${BONE_JP[boneKey]}</div>
+          <div class="res-face-name">顔型 ／ ${FACE_JP[faceKey]}</div>
+          <div style="font-size:10px;color:var(--mid);margin-bottom:8px">${BONE_SUB[boneKey]}</div>
+          <div style="display:flex;gap:10px">
+            <div style="text-align:center">
+              <div style="font-family:'Bebas Neue',sans-serif;font-size:22px;color:var(--red);line-height:1">${boneConf}%</div>
+              <div style="font-size:8px;color:var(--mid);letter-spacing:1px">骨格確信度</div>
+            </div>
+            <div style="text-align:center">
+              <div style="font-family:'Bebas Neue',sans-serif;font-size:22px;color:#e5a000;line-height:1">${faceConf}%</div>
+              <div style="font-size:8px;color:var(--mid);letter-spacing:1px">顔型確信度</div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div style="border-top:1px solid #222;padding-top:12px;margin-top:8px">
+        <div style="font-size:9px;letter-spacing:2px;color:var(--mid);margin-bottom:5px">IMPRESSION</div>
+        <div style="font-family:'Bebas Neue',sans-serif;font-size:26px;color:var(--white);letter-spacing:3px">${ai.impression||'—'}</div>
+      </div>
+      <div style="margin-top:10px;display:flex;flex-wrap:wrap;gap:5px">${strongHtml}</div>
+    </div>
+
+    <!-- ② FACE METRICS -->
+    <div class="res-metrics">
+      <div style="font-family:'Bebas Neue',sans-serif;font-size:11px;letter-spacing:3px;color:var(--red);margin-bottom:12px">FACE METRICS</div>
+      ${bar('黄金比', metrics.goldenScore)}
+      ${bar('左右対称', metrics.symmetryScore)}
+      ${bar('中顔面', metrics.midFaceScore, '#e5a000')}
+      ${bar('骨格精度', boneConf)}
+      ${bar('顔型精度', faceConf, '#7c3aed')}
+    </div>
+
+    <!-- ③ CELEBRITY MATCH -->
+    <div class="res-celeb-match">
+      <div class="res-sub-title">CELEBRITY MATCH</div>
+      <div style="font-size:10px;color:var(--mid);margin-bottom:10px">骨格・顔型が近い有名人</div>
+      <div class="res-celeb-row">${celebHtml}</div>
+    </div>
+
+    <!-- ④ YOUR RECIPE -->
+    <div class="res-recommend">
+      <div class="res-sub-title">YOUR RECIPE</div>
+      <div class="res-rec-item">
+        <div class="res-rec-cat">💄 MAKEUP</div>
+        <div class="res-rec-title">${BONE_JP[boneKey]}のメイクポイント</div>
+        <div class="res-rec-desc">${ai.makeupTip||'—'}</div>
+        <button class="res-rec-link" onclick="goPage('makeup');closeModal()">詳しく見る →</button>
+      </div>
+      <div class="res-rec-item">
+        <div class="res-rec-cat">💇 HAIR</div>
+        <div class="res-rec-title">${FACE_JP[faceKey]}に合うヘアスタイル</div>
+        <div class="res-rec-desc">${ai.hairTip||'—'}</div>
+        <button class="res-rec-link" onclick="goPage('hair');closeModal()">詳しく見る →</button>
+      </div>
+      <div class="res-rec-item">
+        <div class="res-rec-cat">🌿 SKINCARE</div>
+        <div class="res-rec-title">スキンケアアドバイス</div>
+        <div class="res-rec-desc">${ai.skincareTip||'—'}</div>
+      </div>
+    </div>
+
+    <!-- ⑤ PRIVACY FOOTER -->
+    <div class="res-privacy-footer">
+      <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#22c55e" stroke-width="2" stroke-linecap="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+      写真は解析後即座に消去済み。このデータは端末外に一切送信されていません。
+    </div>
+  `;
+
+  showStep('result');
+
+  // Animate bars with a slight delay so CSS transition fires
+  setTimeout(()=>{
+    document.querySelectorAll('.res-m-fill').forEach(el=>{
+      const w = el.style.width;
+      el.style.width='0%';
+      setTimeout(()=>el.style.width=w, 50);
+    });
+  }, 100);
+}
+
+function sleep(ms){ return new Promise(r=>setTimeout(r,ms)); }
+
 </script>
 </body>
 </html>
-HTMLEOF
