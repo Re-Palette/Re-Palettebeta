@@ -1,0 +1,987 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>Re-Palette β</title>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Noto+Sans+JP:wght@300;400;700&family=DM+Serif+Display:ital@0;1&display=swap" rel="stylesheet">
+<style>
+:root {
+  --black: #0a0a0a;
+  --white: #f5f2ee;
+  --red: #e5131a;
+  --gray: #2a2a2a;
+  --mid: #888;
+  --light: #d4d0ca;
+  --border: #e0dbd5;
+}
+* { margin:0; padding:0; box-sizing:border-box; -webkit-tap-highlight-color:transparent; }
+html,body { width:100%; max-width:430px; margin:0 auto; background:var(--white); color:var(--black); font-family:'Noto Sans JP',sans-serif; font-weight:300; overflow-x:hidden; }
+
+/* NAV */
+nav { position:fixed; top:0; left:50%; transform:translateX(-50%); width:100%; max-width:430px; z-index:200; display:flex; align-items:center; justify-content:space-between; padding:0 20px; height:52px; background:var(--black); border-bottom:2px solid var(--red); }
+.nav-logo { font-family:'Bebas Neue',sans-serif; font-size:19px; color:var(--white); letter-spacing:3px; }
+.nav-logo span { color:var(--red); }
+.nav-btn { background:var(--red); color:#fff; padding:8px 16px; border:none; cursor:pointer; font-family:'Bebas Neue',sans-serif; font-size:13px; letter-spacing:2px; }
+
+/* TAB BAR */
+.tab-bar { position:fixed; bottom:0; left:50%; transform:translateX(-50%); width:100%; max-width:430px; z-index:200; display:flex; background:var(--black); border-top:1px solid #1e1e1e; padding-bottom:env(safe-area-inset-bottom,0); }
+.tab-item { flex:1; display:flex; flex-direction:column; align-items:center; padding:9px 0 7px; cursor:pointer; color:#555; border:none; background:none; transition:color .2s; }
+.tab-item.active { color:var(--red); }
+.tab-icon { display:flex; align-items:center; justify-content:center; margin-bottom:3px; }
+.tab-label { font-size:9px; letter-spacing:.5px; font-family:'Noto Sans JP',sans-serif; }
+
+/* PAGES */
+.page { display:none; padding-top:52px; padding-bottom:70px; min-height:100vh; }
+.page.active { display:block; }
+
+/* PAGE HEADER */
+.page-hd { background:var(--black); padding:18px 20px 0; border-bottom:2px solid var(--red); position:sticky; top:52px; z-index:100; }
+.page-hd-title { font-family:'Bebas Neue',sans-serif; font-size:28px; color:var(--white); letter-spacing:2px; margin-bottom:14px; }
+.seg-tabs { display:flex; overflow-x:auto; scrollbar-width:none; }
+.seg-tabs::-webkit-scrollbar { display:none; }
+.seg-tab { flex-shrink:0; padding:9px 16px; font-family:'Bebas Neue',sans-serif; font-size:12px; letter-spacing:2px; color:var(--mid); background:none; border:none; border-bottom:2px solid transparent; cursor:pointer; transition:color .2s,border-color .2s; white-space:nowrap; }
+.seg-tab.active { color:var(--red); border-bottom-color:var(--red); }
+
+/* FILTER BAR */
+.filter-bar { padding:12px 16px; display:flex; gap:7px; overflow-x:auto; scrollbar-width:none; background:var(--white); border-bottom:1px solid var(--border); position:sticky; top:calc(52px + 82px); z-index:90; }
+.filter-bar::-webkit-scrollbar { display:none; }
+.chip { flex-shrink:0; padding:5px 12px; border:1px solid #ccc; background:none; font-size:10px; letter-spacing:.5px; cursor:pointer; color:#777; transition:all .2s; font-family:'Noto Sans JP',sans-serif; }
+.chip.on { border-color:var(--red); color:var(--red); background:rgba(229,19,26,.05); }
+
+/* SECTION LABEL */
+.sec-label { display:flex; align-items:center; gap:12px; margin-bottom:20px; }
+.sec-label-line { height:2px; width:28px; background:var(--red); flex-shrink:0; }
+.sec-label-text { font-size:10px; letter-spacing:3px; color:var(--red); text-transform:uppercase; }
+
+/* BUTTONS */
+.btn-red { background:var(--red); color:#fff; padding:14px 0; border:none; cursor:pointer; font-family:'Bebas Neue',sans-serif; font-size:18px; letter-spacing:3px; text-align:center; width:100%; display:block; }
+.btn-red:active { background:#c0000e; }
+.btn-dark { background:transparent; color:var(--light); padding:14px 0; border:1px solid #444; cursor:pointer; font-family:'Bebas Neue',sans-serif; font-size:18px; letter-spacing:3px; text-align:center; width:100%; display:block; }
+
+/* ══════════════ HOME PAGE ══════════════ */
+.hero { background:var(--black); padding:36px 22px 28px; min-height:calc(100svh - 52px); display:flex; flex-direction:column; justify-content:center; position:relative; overflow:hidden; }
+.hero::after { content:'FACE'; position:absolute; bottom:-8px; right:-16px; font-family:'Bebas Neue',sans-serif; font-size:120px; color:rgba(229,19,26,.07); letter-spacing:-6px; pointer-events:none; }
+.hero-tag { font-size:10px; letter-spacing:3px; color:var(--red); text-transform:uppercase; margin-bottom:14px; }
+.hero-title { font-family:'Bebas Neue',sans-serif; font-size:68px; line-height:.88; color:var(--white); letter-spacing:2px; margin-bottom:18px; }
+.hero-title em { font-family:'DM Serif Display',serif; font-style:italic; color:var(--red); }
+.hero-sub { font-size:12px; line-height:2; color:var(--mid); margin-bottom:24px; }
+
+/* Scan card */
+.scan-card { background:var(--gray); border:1px solid #444; margin-bottom:24px; animation:floatY 4s ease-in-out infinite; }
+@keyframes floatY { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-8px)} }
+.scan-card-hd { background:var(--black); padding:11px 15px; display:flex; align-items:center; justify-content:space-between; border-bottom:2px solid var(--red); }
+.scan-card-hd-t { font-family:'Bebas Neue',sans-serif; font-size:12px; letter-spacing:3px; color:var(--light); }
+.scan-card-badge { background:var(--red); color:#fff; font-size:8px; letter-spacing:2px; padding:2px 7px; }
+.scan-face-area { display:flex; align-items:center; justify-content:center; padding:22px; background:#1a1a1a; }
+.face-oval { width:82px; height:104px; border:2px solid var(--red); border-radius:50% 50% 45% 45%/60% 60% 40% 40%; position:relative; display:flex; align-items:center; justify-content:center; }
+.face-grid { position:absolute; inset:0; background:repeating-linear-gradient(0deg,transparent,transparent 10px,rgba(229,19,26,.1) 10px,rgba(229,19,26,.1) 11px),repeating-linear-gradient(90deg,transparent,transparent 10px,rgba(229,19,26,.1) 10px,rgba(229,19,26,.1) 11px); border-radius:inherit; }
+.scan-line { position:absolute; left:-8px; right:-8px; height:2px; background:linear-gradient(90deg,transparent,var(--red),transparent); animation:scan 2.5s ease-in-out infinite; top:50%; }
+@keyframes scan { 0%{transform:translateY(-52px);opacity:0} 10%{opacity:1} 90%{opacity:1} 100%{transform:translateY(52px);opacity:0} }
+.face-cross { position:absolute; width:10px; height:10px; border-top:2px solid var(--red); border-left:2px solid var(--red); top:6px; left:6px; }
+.face-cross::after { content:''; position:absolute; bottom:-10px; right:-10px; width:10px; height:10px; border-bottom:2px solid var(--red); border-right:2px solid var(--red); }
+.scan-metrics { padding:13px 15px; display:flex; flex-direction:column; gap:9px; }
+.m-row { display:flex; align-items:center; gap:9px; }
+.m-lbl { font-size:9px; letter-spacing:1px; color:var(--mid); width:58px; flex-shrink:0; }
+.m-bar { flex:1; height:3px; background:#444; }
+.m-fill { height:100%; background:var(--red); animation:fillBar 1.5s ease-out forwards; width:0; }
+@keyframes fillBar { to{width:var(--w)} }
+.m-val { font-family:'Bebas Neue',sans-serif; font-size:12px; color:var(--light); width:30px; text-align:right; }
+.scan-result { padding:11px 15px; border-top:1px solid #333; display:flex; align-items:center; justify-content:space-between; }
+.res-type { font-family:'Bebas Neue',sans-serif; font-size:17px; letter-spacing:2px; color:var(--white); }
+.res-pct { font-family:'Bebas Neue',sans-serif; font-size:30px; color:var(--red); line-height:1; }
+.res-pct span { font-size:12px; }
+.hero-btns { display:flex; gap:10px; }
+.hero-btns .btn-red,.hero-btns .btn-dark { flex:1; font-size:16px; }
+
+/* Home browse section */
+.home-browse { padding:44px 20px 0; }
+.browse-grid { display:grid; grid-template-columns:1fr 1fr; gap:10px; }
+.browse-card { background:var(--black); border:1px solid #1e1e1e; padding:20px 16px 16px; cursor:pointer; position:relative; overflow:hidden; min-height:120px; display:flex; flex-direction:column; justify-content:space-between; transition:border-color .2s; }
+.browse-card:active,.browse-card:hover { border-color:var(--red); }
+.browse-card.wide { grid-column:1/-1; min-height:80px; flex-direction:row; align-items:center; gap:16px; padding:16px 18px; }
+.browse-bg { position:absolute; bottom:-8px; right:-4px; font-family:'Bebas Neue',sans-serif; font-size:72px; color:rgba(229,19,26,.07); line-height:1; pointer-events:none; }
+.browse-lbl { font-size:9px; letter-spacing:2px; color:var(--red); margin-bottom:5px; }
+.browse-name { font-family:'Bebas Neue',sans-serif; font-size:17px; color:var(--white); line-height:1.1; margin-bottom:6px; }
+.browse-desc { font-size:10px; color:var(--mid); line-height:1.7; }
+.browse-arr { width:18px; height:1px; background:var(--red); position:relative; margin-top:10px; flex-shrink:0; }
+.browse-card.wide .browse-arr { margin-top:0; }
+.browse-arr::after { content:''; position:absolute; right:0; top:-3px; border-left:6px solid var(--red); border-top:3px solid transparent; border-bottom:3px solid transparent; }
+
+/* Home features */
+.home-features { padding:44px 20px 0; }
+.feat-grid { display:grid; grid-template-columns:1fr 1fr; gap:1px; background:#e0dbd5; border:1px solid #e0dbd5; margin-top:0; }
+.feat-card { background:var(--white); padding:20px 16px; transition:background .2s; }
+.feat-card:active { background:#f0ece8; }
+.feat-num { font-family:'Bebas Neue',sans-serif; font-size:36px; color:rgba(229,19,26,.12); line-height:1; margin-bottom:6px; }
+.feat-icon { font-size:20px; margin-bottom:8px; }
+.feat-name { font-family:'Bebas Neue',sans-serif; font-size:15px; color:var(--black); margin-bottom:6px; letter-spacing:1px; }
+.feat-desc { font-size:11px; line-height:1.8; color:#777; }
+
+/* Home steps */
+.home-steps { padding:44px 20px 0; background:var(--black); margin-top:44px; }
+.steps-title { font-family:'Bebas Neue',sans-serif; font-size:48px; color:var(--white); line-height:.9; margin-bottom:28px; }
+.step-list { border:1px solid #1e1e1e; }
+.step-item { padding:24px 20px; border-bottom:1px solid #1e1e1e; position:relative; }
+.step-item:last-child { border-bottom:none; }
+.step-bg { position:absolute; top:10px; right:12px; font-family:'Bebas Neue',sans-serif; font-size:72px; color:rgba(229,19,26,.1); line-height:1; }
+.step-idx { font-size:9px; letter-spacing:2px; color:var(--red); margin-bottom:8px; }
+.step-name { font-family:'Bebas Neue',sans-serif; font-size:20px; color:var(--white); letter-spacing:1px; margin-bottom:8px; }
+.step-desc { font-size:11px; line-height:1.9; color:var(--mid); }
+.step-arr { margin-top:14px; width:24px; height:2px; background:var(--red); position:relative; }
+.step-arr::after { content:''; position:absolute; right:0; top:-3px; border-left:6px solid var(--red); border-top:3px solid transparent; border-bottom:3px solid transparent; }
+
+/* Home CTA */
+.home-cta { padding:44px 20px; }
+.home-cta-title { font-family:'Bebas Neue',sans-serif; font-size:56px; line-height:.88; margin-bottom:10px; }
+.home-cta-title em { font-family:'DM Serif Display',serif; font-style:italic; color:var(--red); }
+.home-cta-sub { font-size:12px; color:#888; margin-bottom:22px; line-height:1.9; }
+.home-cta-btns { display:flex; flex-direction:column; gap:10px; }
+
+/* FOOTER */
+footer { background:var(--black); padding:24px 20px; border-top:2px solid var(--red); }
+.foot-logo { font-family:'Bebas Neue',sans-serif; font-size:20px; color:var(--white); letter-spacing:3px; margin-bottom:6px; }
+.foot-logo span { color:var(--red); }
+.foot-copy { font-size:10px; color:var(--mid); line-height:1.8; }
+
+/* ══════════════ CELEB PAGE ══════════════ */
+.celeb-grid { padding:14px 14px 20px; display:grid; grid-template-columns:1fr 1fr; gap:10px; }
+.celeb-card { background:var(--black); border:1px solid #1e1e1e; cursor:pointer; overflow:hidden; transition:border-color .2s; }
+.celeb-card:active { border-color:var(--red); }
+.celeb-face { width:100%; aspect-ratio:3/4; background:#181818; display:flex; align-items:center; justify-content:center; position:relative; }
+.c-flag { position:absolute; top:7px; right:7px; background:var(--red); color:#fff; font-size:8px; letter-spacing:1px; padding:2px 6px; font-family:'Bebas Neue',sans-serif; }
+.c-genre { position:absolute; bottom:7px; left:7px; background:rgba(0,0,0,.75); color:var(--light); font-size:8px; letter-spacing:1px; padding:2px 6px; font-family:'Bebas Neue',sans-serif; }
+.celeb-info { padding:9px 11px 11px; }
+.celeb-name { font-family:'Bebas Neue',sans-serif; font-size:15px; letter-spacing:1px; color:var(--white); margin-bottom:3px; }
+.celeb-type { font-size:9px; color:var(--red); letter-spacing:1px; margin-bottom:3px; }
+.celeb-desc { font-size:10px; color:var(--mid); line-height:1.7; }
+
+/* ══════════════ HAIR PAGE ══════════════ */
+.hair-list { padding:14px 14px 20px; display:flex; flex-direction:column; gap:12px; }
+.hair-card { background:var(--black); border:1px solid #1e1e1e; display:flex; overflow:hidden; cursor:pointer; transition:border-color .2s; }
+.hair-card:active { border-color:var(--red); }
+.hair-thumb { width:90px; flex-shrink:0; background:#181818; display:flex; align-items:center; justify-content:center; }
+.hair-body { padding:13px 13px; flex:1; }
+.hair-name { font-family:'Bebas Neue',sans-serif; font-size:17px; letter-spacing:1px; color:var(--white); margin-bottom:3px; }
+.hair-badge { display:inline-block; background:var(--red); color:#fff; font-size:8px; letter-spacing:2px; padding:2px 7px; font-family:'Bebas Neue',sans-serif; margin-bottom:7px; }
+.hair-tags { display:flex; flex-wrap:wrap; gap:4px; margin-bottom:7px; }
+.hair-tag { border:1px solid #333; color:var(--mid); font-size:9px; padding:2px 6px; letter-spacing:.5px; }
+.hair-pts { font-size:11px; color:var(--mid); line-height:1.8; }
+.hair-pts b { color:var(--red); font-weight:normal; }
+
+/* ══════════════ MAKEUP PAGE ══════════════ */
+.makeup-list { padding:14px 14px 20px; display:flex; flex-direction:column; gap:8px; }
+.makeup-sect { border:1px solid #1e1e1e; overflow:hidden; }
+.makeup-sect-hd { background:var(--black); padding:16px 18px; display:flex; align-items:center; justify-content:space-between; cursor:pointer; border-bottom:2px solid var(--red); }
+.makeup-sect-name { font-family:'Bebas Neue',sans-serif; font-size:20px; color:var(--white); letter-spacing:2px; }
+.makeup-sect-sub { font-size:10px; color:var(--mid); margin-top:2px; }
+.makeup-plus { width:22px; height:22px; border:1px solid #444; display:flex; align-items:center; justify-content:center; flex-shrink:0; transition:transform .3s; }
+.makeup-plus.open { transform:rotate(45deg); }
+.makeup-body { display:none; background:#fff; }
+.makeup-body.open { display:block; }
+.makeup-cat-bar { display:flex; overflow-x:auto; border-bottom:1px solid var(--border); scrollbar-width:none; }
+.makeup-cat-bar::-webkit-scrollbar { display:none; }
+.makeup-cat { flex-shrink:0; padding:9px 14px; font-size:11px; letter-spacing:.5px; color:#999; border:none; background:none; cursor:pointer; border-bottom:2px solid transparent; font-family:'Noto Sans JP',sans-serif; transition:color .2s,border-color .2s; }
+.makeup-cat.on { color:var(--red); border-bottom-color:var(--red); }
+.makeup-items-wrap { padding:14px 14px; display:flex; flex-direction:column; gap:0; }
+.makeup-item { display:flex; gap:12px; align-items:flex-start; padding:12px 0; border-bottom:1px solid #f2ede9; }
+.makeup-item:last-child { border-bottom:none; }
+.makeup-ico { width:44px; height:44px; background:var(--black); border:1px solid #1e1e1e; flex-shrink:0; display:flex; align-items:center; justify-content:center; }
+.makeup-ico-letter { font-family:'Bebas Neue',sans-serif; font-size:18px; color:var(--red); }
+.makeup-item-body { flex:1; }
+.makeup-item-name { font-family:'Bebas Neue',sans-serif; font-size:15px; color:var(--black); margin-bottom:3px; letter-spacing:.5px; }
+.makeup-item-pt { font-size:11px; line-height:1.8; color:#555; }
+.makeup-item-pt b { color:var(--red); font-weight:normal; }
+.makeup-item-tags { display:flex; flex-wrap:wrap; gap:4px; margin-top:5px; }
+.makeup-item-tag { border:1px solid #ddd; color:#999; font-size:9px; padding:2px 6px; }
+
+/* ══════════════ QUIZ PAGE ══════════════ */
+.quiz-page-wrap { padding:20px 18px; }
+.quiz-title { font-family:'Bebas Neue',sans-serif; font-size:48px; line-height:.88; margin-bottom:10px; }
+.quiz-title em { font-family:'DM Serif Display',serif; font-style:italic; color:var(--red); display:block; }
+.quiz-desc { font-size:12px; line-height:2; color:#666; margin-bottom:24px; }
+.quiz-card { background:var(--black); border:1px solid #1e1e1e; padding:24px 18px; position:relative; margin-bottom:16px; }
+.quiz-card::before { content:'QUIZ'; position:absolute; top:-13px; left:18px; background:var(--red); color:#fff; font-family:'Bebas Neue',sans-serif; font-size:11px; letter-spacing:4px; padding:3px 13px; }
+.quiz-q { font-size:13px; line-height:1.9; color:var(--light); margin-bottom:18px; }
+.quiz-opts { display:flex; flex-direction:column; gap:9px; }
+.quiz-opt { display:flex; align-items:flex-start; gap:11px; padding:11px 13px; border:1px solid #333; cursor:pointer; transition:border-color .2s,background .2s; }
+.quiz-opt:active { background:rgba(229,19,26,.05); }
+.quiz-opt.correct { border-color:#22c55e; background:rgba(34,197,94,.1); }
+.quiz-opt.wrong { border-color:var(--red); background:rgba(229,19,26,.1); }
+.quiz-opt-m { width:22px; height:22px; border:1px solid #444; display:flex; align-items:center; justify-content:center; font-family:'Bebas Neue',sans-serif; font-size:12px; color:var(--mid); flex-shrink:0; }
+.quiz-opt-t { font-size:12px; color:var(--light); line-height:1.7; }
+.quiz-feedback { margin-top:12px; font-size:11px; color:var(--mid); padding:10px 13px; border-left:2px solid var(--red); background:rgba(229,19,26,.05); display:none; line-height:1.8; }
+.quiz-feedback.show { display:block; }
+.quiz-next { margin-top:14px; background:var(--gray); color:var(--light); border:none; width:100%; padding:12px; font-family:'Bebas Neue',sans-serif; font-size:15px; letter-spacing:2px; cursor:pointer; display:none; }
+.quiz-next.show { display:block; }
+.quiz-progress { display:flex; align-items:center; gap:10px; margin-bottom:20px; }
+.quiz-prog-bar { flex:1; height:3px; background:#e0dbd5; }
+.quiz-prog-fill { height:100%; background:var(--red); transition:width .4s; }
+.quiz-prog-text { font-size:10px; color:var(--mid); white-space:nowrap; letter-spacing:1px; }
+
+/* MODAL */
+.modal-ov { display:none; position:fixed; inset:0; z-index:500; background:rgba(0,0,0,.88); align-items:flex-end; justify-content:center; }
+.modal-ov.open { display:flex; }
+.modal { background:var(--black); border-top:3px solid var(--red); width:100%; max-width:430px; animation:slideUp .3s ease-out; padding-bottom:env(safe-area-inset-bottom,12px); }
+@keyframes slideUp { from{transform:translateY(100%)} to{transform:translateY(0)} }
+.modal-hd { padding:18px 18px 14px; display:flex; align-items:center; justify-content:space-between; border-bottom:1px solid #222; }
+.modal-hd-t { font-family:'Bebas Neue',sans-serif; font-size:15px; letter-spacing:2px; color:var(--white); }
+.modal-x { background:none; border:none; color:var(--mid); font-size:20px; cursor:pointer; padding:4px 8px; }
+.modal-body { padding:22px 18px; }
+.upload-area { border:1px dashed #444; padding:36px 14px; display:flex; flex-direction:column; align-items:center; gap:10px; cursor:pointer; transition:border-color .2s; }
+.upload-area:active { border-color:var(--red); }
+.upload-ico { font-size:32px; }
+.upload-txt { font-size:11px; color:var(--mid); text-align:center; line-height:1.9; }
+.upload-txt strong { color:var(--white); display:block; font-size:13px; margin-bottom:3px; }
+.modal-or { text-align:center; font-size:10px; color:#444; letter-spacing:2px; margin:14px 0; }
+.modal-cam { width:100%; background:var(--gray); color:var(--light); border:none; padding:13px; cursor:pointer; font-family:'Bebas Neue',sans-serif; font-size:15px; letter-spacing:2px; }
+
+::-webkit-scrollbar { width:2px; }
+::-webkit-scrollbar-thumb { background:var(--red); }
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <div class="nav-logo">Re-Palette <span>β</span></div>
+  <button class="nav-btn" onclick="openModal()">診断する</button>
+</nav>
+
+<!-- ══════ HOME PAGE ══════ -->
+<div id="pg-home" class="page active">
+
+  <!-- Hero -->
+  <div class="hero">
+    <div class="hero-tag">AI Powered Beauty Analysis</div>
+    <h1 class="hero-title">YOUR<br>FACE.<br><em>Decoded.</em></h1>
+    <p class="hero-sub">AIが顔の黄金比を精密解析。あなた専用のメイクレシピと習慣クイズで、なりたい自分へ最短距離で到達する。</p>
+    <div class="scan-card">
+      <div class="scan-card-hd">
+        <span class="scan-card-hd-t">FACE ANALYSIS</span>
+        <span class="scan-card-badge">AI LIVE</span>
+      </div>
+      <div class="scan-face-area">
+        <div class="face-oval">
+          <div class="face-grid"></div>
+          <div class="scan-line"></div>
+          <div class="face-cross"></div>
+        </div>
+      </div>
+      <div class="scan-metrics">
+        <div class="m-row"><span class="m-lbl">黄金比</span><div class="m-bar"><div class="m-fill" style="--w:87%"></div></div><span class="m-val">87%</span></div>
+        <div class="m-row"><span class="m-lbl">中顔面</span><div class="m-bar"><div class="m-fill" style="--w:73%"></div></div><span class="m-val">73%</span></div>
+        <div class="m-row"><span class="m-lbl">左右対称</span><div class="m-bar"><div class="m-fill" style="--w:91%"></div></div><span class="m-val">91%</span></div>
+        <div class="m-row"><span class="m-lbl">骨格スコア</span><div class="m-bar"><div class="m-fill" style="--w:82%"></div></div><span class="m-val">82%</span></div>
+      </div>
+      <div class="scan-result">
+        <div><div style="font-size:8px;letter-spacing:2px;color:var(--mid);margin-bottom:3px;">FACE TYPE</div><div class="res-type">OVAL / FEMME</div></div>
+        <div class="res-pct">94<span>%</span></div>
+      </div>
+    </div>
+    <div class="hero-btns">
+      <button class="btn-red" onclick="openModal()">無料で診断する</button>
+      <button class="btn-dark" onclick="goPage('quiz')">クイズを試す</button>
+    </div>
+  </div>
+
+  <!-- Browse -->
+  <div class="home-browse">
+    <div class="sec-label"><div class="sec-label-line"></div><span class="sec-label-text">Browse</span></div>
+    <div class="browse-grid">
+      <div class="browse-card" onclick="goPage('makeup')">
+        <div class="browse-bg">M</div>
+        <div><div class="browse-lbl">Makeup</div><div class="browse-name">骨格別<br>メイク術</div><div class="browse-desc">ストレート・ウェーブ・ナチュラル別に最適なメイクを解説。</div></div>
+        <div class="browse-arr"></div>
+      </div>
+      <div class="browse-card" onclick="goPage('hair')">
+        <div class="browse-bg">H</div>
+        <div><div class="browse-lbl">Hair</div><div class="browse-name">顔型別<br>ヘアセット</div><div class="browse-desc">顔型・骨格に合ったスタイルを一覧で確認できます。</div></div>
+        <div class="browse-arr"></div>
+      </div>
+      <div class="browse-card wide" onclick="goPage('celeb')">
+        <div class="browse-bg">C</div>
+        <div style="flex:1"><div class="browse-lbl">Celebrity</div><div class="browse-name">タイプ別 有名人を見る</div><div class="browse-desc">日本・韓国・欧米・中国・世界の芸能人を骨格・顔型別に検索。</div></div>
+        <div class="browse-arr"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Features -->
+  <div class="home-features" style="margin-top:44px;">
+    <div class="sec-label"><div class="sec-label-line"></div><span class="sec-label-text">Core Features</span></div>
+    <div class="feat-grid">
+      <div class="feat-card"><div class="feat-num">01</div><div class="feat-icon">🔬</div><div class="feat-name">顔型AI診断</div><p class="feat-desc">468点の座標を取得。黄金比・骨格タイプを精密計測します。</p></div>
+      <div class="feat-card"><div class="feat-num">02</div><div class="feat-icon">💄</div><div class="feat-name">メイクレシピ</div><p class="feat-desc">診断結果にもとづく個別メイク手順を自動生成します。</p></div>
+      <div class="feat-card"><div class="feat-num">03</div><div class="feat-icon">🎯</div><div class="feat-name">習慣クイズ</div><p class="feat-desc">日常ルーティンから「自己流の間違い」をクイズ化します。</p></div>
+      <div class="feat-card"><div class="feat-num">04</div><div class="feat-icon">📈</div><div class="feat-name">成長記録</div><p class="feat-desc">過去と現在を数値で比較。上達を可視化します。</p></div>
+    </div>
+  </div>
+
+  <!-- Steps -->
+  <div class="home-steps">
+    <div class="sec-label"><div class="sec-label-line" style="background:#e5131a"></div><span class="sec-label-text" style="color:#e5131a">How It Works</span></div>
+    <h2 class="steps-title">3ステップで<br>完結する</h2>
+    <div class="step-list">
+      <div class="step-item"><div class="step-bg">01</div><div class="step-idx">Step 01 — Upload</div><div class="step-name">写真をアップロード</div><p class="step-desc">正面の顔写真を1枚アップするだけ。カメラ撮影も可能。データは安全に処理されます。</p><div class="step-arr"></div></div>
+      <div class="step-item"><div class="step-bg">02</div><div class="step-idx">Step 02 — Analyze</div><div class="step-name">AIが即座に解析</div><p class="step-desc">468点を検出し、黄金比・中顔面・骨格タイプ・顔型を数秒で判定。有名人との類似度も表示。</p><div class="step-arr"></div></div>
+      <div class="step-item"><div class="step-bg">03</div><div class="step-idx">Step 03 — Act</div><div class="step-name">レシピ＆クイズへ</div><p class="step-desc">専用のメイク手順・クイズセットが生成されます。毎日続けてなりたい顔へ近づきましょう。</p><div class="step-arr"></div></div>
+    </div>
+  </div>
+
+  <!-- CTA -->
+  <div class="home-cta">
+    <h2 class="home-cta-title">今すぐ<br><em>始める</em></h2>
+    <p class="home-cta-sub">無料・登録不要・1分で完了。あなたの顔の可能性を、AIが解き明かします。</p>
+    <div class="home-cta-btns">
+      <button class="btn-red" onclick="openModal()">診断を始める →</button>
+      <button class="btn-dark" onclick="goPage('quiz')">クイズだけ試す</button>
+    </div>
+  </div>
+
+  <footer>
+    <div class="foot-logo">Re-Palette <span>β</span></div>
+    <div class="foot-copy">© 2026 Re-Palette β — AI Beauty Analysis<br>All rights reserved.</div>
+  </footer>
+</div>
+
+<!-- ══════ CELEB PAGE ══════ -->
+<div id="pg-celeb" class="page">
+  <div class="page-hd">
+    <div class="page-hd-title">タイプ別 有名人</div>
+    <div class="seg-tabs">
+      <button class="seg-tab active" onclick="celebTab(this,'bone')">骨格タイプ</button>
+      <button class="seg-tab" onclick="celebTab(this,'face')">顔タイプ</button>
+    </div>
+  </div>
+  <div class="filter-bar" id="celeb-filters">
+    <button class="chip on" onclick="celebChip(this,'all')">すべて</button>
+    <button class="chip" onclick="celebChip(this,'straight')">ストレート</button>
+    <button class="chip" onclick="celebChip(this,'wave')">ウェーブ</button>
+    <button class="chip" onclick="celebChip(this,'natural')">ナチュラル</button>
+    <button class="chip" onclick="celebChip(this,'jp')">🇯🇵 日本</button>
+    <button class="chip" onclick="celebChip(this,'kr')">🇰🇷 韓国</button>
+    <button class="chip" onclick="celebChip(this,'us')">🌍 欧米</button>
+    <button class="chip" onclick="celebChip(this,'cn')">🇨🇳 中国</button>
+    <button class="chip" onclick="celebChip(this,'world')">🌐 世界</button>
+  </div>
+  <div class="celeb-grid" id="celeb-grid"></div>
+</div>
+
+<!-- ══════ HAIR PAGE ══════ -->
+<div id="pg-hair" class="page">
+  <div class="page-hd">
+    <div class="page-hd-title">ヘアスタイル</div>
+    <div class="seg-tabs">
+      <button class="seg-tab active" onclick="hairTab(this,'bone')">骨格別</button>
+      <button class="seg-tab" onclick="hairTab(this,'face')">顔型別</button>
+    </div>
+  </div>
+  <div class="filter-bar" id="hair-filters">
+    <button class="chip on" onclick="hairChip(this,'all')">すべて</button>
+    <button class="chip" onclick="hairChip(this,'straight')">ストレート</button>
+    <button class="chip" onclick="hairChip(this,'wave')">ウェーブ</button>
+    <button class="chip" onclick="hairChip(this,'natural')">ナチュラル</button>
+  </div>
+  <div class="hair-list" id="hair-list"></div>
+</div>
+
+<!-- ══════ MAKEUP PAGE ══════ -->
+<div id="pg-makeup" class="page">
+  <div class="page-hd">
+    <div class="page-hd-title">骨格別 メイク術</div>
+    <div class="seg-tabs">
+      <button class="seg-tab active" onclick="makeupTab(this,'bone')">骨格別</button>
+      <button class="seg-tab" onclick="makeupTab(this,'face')">顔型別</button>
+    </div>
+  </div>
+  <div class="filter-bar" id="makeup-filters">
+    <button class="chip on" onclick="makeupChip(this,'all')">すべて</button>
+    <button class="chip" onclick="makeupChip(this,'straight')">ストレート</button>
+    <button class="chip" onclick="makeupChip(this,'wave')">ウェーブ</button>
+    <button class="chip" onclick="makeupChip(this,'natural')">ナチュラル</button>
+  </div>
+  <div class="makeup-list" id="makeup-list"></div>
+</div>
+
+<!-- ══════ QUIZ PAGE ══════ -->
+<div id="pg-quiz" class="page">
+  <div class="quiz-page-wrap">
+    <div class="sec-label"><div class="sec-label-line"></div><span class="sec-label-text">Habit Quiz</span></div>
+    <h2 class="quiz-title">習慣の<br><em>間違いを</em><br>発見する</h2>
+    <p class="quiz-desc">「なんとなく」続けているスキンケアやメイクに大きな落とし穴が潜んでいます。クイズ形式で正しい知識を身につけましょう。</p>
+    <div class="quiz-progress">
+      <div class="quiz-prog-bar"><div class="quiz-prog-fill" id="qpf" style="width:0%"></div></div>
+      <span class="quiz-prog-text" id="qpt">0 / 5</span>
+    </div>
+    <div id="quiz-container"></div>
+  </div>
+</div>
+
+<!-- TAB BAR -->
+<div class="tab-bar">
+  <button class="tab-item active" onclick="goPage('home')">
+    <span class="tab-icon">
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+        <polyline points="3 11 12 3 21 11"/><rect x="5" y="11" width="5" height="9"/><rect x="14" y="14" width="5" height="6"/>
+      </svg>
+    </span>
+    <span class="tab-label">ホーム</span>
+  </button>
+  <button class="tab-item" onclick="openModal()">
+    <span class="tab-icon">
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+        <ellipse cx="12" cy="11" rx="5" ry="6.5"/>
+        <line x1="7.5" y1="8" x2="4" y2="8"/><line x1="7.5" y1="11" x2="3" y2="11"/><line x1="7.5" y1="14" x2="4" y2="14"/>
+        <line x1="16.5" y1="8" x2="20" y2="8"/><line x1="16.5" y1="11" x2="21" y2="11"/><line x1="16.5" y1="14" x2="20" y2="14"/>
+      </svg>
+    </span>
+    <span class="tab-label">診断</span>
+  </button>
+  <button class="tab-item" onclick="goPage('celeb')">
+    <span class="tab-icon">
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+        <circle cx="12" cy="8" r="3"/><circle cx="5" cy="10" r="2"/><circle cx="19" cy="10" r="2"/>
+        <path d="M6 20c0-3.3 2.7-6 6-6s6 2.7 6 6"/>
+        <path d="M2 20c0-2.2 1.3-4 3-5"/><path d="M22 20c0-2.2-1.3-4-3-5"/>
+      </svg>
+    </span>
+    <span class="tab-label">有名人</span>
+  </button>
+  <button class="tab-item" onclick="goPage('makeup')">
+    <span class="tab-icon">
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M8 3 C8 3 5 6 5 10 C5 13 7 14 7 17 L17 17 C17 14 19 13 19 10 C19 6 16 3 16 3"/>
+        <path d="M8 3 Q12 1.5 16 3"/>
+        <line x1="7" y1="17" x2="7" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/><line x1="17" y1="17" x2="17" y2="21"/>
+        <line x1="5" y1="21" x2="19" y2="21"/>
+      </svg>
+    </span>
+    <span class="tab-label">メイク</span>
+  </button>
+  <button class="tab-item" onclick="goPage('hair')">
+    <span class="tab-icon">
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M7 4C7 4 4 7 4 11C4 15 6 17 6 20L18 20C18 17 20 15 20 11C20 7 17 4 17 4"/>
+        <path d="M7 4Q12 2 17 4"/>
+        <line x1="6" y1="20" x2="6" y2="22"/><line x1="12" y1="20" x2="12" y2="22"/><line x1="18" y1="20" x2="18" y2="22"/>
+      </svg>
+    </span>
+    <span class="tab-label">ヘア</span>
+  </button>
+  <button class="tab-item" onclick="goPage('quiz')">
+    <span class="tab-icon">
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+        <circle cx="12" cy="12" r="9"/>
+        <path d="M9.5 9.8a2.8 2.8 0 0 1 5.2.9c0 2-3 2.8-3 4.8"/>
+        <circle cx="12" cy="18.2" r="0.9" fill="currentColor" stroke="none"/>
+      </svg>
+    </span>
+    <span class="tab-label">クイズ</span>
+  </button>
+</div>
+
+<!-- MODAL -->
+<div class="modal-ov" id="modal-ov" onclick="closeModal(event)">
+  <div class="modal">
+    <div class="modal-hd">
+      <span class="modal-hd-t">顔写真をアップロード</span>
+      <button class="modal-x" onclick="closeModal()">✕</button>
+    </div>
+    <div class="modal-body">
+      <div class="upload-area" onclick="document.getElementById('fi1').click()">
+        <div class="upload-ico">🖼️</div>
+        <div class="upload-txt"><strong>タップして写真を選択</strong>正面・明るい環境・メガネなしを推奨<br>JPG / PNG / WEBP 対応</div>
+        <input type="file" id="fi1" accept="image/*" style="display:none" onchange="handleFile(event)">
+      </div>
+      <div class="modal-or">— または —</div>
+      <button class="modal-cam" onclick="document.getElementById('fi2').click()">📸　カメラで今すぐ撮影する</button>
+      <input type="file" id="fi2" accept="image/*" capture="user" style="display:none" onchange="handleFile(event)">
+    </div>
+  </div>
+</div>
+
+<script>
+// ═══════════════════════════════════════
+//  DATA
+// ═══════════════════════════════════════
+const CELEBS = [
+  {name:'石原さとみ',    bone:'straight',face:'oval',    country:'jp',genre:'女優',      desc:'クールビューティ代表。直線的なシルエットが魅力。',init:'IS'},
+  {name:'長澤まさみ',    bone:'straight',face:'oval',    country:'jp',genre:'女優',      desc:'モデル体型の直線ラインで存在感抜群。',          init:'NM'},
+  {name:'米倉涼子',      bone:'straight',face:'long',    country:'jp',genre:'女優',      desc:'ドラマティックな面長×ストレートの魅力。',        init:'YR'},
+  {name:'今田美桜',      bone:'straight',face:'oval',    country:'jp',genre:'女優',      desc:'小顔×スレンダーで洗練されたクール系。',          init:'IM'},
+  {name:'浜辺美波',      bone:'straight',face:'oval',    country:'jp',genre:'女優',      desc:'透明感とシャープさが共存する美女。',             init:'HM'},
+  {name:'白石麻衣',      bone:'straight',face:'oval',    country:'jp',genre:'アイドル',  desc:'乃木坂46元センター。ストレートの美人系。',        init:'SM'},
+  {name:'橋本環奈',      bone:'wave',    face:'round',   country:'jp',genre:'アイドル',  desc:'1000年に1人の天使。愛らしい丸みウェーブ。',      init:'KK'},
+  {name:'新垣結衣',      bone:'wave',    face:'oval',    country:'jp',genre:'女優',      desc:'清楚でフェミニンな曲線ラインの代名詞。',         init:'GY'},
+  {name:'綾瀬はるか',    bone:'wave',    face:'round',   country:'jp',genre:'女優',      desc:'ウェーブ骨格の代表格。愛らしい印象。',           init:'AH'},
+  {name:'有村架純',      bone:'wave',    face:'round',   country:'jp',genre:'女優',      desc:'ふんわり丸みの小顔。ガーリーウェーブ系。',       init:'YK'},
+  {name:'広瀬すず',      bone:'wave',    face:'oval',    country:'jp',genre:'女優',      desc:'透明感ある柔らかい印象のウェーブ美女。',         init:'HS'},
+  {name:'北川景子',      bone:'natural', face:'long',    country:'jp',genre:'女優',      desc:'すっきりした骨感と面長が映えるナチュラル。',     init:'KK'},
+  {name:'深田恭子',      bone:'natural', face:'round',   country:'jp',genre:'女優',      desc:'骨感あるナチュラルでヘルシーな美しさ。',         init:'FK'},
+  {name:'菅野美穂',      bone:'natural', face:'oval',    country:'jp',genre:'女優',      desc:'大人の骨格美が光るナチュラル系の代表。',         init:'KM'},
+  {name:'NewJeans ミンジ',bone:'straight',face:'oval',   country:'kr',genre:'K-POP',    desc:'クールビューティ代表メンバー。',                 init:'MJ'},
+  {name:'IVE ウォニョン', bone:'straight',face:'oval',   country:'kr',genre:'K-POP',    desc:'長身モデル系。直線ラインの圧倒的ビジュアル。',   init:'WY'},
+  {name:'aespa ウィンター',bone:'straight',face:'long',  country:'kr',genre:'K-POP',    desc:'シャープな輪郭とクールなオーラが特徴。',         init:'WI'},
+  {name:'BLACKPINK ジェニ',bone:'wave',  face:'oval',    country:'kr',genre:'K-POP',    desc:'チャーミングな曲線美とファッション感覚が魅力。', init:'JE'},
+  {name:'TWICE サナ',    bone:'wave',    face:'round',   country:'kr',genre:'K-POP',    desc:'愛らしい丸顔×曲線ラインのガーリーウェーブ。',    init:'SA'},
+  {name:'NewJeans ハニ', bone:'wave',    face:'oval',    country:'kr',genre:'K-POP',    desc:'フレッシュな曲線美。ガーリーウェーブの体現者。', init:'HA'},
+  {name:'BLACKPINK ジス',bone:'natural', face:'oval',    country:'kr',genre:'K-POP',    desc:'骨格感ある骨太ナチュラル。BBのビジュアル担当。', init:'JI'},
+  {name:'LE SSERAFIM カズハ',bone:'natural',face:'oval', country:'kr',genre:'K-POP',   desc:'長身骨格美人。日本出身のナチュラル系。',         init:'KZ'},
+  {name:'ソン・ヘギョ',  bone:'wave',    face:'round',   country:'kr',genre:'ドラマ',   desc:'韓国の国民的女優。愛らしい丸顔ウェーブ系。',     init:'SH'},
+  {name:'キム・テリ',    bone:'natural', face:'oval',    country:'kr',genre:'ドラマ',   desc:'骨格美が光る実力派ナチュラル系女優。',           init:'KT'},
+  {name:'ゼンデイヤ',    bone:'straight',face:'long',    country:'us',genre:'女優',     desc:'長身スレンダー。ファッションアイコン。',          init:'ZD'},
+  {name:'テイラー・スウィフト',bone:'straight',face:'oval',country:'us',genre:'シンガー',desc:'長身スレンダーのストレート系。小顔との比率が魅力。',init:'TS'},
+  {name:'ケンダル・ジェンナー',bone:'straight',face:'oval',country:'us',genre:'モデル', desc:'スーパーモデル体型の典型的ストレート骨格。',     init:'KJ'},
+  {name:'アリアナ・グランデ',bone:'wave', face:'oval',   country:'us',genre:'シンガー', desc:'小柄でグラマラスな曲線美のウェーブ系代表。',     init:'AG'},
+  {name:'スカーレット・ヨハンソン',bone:'wave',face:'oval',country:'us',genre:'女優',   desc:'グラマラスな曲線ラインが映えるウェーブ美女。',   init:'SJ'},
+  {name:'アン・ハサウェイ',bone:'wave',  face:'oval',    country:'us',genre:'女優',     desc:'柔らかい曲線美とはっきりした目が印象的。',       init:'AH'},
+  {name:'エマ・ワトソン', bone:'natural',face:'oval',    country:'us',genre:'女優',     desc:'骨格感が活きるナチュラル系知的美人。',           init:'EW'},
+  {name:'ビリー・アイリッシュ',bone:'natural',face:'oval',country:'us',genre:'シンガー',desc:'個性的な骨格感を活かすナチュラル系。',           init:'BE'},
+  {name:'ジゼル・ブンチェン',bone:'straight',face:'oval',country:'us',genre:'モデル',  desc:'世界最高のスーパーモデル。ストレートの極致。',   init:'GB'},
+  {name:'ディルラバ',    bone:'straight',face:'oval',    country:'cn',genre:'女優',     desc:'中国の国民的女優。シャープな輪郭と長身が特徴。', init:'DL'},
+  {name:'リウ・イーフェイ',bone:'straight',face:'oval',  country:'cn',genre:'女優',     desc:'仙女系と称される清楚な直線美人。',               init:'LY'},
+  {name:'ヤン・ミー',    bone:'straight',face:'oval',    country:'cn',genre:'女優',     desc:'ワンホン系美人の代表格。直線ラインとシャープな瞳。',init:'YM'},
+  {name:'楊紫（ヤン・ズー）',bone:'wave',face:'round',   country:'cn',genre:'女優',     desc:'柔らかい笑顔と丸みあるライン。中国の国民的女優。',init:'YZ'},
+  {name:'ガオ・ユアンユアン',bone:'wave',face:'oval',    country:'cn',genre:'女優',     desc:'清純派の柔らかいウェーブ系。中国版・新垣結衣。', init:'GY'},
+  {name:'ゴング・リー',  bone:'natural', face:'square',  country:'cn',genre:'女優',     desc:'強い骨格感が魅力のカリスマ系ナチュラル。',       init:'GL'},
+  {name:'ビヨンセ',      bone:'natural', face:'oval',    country:'world',genre:'シンガー',desc:'パワフルな骨格感のナチュラル系。世界的スター。',init:'BY'},
+  {name:'リアーナ',      bone:'natural', face:'oval',    country:'world',genre:'シンガー',desc:'バルバドス出身。存在感ある骨格と個性が魅力。',  init:'RH'},
+  {name:'ナオミ・キャンベル',bone:'straight',face:'long',country:'world',genre:'モデル',desc:'スーパーモデルの女王。ストレートの象徴的存在。',init:'NC'},
+  {name:'ジェニファー・ロペス',bone:'wave',face:'oval',  country:'world',genre:'女優',  desc:'ラテン系曲線美×ウェーブ骨格の代名詞的存在。',   init:'JL'},
+  {name:'プリヤンカー・チョープラー',bone:'natural',face:'oval',country:'world',genre:'女優',desc:'インド出身ハリウッド女優。骨格美のナチュラル系。',init:'PC'},
+  {name:'ディーピカー・パードゥコーン',bone:'straight',face:'oval',country:'world',genre:'女優',desc:'インドNo.1女優。高身長ストレートの圧倒的存在感。',init:'DP'},
+  {name:'シャキーラ',    bone:'wave',    face:'oval',    country:'world',genre:'シンガー',desc:'コロンビア出身。曲線美のウェーブ系ポップスター。',init:'SK'},
+];
+
+const HAIR = [
+  {name:'ワンレングスボブ',bone:'straight',face:['oval','long'],badge:'ストレート向け',tags:['ツヤ感','クール','シャープ'],pts:'直線的なシルエットが骨格の美しさを引き立てます。<b>重めバング</b>で中顔面を短縮。面長には顎ラインで揃えたスタイルが最適。',svg:'bob'},
+  {name:'センターパートミディ',bone:'straight',face:['oval','square'],badge:'ストレート向け',tags:['韓国風','トレンド','すっきり'],pts:'高身長・直線ラインに映えるスタイル。<b>巻かずにストレートで</b>洗練感を出すのがポイント。前髪なしで縦長効果。',svg:'mid'},
+  {name:'ショートレイヤー',bone:'straight',face:['long','oval'],badge:'ストレート向け',tags:['クール','スポーティ','簡単'],pts:'骨格の直線感を活かすレイヤー。<b>えり足をすっきり</b>させることで輪郭をシャープに見せます。',svg:'short'},
+  {name:'ふわふわひし形ロング',bone:'wave',face:['round','oval'],badge:'ウェーブ向け',tags:['フェミニン','ふわふわ','モテ'],pts:'曲線ラインに自然になじむひし形シルエット。<b>顔周りにレイヤー</b>を入れて丸顔を縦長に。毛先のカールが柔らかさをプラス。',svg:'long'},
+  {name:'うぶバングミディ',bone:'wave',face:['oval','round'],badge:'ウェーブ向け',tags:['ガーリー','清楚','トレンド'],pts:'シースルーバングで柔らかい印象に。<b>毛先を外ハネ</b>にすると軽やかさが増します。ウェーブ体型の丸みと相性◎。',svg:'mid'},
+  {name:'ゆるウェーブパーマ',bone:'wave',face:['oval','long'],badge:'ウェーブ向け',tags:['こなれ感','大人','ナチュラル'],pts:'体型の曲線と連動した自然なウェーブが魅力。<b>中間から毛先</b>だけのパーマでボリュームを調整。',svg:'wave'},
+  {name:'外ハネミディボブ',bone:'natural',face:['square','oval'],badge:'ナチュラル向け',tags:['こなれ','大人','骨格感'],pts:'骨格の存在感を活かすラフなスタイル。<b>外ハネで肩周りを</b>広げてバランス良く。重めバングでフレーム感を演出。',svg:'bob'},
+  {name:'無造作マッシュ',bone:'natural',face:['oval','long'],badge:'ナチュラル向け',tags:['無造作','ストリート','個性的'],pts:'骨感をおしゃれに活かすスタイル。<b>質感を活かした</b>無造作仕上げが骨格感をスタイリッシュに見せます。',svg:'short'},
+  {name:'ハイポニーテール',bone:'natural',face:['oval','square'],badge:'ナチュラル向け',tags:['クール','スポーツ','すっきり'],pts:'骨格の強さを活かしたハンサムスタイル。<b>顔周りの後れ毛</b>を少し出すことでシャープすぎず自然な仕上がり。',svg:'ponytail'},
+  {name:'前髪なしストレートロング',bone:'straight',face:['long','oval'],badge:'ストレート向け',tags:['クール','ミニマル','美人'],pts:'前髪なしで縦ラインを強調。<b>黒髪ストレート</b>が直線的な骨格の美しさを最大限に引き出します。',svg:'long'},
+  {name:'サイドカールミディ',bone:'wave',face:['round','oval'],badge:'ウェーブ向け',tags:['ロマンティック','フェミニン','巻き'],pts:'顔周りにカールを入れてひし形シルエットに。<b>リバースカール</b>でこなれた印象を演出します。',svg:'mid'},
+  {name:'ツーブロック',bone:'natural',face:['square','oval'],badge:'ナチュラル向け',tags:['ボーイッシュ','骨格感','メリハリ'],pts:'サイドをすっきりさせて骨格感を強調。<b>トップのボリューム</b>で縦長バランスに整えます。',svg:'short'},
+];
+
+const MAKEUP = {
+  bone: {
+    straight:{
+      label:'ストレート骨格',sub:'直線・立体・メリハリが特徴',
+      cats:['ベース','アイ','リップ','チーク'],
+      items:{
+        'ベース':[
+          {name:'マットファンデ',ico:'F',pt:'ツヤ感を抑えた<b>マットな質感</b>で輪郭のシャープさをキープ。粉感のあるパウダーで仕上げると骨格感が際立ちます。',tags:['マット','粉感','カバー力']},
+          {name:'シェーディング',ico:'S',pt:'エラ・こめかみ・鼻筋に入れて<b>縦長効果</b>を強調。横幅を狭く見せることでスタイリッシュな印象に。',tags:['縦長','シャープ','立体感']},
+        ],
+        'アイ':[
+          {name:'アイライン',ico:'E',pt:'<b>目頭から目尻まで細く</b>くっきり引くことでクールな目元に。跳ね上げラインでフェロモン感アップ。',tags:['クール','くっきり','跳ね上げ']},
+          {name:'アイシャドウ',ico:'A',pt:'ブラウン系を<b>縦グラデ</b>で入れて目を深く見せる。パール感よりマットカラーが骨格にマッチ。',tags:['ブラウン','縦グラデ','マット']},
+        ],
+        'リップ':[
+          {name:'リップライン',ico:'L',pt:'<b>輪郭をきっちり描く</b>ことで直線的な骨格との相性が◎。深みカラー（バーガンディ・テラコッタ）が映えます。',tags:['輪郭','バーガンディ','深み']},
+        ],
+        'チーク':[
+          {name:'チークの入れ方',ico:'C',pt:'頬骨の高い位置に<b>細くすっと</b>入れるのがポイント。横に広げず縦方向に意識するとシャープに。',tags:['縦方向','頬骨','シャープ']},
+        ],
+      }
+    },
+    wave:{
+      label:'ウェーブ骨格',sub:'曲線・柔らかさ・フェミニンが特徴',
+      cats:['ベース','アイ','リップ','チーク'],
+      items:{
+        'ベース':[
+          {name:'ツヤファンデ',ico:'F',pt:'<b>うるツヤ感のある</b>リキッドファンデで柔らかい印象に。曲線ラインとツヤが相性抜群。',tags:['ツヤ','リキッド','柔らか']},
+          {name:'ハイライト',ico:'H',pt:'鼻筋・Cゾーン・あごにふんわりと入れて<b>丸みと柔らかさ</b>を演出。パール系が◎。',tags:['パール','丸み','ふわっと']},
+        ],
+        'アイ':[
+          {name:'アイシャドウ',ico:'A',pt:'ピンク・ラベンダー・コーラル系のカラーで<b>ふんわり丸い目</b>を演出。グラデーションを柔らかく。',tags:['ピンク','丸目','グラデ']},
+          {name:'マスカラ',ico:'M',pt:'根元からしっかり<b>カールアップ</b>してドーリーな目元に。繊細なボリュームが理想。',tags:['カール','ドーリー','繊細']},
+        ],
+        'リップ':[
+          {name:'グロスリップ',ico:'L',pt:'<b>ぷっくりツヤ感</b>のあるグロスやウォーターリップで愛らしい口元に。ローズ・コーラルが相性◎。',tags:['グロス','ぷっくり','ローズ']},
+        ],
+        'チーク':[
+          {name:'ふわふわチーク',ico:'C',pt:'頬の丸みに沿って<b>ふんわり広め</b>に入れるのが鉄則。コーラルピンク系でガーリーな印象に。',tags:['広め','コーラル','ガーリー']},
+        ],
+      }
+    },
+    natural:{
+      label:'ナチュラル骨格',sub:'骨感・カジュアル・個性が特徴',
+      cats:['ベース','アイ','リップ','チーク'],
+      items:{
+        'ベース':[
+          {name:'薄づきベース',ico:'F',pt:'<b>薄づきのBBクリームやティント</b>で素肌感を残すのがベスト。厚塗りは骨格感を消してしまいます。',tags:['薄づき','BB','素肌感']},
+          {name:'サテン質感',ico:'T',pt:'<b>サテンやナチュラルツヤ</b>が骨格感のある肌に最適。マットすぎずツヤすぎないバランスを意識して。',tags:['サテン','ナチュラル','バランス']},
+        ],
+        'アイ':[
+          {name:'カラーアイシャドウ',ico:'A',pt:'<b>テラコッタ・カーキ・オレンジ</b>などアーシーカラーが骨格感とマッチ。個性的な色で骨格を活かして。',tags:['テラコッタ','カーキ','個性']},
+          {name:'太眉',ico:'B',pt:'<b>太眉・直線的な眉</b>で骨格感を強調するのがポイント。ふとした眉がナチュラルボーンの顔をまとめます。',tags:['太眉','直線','ストレート']},
+        ],
+        'リップ':[
+          {name:'テラコッタリップ',ico:'L',pt:'<b>レンガ色・テラコッタ</b>でカジュアルな色気を。ぽんぽんと叩き込むグラデリップも今っぽい。',tags:['テラコッタ','カジュアル','グラデ']},
+        ],
+        'チーク':[
+          {name:'斜めチーク',ico:'C',pt:'頬骨に沿って<b>斜めに細長く</b>入れることで小顔効果と個性を両立。テラコッタチークが特に◎。',tags:['斜め','小顔','個性的']},
+        ],
+      }
+    }
+  },
+  face:{
+    oval:{
+      label:'卵型顔',sub:'バランスが良くどんなメイクも似合う',
+      cats:['ベース','アイ','リップ'],
+      items:{
+        'ベース':[{name:'バランス重視ベース',ico:'F',pt:'<b>シェーディング・ハイライト両方</b>を取り入れてバランスよく。卵型はどんな技法も取り入れやすいのが強み。',tags:['バランス','オールマイティ']}],
+        'アイ':[{name:'自由度の高いアイ',ico:'E',pt:'縦長・横長どちらの技法も似合う万能顔型。<b>なりたいイメージに合わせて</b>自由に楽しんで。',tags:['自由','なりたい顔']}],
+        'リップ':[{name:'フルリップ',ico:'L',pt:'輪郭に忠実に<b>しっかり色をのせる</b>だけで映える。ヌードからビビッドまで何でも似合う万能顔型。',tags:['フルリップ','どんな色も']}],
+      }
+    },
+    round:{
+      label:'丸顔',sub:'縦長効果と引き締めがポイント',
+      cats:['ベース','アイ','リップ'],
+      items:{
+        'ベース':[{name:'縦長シェーディング',ico:'S',pt:'額の両端・フェイスライン・あごに<b>縦長にシェーディング</b>を入れて小顔に。ハイライトは鼻筋に細く縦に。',tags:['縦長','シェーディング','小顔']}],
+        'アイ':[{name:'縦長アイメイク',ico:'E',pt:'<b>目頭＆目尻にアイシャドウ</b>を入れて目を縦に大きく見せる。長めの逆まつ毛スタイルも効果的。',tags:['縦大きく','目頭','逆まつ毛']}],
+        'リップ':[{name:'縦長リップ',ico:'L',pt:'上唇の山を<b>高く・尖らせ気味</b>に描いて縦長効果を。ヌードリップで引き算するとバランス◎。',tags:['山高く','縦長','ヌード']}],
+      }
+    },
+    long:{
+      label:'面長顔',sub:'横幅を意識してボリュームを出す',
+      cats:['ベース','アイ','リップ'],
+      items:{
+        'ベース':[{name:'横広ベース',ico:'F',pt:'チークやハイライトを<b>横に広げて</b>入れることで面長を緩和。前髪をつくるかサイドにボリュームを。',tags:['横広','ボリューム','緩和']}],
+        'アイ':[{name:'横長アイメイク',ico:'E',pt:'目尻を<b>横に延ばすライン</b>で横幅を強調。アイシャドウも横に広げて幅広に見せる。',tags:['横延ばし','横幅','幅広']}],
+        'リップ':[{name:'横広リップ',ico:'L',pt:'口角を<b>少し外側まで</b>描いて横幅を出す。コーラル・ピーチ系の明るい色で縦の印象を弱める。',tags:['口角外','横幅','明るい']}],
+      }
+    },
+    square:{
+      label:'ベース型（エラ張り）',sub:'フェイスラインを丸く柔らかく',
+      cats:['ベース','アイ','リップ'],
+      items:{
+        'ベース':[{name:'エラ丸見せシェーディング',ico:'S',pt:'エラにしっかり<b>シェーディングを丸く</b>入れてフェイスラインを細く。卵型に近づけるように意識して。',tags:['エラ','フェイスライン','丸く']}],
+        'アイ':[{name:'丸みアイメイク',ico:'E',pt:'目の中央に<b>丸く大きく</b>アイシャドウを入れて柔らかさを演出。強すぎない柔らかいラインで。',tags:['丸く','柔らか','中央']}],
+        'リップ':[{name:'ぽってりリップ',ico:'L',pt:'<b>丸みのある</b>フルリップで柔らかい印象に。ベリー系・ピンク系でフェミニン感をプラス。',tags:['丸み','フルリップ','ピンク']}],
+      }
+    },
+    triangle:{
+      label:'逆三角顔',sub:'あごのシャープさを活かしバランスをとる',
+      cats:['ベース','アイ','リップ'],
+      items:{
+        'ベース':[{name:'下重心ベース',ico:'F',pt:'あごよりおでこ・こめかみを<b>シェーディングで引き締め</b>、下重心に見せてバランスを整える。',tags:['下重心','バランス','こめかみ']}],
+        'アイ':[{name:'重めアイメイク',ico:'E',pt:'目元に<b>ボリュームを出して</b>下重心に誘導。スモーキーや濃いアイシャドウで目力アップ。',tags:['目力','ボリューム','スモーキー']}],
+        'リップ':[{name:'フルリップ',ico:'L',pt:'<b>大きくふっくらしたリップ</b>で下重心を強調。ビビッドなカラーであごに目線を集める。',tags:['フルリップ','ビビッド','下重心']}],
+      }
+    },
+  }
+};
+
+const QUIZ_QUESTIONS = [
+  {q:'混合肌でオイルクレンジングを毎日使うのは良い？',opts:['良い。毎日使うべき','関係ない。種類は同じ','場合による。Tゾーンには不向きなことがある','悪い。一切使ってはいけない'],ans:2,fb:'正解！混合肌のTゾーンは皮脂分泌が多く、強いオイルクレンジングを毎日使うと乾燥を招く場合があります。肌状態で使い分けましょう。'},
+  {q:'アイクリームは目の周りのどこに塗るのが正しい？',opts:['まぶた全体に薄く','目頭・目尻のしわになりやすい部分','目の下だけに厚塗り','まつ毛の生え際に沿って'],ans:1,fb:'正解！アイクリームはシワやたるみが出やすい目頭・目尻・目の下に薄く塗るのが効果的です。まぶたへの塗布はふくらみの原因になる場合も。'},
+  {q:'ウェーブ骨格さんにおすすめのファンデーションの質感は？',opts:['マット','サテン','ツヤ系リキッド','パウダーのみ'],ans:2,fb:'正解！ウェーブ骨格は曲線的な体型で、ツヤ系リキッドファンデーションが柔らかい印象をさらに引き立てます。マット仕上げは硬い印象になりがちです。'},
+  {q:'丸顔を縦長に見せるチークの入れ方は？',opts:['頬の高い部分に横に広く','鼻の下から頬骨に向けて斜め上に細く','こめかみから頬全体に丸く','アゴ下から頬全体に広く'],ans:1,fb:'正解！丸顔は斜め上に細くチークを入れることで縦長効果が生まれます。横に広く入れると丸みが強調されてしまいます。'},
+  {q:'ストレート骨格さんに似合うリップカラーはどれ？',opts:['淡いコーラルピンク','クリアグロスのみ','バーガンディやテラコッタ','パステルラベンダー'],ans:2,fb:'正解！ストレート骨格はシャープで直線的な印象が特徴。バーガンディやテラコッタなど深みのあるカラーが輪郭の美しさと骨格感を引き立てます。'},
+];
+
+// ═══════════════════════════════════════
+//  SVG HELPERS
+// ═══════════════════════════════════════
+function faceSVG(init, faceType) {
+  const col = {oval:'#e5131a',long:'#c0000e',round:'#ff4d52',triangle:'#a00010',square:'#ff8080'}[faceType]||'#e5131a';
+  return `<svg width="72" height="90" viewBox="0 0 72 90" fill="none">
+    <ellipse cx="36" cy="38" rx="22" ry="28" stroke="${col}" stroke-width="1.5"/>
+    <line x1="14" y1="30" x2="8" y2="30" stroke="${col}" stroke-width="1" stroke-dasharray="2 2"/>
+    <line x1="14" y1="38" x2="6" y2="38" stroke="${col}" stroke-width="1" stroke-dasharray="2 2"/>
+    <line x1="58" y1="30" x2="64" y2="30" stroke="${col}" stroke-width="1" stroke-dasharray="2 2"/>
+    <line x1="58" y1="38" x2="66" y2="38" stroke="${col}" stroke-width="1" stroke-dasharray="2 2"/>
+    <path d="M28 66 L36 74 L44 66" stroke="${col}" stroke-width="1.5" fill="none"/>
+    <line x1="24" y1="8" x2="24" y2="3" stroke="${col}" stroke-width="1.5"/>
+    <line x1="36" y1="10" x2="36" y2="3" stroke="${col}" stroke-width="1.5"/>
+    <line x1="48" y1="8" x2="48" y2="3" stroke="${col}" stroke-width="1.5"/>
+    <text x="36" y="44" text-anchor="middle" font-family="Bebas Neue,sans-serif" font-size="13" fill="${col}" letter-spacing="1">${init}</text>
+  </svg>`;
+}
+function hairSVG(type) {
+  const d = {
+    bob:`<svg width="64" height="80" viewBox="0 0 64 80" fill="none"><ellipse cx="32" cy="30" rx="14" ry="18" stroke="#e5131a" stroke-width="1.5"/><path d="M18 34 Q12 42 14 54 Q22 60 32 60 Q42 60 50 54 Q52 42 46 34" stroke="#e5131a" stroke-width="1.5" fill="none"/><path d="M18 22 Q20 11 32 11 Q44 11 46 22" stroke="#e5131a" stroke-width="1.5" fill="none"/><line x1="22" y1="60" x2="20" y2="73" stroke="#e5131a" stroke-width="1.2"/><line x1="42" y1="60" x2="44" y2="73" stroke="#e5131a" stroke-width="1.2"/><line x1="16" y1="73" x2="48" y2="73" stroke="#e5131a" stroke-width="1.2"/></svg>`,
+    long:`<svg width="64" height="80" viewBox="0 0 64 80" fill="none"><ellipse cx="32" cy="26" rx="13" ry="17" stroke="#e5131a" stroke-width="1.5"/><path d="M19 31 Q10 46 13 67 Q21 74 32 74 Q43 74 51 67 Q54 46 45 31" stroke="#e5131a" stroke-width="1.5" fill="none"/><path d="M19 19 Q22 9 32 9 Q42 9 45 19" stroke="#e5131a" stroke-width="1.5" fill="none"/></svg>`,
+    mid:`<svg width="64" height="80" viewBox="0 0 64 80" fill="none"><ellipse cx="32" cy="27" rx="13" ry="17" stroke="#e5131a" stroke-width="1.5"/><path d="M19 31 Q11 43 13 58 Q21 66 32 66 Q43 66 51 58 Q53 43 45 31" stroke="#e5131a" stroke-width="1.5" fill="none"/><path d="M19 19 Q21 9 32 9 Q43 9 45 19" stroke="#e5131a" stroke-width="1.5"/><line x1="32" y1="9" x2="32" y2="15" stroke="#e5131a" stroke-width="1.5"/></svg>`,
+    short:`<svg width="64" height="80" viewBox="0 0 64 80" fill="none"><ellipse cx="32" cy="31" rx="14" ry="18" stroke="#e5131a" stroke-width="1.5"/><path d="M18 25 Q20 11 32 11 Q44 11 46 25" stroke="#e5131a" stroke-width="1.5" fill="none"/><path d="M18 38 Q22 46 32 48 Q42 46 46 38" stroke="#e5131a" stroke-width="1.5" fill="none"/><line x1="24" y1="48" x2="24" y2="57" stroke="#e5131a" stroke-width="1.2"/><line x1="40" y1="48" x2="40" y2="57" stroke="#e5131a" stroke-width="1.2"/></svg>`,
+    wave:`<svg width="64" height="80" viewBox="0 0 64 80" fill="none"><ellipse cx="32" cy="26" rx="13" ry="17" stroke="#e5131a" stroke-width="1.5"/><path d="M19 31 Q10 43 13 59" stroke="#e5131a" stroke-width="1.5" fill="none"/><path d="M45 31 Q54 43 51 59" stroke="#e5131a" stroke-width="1.5" fill="none"/><path d="M13 59 Q17 66 21 62 Q25 58 29 64 Q33 70 37 64 Q41 58 45 62 Q49 66 51 59" stroke="#e5131a" stroke-width="1.5" fill="none"/><path d="M19 19 Q22 9 32 9 Q42 9 45 19" stroke="#e5131a" stroke-width="1.5"/></svg>`,
+    ponytail:`<svg width="64" height="80" viewBox="0 0 64 80" fill="none"><ellipse cx="32" cy="31" rx="13" ry="17" stroke="#e5131a" stroke-width="1.5"/><path d="M22 16 Q24 7 32 6 Q40 7 42 16" stroke="#e5131a" stroke-width="1.5"/><line x1="32" y1="6" x2="32" y2="2" stroke="#e5131a" stroke-width="1.5"/><path d="M30 2 Q32 0 34 2 L37 14 Q34 16 32 16 Q30 16 27 14 Z" stroke="#e5131a" stroke-width="1.2" fill="none"/><path d="M32 16 Q34 26 36 40 Q38 56 36 70" stroke="#e5131a" stroke-width="1.2"/><path d="M32 16 Q30 26 28 40 Q26 56 28 70" stroke="#e5131a" stroke-width="1.2"/></svg>`,
+  };
+  return d[type]||d.mid;
+}
+
+// ═══════════════════════════════════════
+//  PAGE NAVIGATION
+// ═══════════════════════════════════════
+const PAGE_MAP = {home:'pg-home',celeb:'pg-celeb',hair:'pg-hair',makeup:'pg-makeup',quiz:'pg-quiz'};
+const TAB_IDX  = {home:0,celeb:2,makeup:3,hair:4,quiz:5};
+let rendered = {};
+
+function goPage(name) {
+  // hide all pages
+  document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
+  // deactivate all tabs
+  document.querySelectorAll('.tab-item').forEach(t=>t.classList.remove('active'));
+  // activate target page
+  document.getElementById(PAGE_MAP[name]).classList.add('active');
+  // activate tab
+  const tabs = document.querySelectorAll('.tab-item');
+  if(TAB_IDX[name]!==undefined) tabs[TAB_IDX[name]]?.classList.add('active');
+  window.scrollTo(0,0);
+  // render page content if needed
+  if(!rendered[name]) {
+    rendered[name]=true;
+    if(name==='celeb') renderCelebs();
+    if(name==='hair') renderHair();
+    if(name==='makeup') renderMakeup();
+    if(name==='quiz') initQuiz();
+  }
+}
+
+// ═══════════════════════════════════════
+//  CELEB
+// ═══════════════════════════════════════
+let cState={tab:'bone',val:'all'};
+function celebTab(btn,tab){
+  document.querySelectorAll('#pg-celeb .seg-tab').forEach(t=>t.classList.remove('active'));
+  btn.classList.add('active');
+  cState.tab=tab; cState.val='all';
+  const bar=document.getElementById('celeb-filters');
+  if(tab==='bone'){
+    bar.innerHTML=`<button class="chip on" onclick="celebChip(this,'all')">すべて</button><button class="chip" onclick="celebChip(this,'straight')">ストレート</button><button class="chip" onclick="celebChip(this,'wave')">ウェーブ</button><button class="chip" onclick="celebChip(this,'natural')">ナチュラル</button><button class="chip" onclick="celebChip(this,'jp')">🇯🇵 日本</button><button class="chip" onclick="celebChip(this,'kr')">🇰🇷 韓国</button><button class="chip" onclick="celebChip(this,'us')">🌍 欧米</button><button class="chip" onclick="celebChip(this,'cn')">🇨🇳 中国</button><button class="chip" onclick="celebChip(this,'world')">🌐 世界</button>`;
+  } else {
+    bar.innerHTML=`<button class="chip on" onclick="celebChip(this,'all')">すべて</button><button class="chip" onclick="celebChip(this,'oval')">卵型</button><button class="chip" onclick="celebChip(this,'long')">面長</button><button class="chip" onclick="celebChip(this,'round')">丸顔</button><button class="chip" onclick="celebChip(this,'triangle')">逆三角</button><button class="chip" onclick="celebChip(this,'square')">ベース型</button><button class="chip" onclick="celebChip(this,'jp')">🇯🇵 日本</button><button class="chip" onclick="celebChip(this,'kr')">🇰🇷 韓国</button><button class="chip" onclick="celebChip(this,'us')">🌍 欧米</button><button class="chip" onclick="celebChip(this,'cn')">🇨🇳 中国</button><button class="chip" onclick="celebChip(this,'world')">🌐 世界</button>`;
+  }
+  renderCelebs();
+}
+function celebChip(btn,val){
+  btn.closest('.filter-bar').querySelectorAll('.chip').forEach(c=>c.classList.remove('on'));
+  btn.classList.add('on');
+  const countries=['jp','kr','us','cn','world'];
+  if(val==='all'){cState.val='all';}
+  else if(countries.includes(val)){cState.country=val; cState.typeVal='all';}
+  else{cState.typeVal=val; cState.country='all';}
+  if(val==='all'){cState.typeVal='all';cState.country='all';}
+  renderCelebs();
+}
+const CLABEL={jp:'JPN',kr:'KOR',us:'USA',cn:'CHN',world:'WORLD'};
+const BLABEL={straight:'ストレート',wave:'ウェーブ',natural:'ナチュラル'};
+const FLABEL={oval:'卵型',long:'面長',round:'丸顔',triangle:'逆三角',square:'ベース型'};
+function renderCelebs(){
+  const {tab,typeVal,country}=cState;
+  const countries=['jp','kr','us','cn','world'];
+  let list=CELEBS.filter(c=>{
+    if(country && country!=='all' && c.country!==country) return false;
+    if(typeVal && typeVal!=='all'){
+      if(tab==='bone' && c.bone!==typeVal) return false;
+      if(tab==='face' && c.face!==typeVal) return false;
+    }
+    return true;
+  });
+  const g=document.getElementById('celeb-grid');
+  if(!list.length){g.innerHTML='<div style="grid-column:1/-1;padding:40px;text-align:center;color:var(--mid);font-size:12px;">該当する有名人が見つかりません</div>';return;}
+  g.innerHTML=list.map(c=>`
+    <div class="celeb-card">
+      <div class="celeb-face">${faceSVG(c.init,c.face)}
+        <div class="c-flag">${CLABEL[c.country]}</div>
+        <div class="c-genre">${c.genre}</div>
+      </div>
+      <div class="celeb-info">
+        <div class="celeb-name">${c.name}</div>
+        <div class="celeb-type">${BLABEL[c.bone]} / ${FLABEL[c.face]||c.face}</div>
+        <div class="celeb-desc">${c.desc}</div>
+      </div>
+    </div>`).join('');
+}
+
+// ═══════════════════════════════════════
+//  HAIR
+// ═══════════════════════════════════════
+let hState={tab:'bone',val:'all'};
+function hairTab(btn,tab){
+  document.querySelectorAll('#pg-hair .seg-tab').forEach(t=>t.classList.remove('active'));
+  btn.classList.add('active'); hState.tab=tab; hState.val='all';
+  const bar=document.getElementById('hair-filters');
+  if(tab==='bone'){
+    bar.innerHTML=`<button class="chip on" onclick="hairChip(this,'all')">すべて</button><button class="chip" onclick="hairChip(this,'straight')">ストレート</button><button class="chip" onclick="hairChip(this,'wave')">ウェーブ</button><button class="chip" onclick="hairChip(this,'natural')">ナチュラル</button>`;
+  } else {
+    bar.innerHTML=`<button class="chip on" onclick="hairChip(this,'all')">すべて</button><button class="chip" onclick="hairChip(this,'oval')">卵型</button><button class="chip" onclick="hairChip(this,'round')">丸顔</button><button class="chip" onclick="hairChip(this,'long')">面長</button><button class="chip" onclick="hairChip(this,'square')">ベース型</button>`;
+  }
+  renderHair();
+}
+function hairChip(btn,val){
+  btn.closest('.filter-bar').querySelectorAll('.chip').forEach(c=>c.classList.remove('on'));
+  btn.classList.add('on'); hState.val=val; renderHair();
+}
+function renderHair(){
+  const {tab,val}=hState;
+  let list=HAIR.filter(h=>{
+    if(val==='all') return true;
+    if(tab==='bone') return h.bone===val;
+    return h.face.includes(val);
+  });
+  const el=document.getElementById('hair-list');
+  if(!list.length){el.innerHTML='<div style="padding:40px;text-align:center;color:var(--mid);font-size:12px;">該当するスタイルがありません</div>';return;}
+  el.innerHTML=list.map(h=>`
+    <div class="hair-card">
+      <div class="hair-thumb">${hairSVG(h.svg)}</div>
+      <div class="hair-body">
+        <div class="hair-name">${h.name}</div>
+        <span class="hair-badge">${h.badge}</span>
+        <div class="hair-tags">${h.tags.map(t=>`<span class="hair-tag">${t}</span>`).join('')}</div>
+        <div class="hair-pts">${h.pts}</div>
+      </div>
+    </div>`).join('');
+}
+
+// ═══════════════════════════════════════
+//  MAKEUP
+// ═══════════════════════════════════════
+let mState={tab:'bone',val:'all'};
+let mOpen={};
+function makeupTab(btn,tab){
+  document.querySelectorAll('#pg-makeup .seg-tab').forEach(t=>t.classList.remove('active'));
+  btn.classList.add('active'); mState.tab=tab; mState.val='all'; mOpen={};
+  const bar=document.getElementById('makeup-filters');
+  if(tab==='bone'){
+    bar.innerHTML=`<button class="chip on" onclick="makeupChip(this,'all')">すべて</button><button class="chip" onclick="makeupChip(this,'straight')">ストレート</button><button class="chip" onclick="makeupChip(this,'wave')">ウェーブ</button><button class="chip" onclick="makeupChip(this,'natural')">ナチュラル</button>`;
+  } else {
+    bar.innerHTML=`<button class="chip on" onclick="makeupChip(this,'all')">すべて</button><button class="chip" onclick="makeupChip(this,'oval')">卵型</button><button class="chip" onclick="makeupChip(this,'round')">丸顔</button><button class="chip" onclick="makeupChip(this,'long')">面長</button><button class="chip" onclick="makeupChip(this,'square')">ベース型</button><button class="chip" onclick="makeupChip(this,'triangle')">逆三角</button>`;
+  }
+  renderMakeup();
+}
+function makeupChip(btn,val){
+  btn.closest('.filter-bar').querySelectorAll('.chip').forEach(c=>c.classList.remove('on'));
+  btn.classList.add('on'); mState.val=val; mOpen={}; renderMakeup();
+}
+function toggleMU(key){
+  mOpen[key]=!mOpen[key];
+  document.getElementById('mu-body-'+key).classList.toggle('open',!!mOpen[key]);
+  document.getElementById('mu-plus-'+key).classList.toggle('open',!!mOpen[key]);
+}
+function switchMUCat(key,btn,cat){
+  const body=document.getElementById('mu-body-'+key);
+  body.querySelectorAll('.makeup-cat').forEach(t=>t.classList.remove('on'));
+  btn.classList.add('on');
+  const src=MAKEUP[mState.tab][key];
+  renderMUItems(key,src.items[cat]||[]);
+}
+function renderMUItems(key,items){
+  document.getElementById('mu-items-'+key).innerHTML=items.map(it=>`
+    <div class="makeup-item">
+      <div class="makeup-ico"><span class="makeup-ico-letter">${it.ico}</span></div>
+      <div class="makeup-item-body">
+        <div class="makeup-item-name">${it.name}</div>
+        <div class="makeup-item-pt">${it.pt}</div>
+        <div class="makeup-item-tags">${it.tags.map(t=>`<span class="makeup-item-tag">${t}</span>`).join('')}</div>
+      </div>
+    </div>`).join('');
+}
+function renderMakeup(){
+  const src=MAKEUP[mState.tab];
+  const keys=mState.val==='all'?Object.keys(src):(src[mState.val]?[mState.val]:[]);
+  const el=document.getElementById('makeup-list');
+  if(!keys.length){el.innerHTML='<div style="padding:40px;text-align:center;color:var(--mid);font-size:12px;">該当するデータがありません</div>';return;}
+  el.innerHTML=keys.map(key=>{
+    const d=src[key]; const isOpen=!!mOpen[key];
+    return `<div class="makeup-sect">
+      <div class="makeup-sect-hd" onclick="toggleMU('${key}')">
+        <div><div class="makeup-sect-name">${d.label}</div><div class="makeup-sect-sub">${d.sub}</div></div>
+        <div class="makeup-plus${isOpen?' open':''}" id="mu-plus-${key}">
+          <svg width="13" height="13" viewBox="0 0 13 13" fill="none" stroke="#888" stroke-width="1.5" stroke-linecap="round"><line x1="6.5" y1="1" x2="6.5" y2="12"/><line x1="1" y1="6.5" x2="12" y2="6.5"/></svg>
+        </div>
+      </div>
+      <div class="makeup-body${isOpen?' open':''}" id="mu-body-${key}">
+        <div class="makeup-cat-bar">${d.cats.map((c,i)=>`<button class="makeup-cat${i===0?' on':''}" onclick="switchMUCat('${key}',this,'${c}')">${c}</button>`).join('')}</div>
+        <div class="makeup-items-wrap" id="mu-items-${key}"></div>
+      </div>
+    </div>`;
+  }).join('');
+  keys.forEach(key=>{
+    const d=src[key];
+    renderMUItems(key,d.items[d.cats[0]]||[]);
+  });
+}
+
+// ═══════════════════════════════════════
+//  QUIZ
+// ═══════════════════════════════════════
+let qIdx=0, qDone=0;
+function initQuiz(){
+  qIdx=0; qDone=0;
+  updateQProgress();
+  showQ(0);
+}
+function updateQProgress(){
+  const pct=Math.round((qDone/QUIZ_QUESTIONS.length)*100);
+  document.getElementById('qpf').style.width=pct+'%';
+  document.getElementById('qpt').textContent=qDone+' / '+QUIZ_QUESTIONS.length;
+}
+function showQ(i){
+  if(i>=QUIZ_QUESTIONS.length){
+    document.getElementById('quiz-container').innerHTML=`
+      <div style="text-align:center;padding:40px 0;">
+        <div style="font-family:'Bebas Neue',sans-serif;font-size:52px;color:var(--red);line-height:.9;margin-bottom:12px;">COMPLETE!</div>
+        <div style="font-size:13px;color:#666;margin-bottom:24px;line-height:2;">全${QUIZ_QUESTIONS.length}問クリアしました！<br>正しい習慣を続けてなりたい顔に近づきましょう。</div>
+        <button class="btn-red" style="max-width:200px;margin:0 auto;" onclick="restartQuiz()">もう一度チャレンジ</button>
+      </div>`;
+    return;
+  }
+  const q=QUIZ_QUESTIONS[i];
+  document.getElementById('quiz-container').innerHTML=`
+    <div class="quiz-card">
+      <p class="quiz-q">Q${i+1}. ${q.q}</p>
+      <div class="quiz-opts">${q.opts.map((o,j)=>`
+        <div class="quiz-opt" onclick="answerQ(this,${j},${q.ans},'${q.fb.replace(/'/g,"\\'")}')">
+          <div class="quiz-opt-m">${String.fromCharCode(65+j)}</div>
+          <span class="quiz-opt-t">${o}</span>
+        </div>`).join('')}
+      </div>
+      <div class="quiz-feedback" id="qfb"></div>
+      <button class="quiz-next" id="qnext" onclick="nextQ()">次の問題へ →</button>
+    </div>`;
+}
+function answerQ(el,chosen,correct,fb){
+  const opts=el.closest('.quiz-opts').querySelectorAll('.quiz-opt');
+  opts.forEach(o=>o.onclick=null);
+  if(chosen===correct){el.classList.add('correct');}
+  else{el.classList.add('wrong'); opts[correct].classList.add('correct');}
+  const fbEl=document.getElementById('qfb');
+  fbEl.textContent=(chosen===correct?'✓ 正解！ ':'✗ 不正解。正解は'+String.fromCharCode(65+correct)+'。 ')+fb;
+  fbEl.classList.add('show');
+  document.getElementById('qnext').classList.add('show');
+  qDone++; updateQProgress();
+}
+function nextQ(){
+  qIdx++;
+  showQ(qIdx);
+}
+function restartQuiz(){
+  rendered.quiz=false;
+  initQuiz();
+  rendered.quiz=true;
+}
+
+// ═══════════════════════════════════════
+//  MODAL
+// ═══════════════════════════════════════
+function openModal(){document.getElementById('modal-ov').classList.add('open');document.body.style.overflow='hidden';}
+function closeModal(e){if(!e||e.target===document.getElementById('modal-ov')){document.getElementById('modal-ov').classList.remove('open');document.body.style.overflow='';}}
+function handleFile(e){
+  const f=e.target.files[0]; if(!f) return;
+  closeModal();
+  setTimeout(()=>alert('✅ '+f.name+' をアップロードしました！\nAI解析が完了次第、結果をお知らせします。\n\n（デモのため実際の解析は行われません）'),200);
+}
+</script>
+</body>
+</html>
+HTMLEOF
