@@ -321,22 +321,6 @@ footer { background:var(--black); padding:24px 20px; border-top:2px solid var(--
 
 
 /* API Key section */
-.apikey-section { border:1px solid #ddd; margin-bottom:14px; }
-.apikey-toggle { display:flex; align-items:center; gap:8px; padding:10px 12px; cursor:pointer; background:#f9f6f2; }
-.apikey-toggle:active { background:#f0ece8; }
-.apikey-label { flex:1; font-size:11px; color:#444; letter-spacing:.3px; }
-.apikey-chevron { font-size:10px; color:#aaa; transition:transform .2s; }
-.apikey-chevron.open { transform:rotate(180deg); }
-.apikey-body { padding:12px; border-top:1px solid #eee; display:none; }
-.apikey-body.open { display:block; }
-.apikey-desc { font-size:10px; color:#666; line-height:1.8; margin-bottom:10px; }
-.apikey-input-row { display:flex; gap:6px; margin-bottom:6px; }
-.apikey-input { flex:1; border:1px solid #ccc; padding:8px 10px; font-size:11px; font-family:monospace; outline:none; }
-.apikey-input:focus { border-color:var(--red); }
-.apikey-vis-btn { background:#1a1a1a; border:none; color:#fff; padding:8px 10px; cursor:pointer; font-size:14px; }
-.apikey-hint { font-size:10px; height:14px; }
-.apikey-hint.ok { color:#22c55e; }
-.apikey-hint.err { color:#e5131a; }
 
 /* Upload tips */
 .upload-tips { display:grid; grid-template-columns:1fr 1fr; gap:5px; margin-top:12px; }
@@ -361,29 +345,12 @@ footer { background:var(--black); padding:24px 20px; border-top:2px solid var(--
 .res-rec-link { background:none; border:none; color:var(--red); font-size:10px; letter-spacing:1px; cursor:pointer; padding:6px 0 0; text-decoration:underline; }
 
 /* API Key section */
-.apikey-section { border:1px solid #ddd; margin-bottom:14px; }
-.apikey-toggle { display:flex; align-items:center; gap:8px; padding:10px 12px; cursor:pointer; font-size:11px; color:#444; }
-.apikey-toggle:active { background:#f5f0ea; }
-.apikey-label { flex:1; }
-.apikey-chevron { font-size:9px; color:#aaa; transition:transform .2s; }
-.apikey-chevron.open { transform:rotate(180deg); }
-.apikey-body { display:none; padding:12px; background:#fafaf8; border-top:1px solid #e8e4df; }
-.apikey-body.open { display:block; }
-.apikey-desc { font-size:10px; color:#888; margin-bottom:10px; line-height:1.7; }
-.apikey-input-row { display:flex; gap:6px; margin-bottom:6px; }
-.apikey-input { flex:1; border:1px solid #ccc; padding:9px 11px; font-size:12px; font-family:monospace; outline:none; }
-.apikey-input:focus { border-color:var(--red); }
-.apikey-vis-btn { background:none; border:1px solid #ccc; padding:0 10px; cursor:pointer; font-size:14px; }
-.apikey-hint { font-size:10px; margin-top:2px; }
-.apikey-hint.ok { color:#22c55e; }
-.apikey-hint.err { color:#ef4444; }
 
 /* Upload tips */
 .upload-tips { display:grid; grid-template-columns:1fr 1fr; gap:5px; margin-top:12px; padding:10px; background:#f9f6f2; border:1px solid var(--border); }
 .tip-item { font-size:10px; color:#777; }
 
 /* API key set indicator */
-#apikey-status-icon { font-size:14px; }
 
 
 /* Diagnosis gender selector */
@@ -713,27 +680,6 @@ footer { background:var(--black); padding:24px 20px; border-top:2px solid var(--
         <div class="priv-notice">
           <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#22c55e" stroke-width="2" stroke-linecap="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
           写真はブラウザ内のみで処理。外部送信・保存なし
-        </div>
-
-        <!-- API Key section (collapsible) -->
-        <div class="apikey-section" id="apikey-section">
-          <div class="apikey-toggle" onclick="toggleApiKeySection()">
-            <span id="apikey-status-icon">⚙️</span>
-            <span id="apikey-label">Anthropic APIキーを設定（AI判定に必要）</span>
-            <span class="apikey-chevron" id="apikey-chevron">▼</span>
-          </div>
-          <div class="apikey-body" id="apikey-body">
-            <div class="apikey-desc">AIによる骨格・顔型判定・有名人マッチングに使用。キーはこのページにのみ保存され、外部には送信されません。</div>
-            <div class="apikey-input-row">
-              <input type="password" id="apikey-input" placeholder="sk-ant-..." class="apikey-input" oninput="saveApiKey(this.value)">
-              <button class="apikey-vis-btn" onclick="toggleKeyVis()">👁</button>
-            </div>
-            <div id="apikey-hint" class="apikey-hint"></div>
-            <div style="font-size:9px;color:#888;margin-top:6px;line-height:1.7">
-              ※ APIキーは <a href="https://console.anthropic.com" target="_blank" style="color:var(--red)">console.anthropic.com</a> で取得できます<br>
-              ※ 設定なしでもローカル計測のみで診断可能です
-            </div>
-          </div>
         </div>
 
         <!-- Gender selector -->
@@ -2510,45 +2456,13 @@ function drawAnalysisOverlay(ctx, lms, sx, sy) {
 }
 
 // ── API Key management ──────────────────────────────────────────────────────
-let _apiKey = sessionStorage.getItem('rp_apikey') || '';
 
-function saveApiKey(val) {
-  _apiKey = val.trim();
-  sessionStorage.setItem('rp_apikey', _apiKey);
-  const hint = document.getElementById('apikey-hint');
-  const icon = document.getElementById('apikey-status-icon');
-  if(!_apiKey){ hint.textContent=''; if(icon) icon.textContent='⚙️'; return; }
-  if(_apiKey.startsWith('sk-ant-')){
-    hint.textContent='✓ 形式OK — AI判定が有効になります'; hint.className='apikey-hint ok';
-    if(icon) icon.textContent='✅';
-  } else {
-    hint.textContent='⚠ sk-ant- で始まるキーを入力してください'; hint.className='apikey-hint err';
-    if(icon) icon.textContent='⚠️';
-  }
-}
 
-function toggleApiKeySection() {
-  const body = document.getElementById('apikey-body');
-  const chev = document.getElementById('apikey-chevron');
-  const isOpen = body.classList.toggle('open');
-  chev.classList.toggle('open', isOpen);
-}
 
-function toggleKeyVis() {
-  const inp = document.getElementById('apikey-input');
-  inp.type = inp.type === 'password' ? 'text' : 'password';
-}
 
-// Pre-fill if stored
-window.addEventListener('DOMContentLoaded', () => {
-  const stored = sessionStorage.getItem('rp_apikey') || '';
-  if(stored){ document.getElementById('apikey-input').value=stored; _apiKey=stored; }
-});
 
 // ── Claude Vision API call ──────────────────────────────────────────────────
 async function callClaudeVision(base64Jpeg, metrics, gender) {
-  const apiKey = _apiKey;
-  if(!apiKey || !apiKey.startsWith('sk-ant-')) throw new Error('NO_API_KEY');
 
   // Build celeb name list from our data for this gender
   const celebPool = (gender === 'male' ? CELEBS_M : CELEBS).map(c => c.name);
@@ -2596,7 +2510,6 @@ ${celebListStr}
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
-      'x-api-key': apiKey,
       'anthropic-version': '2023-06-01',
       'anthropic-dangerous-direct-browser-access': 'true',
     },
@@ -2693,7 +2606,7 @@ function showResults(metrics, ai, previewDataUrl) {
 
   document.getElementById('result-content').innerHTML = `
 
-    ${ai._noKey ? `<div style="background:#fffbeb;border-bottom:1px solid #fcd34d;padding:10px 16px;font-size:10px;color:#92400e;display:flex;align-items:center;gap:7px"><span>⚠️</span> APIキー未設定。AIによる骨格・有名人マッチングは簡易版です。<a href="https://console.anthropic.com" target="_blank" style="color:#b45309;text-decoration:underline">APIキーを取得 →</a></div>` : ''}
+    
 
     <!-- ① TYPE HERO -->
     <div class="res-hero">
