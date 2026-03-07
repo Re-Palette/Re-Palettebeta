@@ -385,6 +385,17 @@ footer { background:var(--black); padding:24px 20px; border-top:2px solid var(--
 /* API key set indicator */
 #apikey-status-icon { font-size:14px; }
 
+
+/* Diagnosis gender selector */
+.diag-gender-sel { display:flex; gap:0; margin-bottom:16px; border:1px solid var(--border); }
+.diag-gender-btn { flex:1; padding:12px 0; border:none; background:none; cursor:pointer; font-family:'Bebas Neue',sans-serif; font-size:15px; letter-spacing:3px; color:#999; transition:all .2s; display:flex; flex-direction:column; align-items:center; gap:3px; }
+.diag-gender-btn span.dg-icon { font-size:22px; line-height:1; }
+.diag-gender-btn span.dg-lbl { font-size:12px; }
+.diag-gender-btn.on { background:var(--black); color:var(--white); }
+.diag-gender-btn.on.female { background:#1a0a10; color:#f472b6; border-bottom:2px solid #e54b7a; }
+.diag-gender-btn.on.male   { background:#0a0e1a; color:#60a5fa; border-bottom:2px solid #3b82f6; }
+.diag-gender-label { font-size:10px; color:var(--mid); letter-spacing:2px; margin-bottom:8px; }
+
 </style>
 </head>
 <body>
@@ -667,6 +678,19 @@ footer { background:var(--black); padding:24px 20px; border-top:2px solid var(--
               ※ 設定なしでもローカル計測のみで診断可能です
             </div>
           </div>
+        </div>
+
+        <!-- Gender selector -->
+        <div class="diag-gender-label">あなたの性別を選択</div>
+        <div class="diag-gender-sel">
+          <button class="diag-gender-btn female on" id="dg-female" onclick="setDiagGender('female')">
+            <span class="dg-icon">♀</span>
+            <span class="dg-lbl">女性</span>
+          </button>
+          <button class="diag-gender-btn male" id="dg-male" onclick="setDiagGender('male')">
+            <span class="dg-icon">♂</span>
+            <span class="dg-lbl">男性</span>
+          </button>
         </div>
 
         <div class="upload-area" onclick="document.getElementById('fi1').click()">
@@ -1657,6 +1681,13 @@ function showStep(name){
 
 // ── Image file handling ──────────────────────────────────────────────────────
 let currentImageDataUrl = null;
+let diagGender = 'female'; // set by gender selector before diagnosis
+
+function setDiagGender(g) {
+  diagGender = g;
+  document.getElementById('dg-female').classList.toggle('on', g === 'female');
+  document.getElementById('dg-male').classList.toggle('on', g === 'male');
+}
 
 function handleFile(e){
   const f = e.target.files[0];
@@ -1822,14 +1853,14 @@ async function startDiagnosis(dataUrl) {
 
   let aiResult = null;
   try {
-    aiResult = await callClaudeVision(compressed, metrics);
+    aiResult = await callClaudeVision(compressed, metrics, diagGender);
   } catch(e) {
     if(e.message === 'NO_API_KEY') {
       console.info('No API key — running local-only diagnosis');
     } else {
       console.warn('Claude API error:', e.message);
     }
-    aiResult = getFallbackResult(metrics);
+    aiResult = getFallbackResult(metrics, diagGender);
     aiResult._noKey = (e.message === 'NO_API_KEY');
   }
   setStep('as4','done'); setStep('as5','active');
@@ -1973,12 +2004,19 @@ window.addEventListener('DOMContentLoaded', () => {
 });
 
 // ── Claude Vision API call ──────────────────────────────────────────────────
-async function callClaudeVision(base64Jpeg, metrics) {
+async function callClaudeVision(base64Jpeg, metrics, gender) {
   const apiKey = _apiKey;
   if(!apiKey || !apiKey.startsWith('sk-ant-')) throw new Error('NO_API_KEY');
 
+  // Build celeb name list from our data for this gender
+  const celebPool = (gender === 'male' ? CELEBS_M : CELEBS).map(c => c.name);
+  const celebListStr = celebPool.join('、');
+  const genderJP = gender === 'male' ? '男性' : '女性';
+
   const prompt = `あなたは骨格診断・顔型診断のプロAIです。
 写真の人物の顔・体型の特徴を注意深く観察し、JSON形式のみで回答してください（前置き・説明文は不要）。
+
+【ユーザー性別】${genderJP}
 
 【MediaPipe計測値（参考）】
 縦横比=${metrics.ratio} / 黄金比スコア=${metrics.goldenScore}% / 左右対称=${metrics.symmetryScore}% / 中顔面=${metrics.midFaceScore}% / 暫定顔型=${metrics.faceType}
@@ -1986,10 +2024,13 @@ async function callClaudeVision(base64Jpeg, metrics) {
 【判定基準】
 boneType:
 - straight = 首・肩・鎖骨が目立つ、筋肉質・立体的、全体に直線的
-- wave = 鎖骨が目立たず、曲線的・丸み、グラマラス寄り
+- wave = 鎖骨が目立たず、曲線的・丸み（${genderJP}的な印象）
 - natural = 骨感が目立つ、肩幅・手・関節が大きく見える
 
 faceType: oval=卵型, round=丸顔, long=面長, square=ベース型, triangle=逆三角形
+
+【似ている有名人の候補リスト（必ずこの中から選ぶこと）】
+${celebListStr}
 
 【出力JSON（厳守）】
 {
@@ -1997,15 +2038,15 @@ faceType: oval=卵型, round=丸顔, long=面長, square=ベース型, triangle=
   "boneConfidence": 整数0-100,
   "faceType": "oval|round|long|square|triangle",
   "faceConfidence": 整数0-100,
-  "impression": "3〜5文字の印象（例：クールビューティ、フェミニン系）",
+  "impression": "3〜5文字の印象（例：クールビューティ、ワイルド系）",
   "celebMatches": [
-    {"name":"日本語の有名人名","similarity":整数0-100,"reason":"10文字以内の理由"},
-    {"name":"日本語の有名人名","similarity":整数0-100,"reason":"10文字以内の理由"},
-    {"name":"日本語の有名人名","similarity":整数0-100,"reason":"10文字以内の理由"}
+    {"name":"上記リスト内の有名人名","similarity":整数0-100,"reason":"10文字以内の理由"},
+    {"name":"上記リスト内の有名人名","similarity":整数0-100,"reason":"10文字以内の理由"},
+    {"name":"上記リスト内の有名人名","similarity":整数0-100,"reason":"10文字以内の理由"}
   ],
-  "makeupTip": "骨格・顔型に合うメイク法（40文字以内）",
-  "hairTip": "骨格・顔型に合うヘアスタイル（40文字以内）",
-  "skincareTip": "肌質別スキンケア提案（30文字以内）",
+  "makeupTip": "骨格・顔型に合う${genderJP}向けメイク／グルーミング法（40文字以内）",
+  "hairTip": "骨格・顔型に合う${genderJP}向けヘアスタイル（40文字以内）",
+  "skincareTip": "${genderJP}向けスキンケア提案（30文字以内）",
   "strongPoints": ["魅力ポイント（8文字以内）","魅力ポイント（8文字以内）","魅力ポイント（8文字以内）"]
 }`;
 
@@ -2041,26 +2082,36 @@ faceType: oval=卵型, round=丸顔, long=面長, square=ベース型, triangle=
 }
 
 // ── Fallback result (if API unavailable) ─────────────────────────────────────
-function getFallbackResult(metrics) {
+function getFallbackResult(metrics, gender) {
   const boneTypes = ['straight','wave','natural'];
-  const boneNames = {straight:'ストレート',wave:'ウェーブ',natural:'ナチュラル'};
-  const faceNames = {oval:'卵型',round:'丸顔',long:'面長',square:'ベース型',triangle:'逆三角型'};
   const bone = boneTypes[Math.floor(Math.random()*3)];
+  const isMale = gender === 'male';
+  // Pick 3 random celebs from the correct pool matching the detected bone type
+  const pool = (isMale ? CELEBS_M : CELEBS).filter(c => c.bone === bone);
+  const fallbackPool = pool.length >= 3 ? pool : (isMale ? CELEBS_M : CELEBS);
+  const shuffled = [...fallbackPool].sort(() => Math.random() - 0.5).slice(0, 3);
+  const reasons = ['骨格ラインが近い','印象が似ている','顔型が共通','オーラが似ている','フェイスラインが近い'];
   return {
     boneType: bone,
     boneConfidence: Math.round(72+Math.random()*20),
     faceType: metrics.faceType,
     faceConfidence: Math.round(70+Math.random()*22),
-    impression: ['クールビューティ','フェミニン系','ナチュラル美人','エレガント系'][Math.floor(Math.random()*4)],
-    celebMatches: [
-      {name:'新垣結衣',similarity:Math.round(68+Math.random()*18),reason:'柔らかい曲線ラインが近い'},
-      {name:'石原さとみ',similarity:Math.round(58+Math.random()*18),reason:'クールなオーラが似ている'},
-      {name:'綾瀬はるか',similarity:Math.round(50+Math.random()*18),reason:'丸みある印象が共通'},
-    ],
-    makeupTip: 'ナチュラルなベースメイクで素肌感を大切に。アイメイクで骨格の特徴を引き立てましょう。',
-    hairTip: '顔型に合わせたシルエットを意識して。顔周りのレイヤーで小顔効果を狙いましょう。',
+    impression: isMale
+      ? ['ワイルド系','クール系','爽やか系','知的系'][Math.floor(Math.random()*4)]
+      : ['クールビューティ','フェミニン系','ナチュラル美人','エレガント系'][Math.floor(Math.random()*4)],
+    celebMatches: shuffled.map((c, i) => ({
+      name: c.name,
+      similarity: Math.round(85 - i*12 + Math.random()*8),
+      reason: reasons[Math.floor(Math.random()*reasons.length)],
+    })),
+    makeupTip: isMale
+      ? '清潔感を意識したグルーミングで骨格の魅力を引き立てましょう。'
+      : 'ナチュラルなベースメイクで素肌感を大切に。アイメイクで骨格の特徴を引き立てましょう。',
+    hairTip: '顔型に合わせたシルエットを意識して。顔周りのスタイリングで全体のバランスを整えましょう。',
     skincareTip: '保湿と日焼け止めを毎日継続することが美肌の基本です。',
-    strongPoints: ['目元の印象','フェイスラインの綺麗さ','全体のバランスの良さ'],
+    strongPoints: isMale
+      ? ['骨格の存在感','フェイスラインの力強さ','全体のバランス']
+      : ['目元の印象','フェイスラインの綺麗さ','全体のバランスの良さ'],
   };
 }
 
