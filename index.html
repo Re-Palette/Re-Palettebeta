@@ -501,6 +501,10 @@ footer { background:var(--black); padding:24px 20px; border-top:2px solid var(--
       <button class="seg-tab" onclick="celebTab(this,'face')">顔タイプ</button>
     </div>
   </div>
+  <div class="gender-bar" id="celeb-gender-bar">
+    <button class="gender-btn female on" onclick="setCelebGender('female',this)">♀ 女性</button>
+    <button class="gender-btn male" onclick="setCelebGender('male',this)">♂ 男性</button>
+  </div>
   <div class="filter-bar" id="celeb-filters">
     <button class="chip on" onclick="celebChip(this,'all')">すべて</button>
     <button class="chip" onclick="celebChip(this,'straight')">ストレート</button>
@@ -809,6 +813,156 @@ const WIKI = {
   'ナオミ・キャンベル':'https://en.wikipedia.org/wiki/Naomi_Campbell',
   'ジェニファー・ロペス':'https://en.wikipedia.org/wiki/Jennifer_Lopez',
   'シャキーラ':'https://en.wikipedia.org/wiki/Shakira',
+};
+
+
+// ─── MALE CELEBRITIES (45名) ────────────────────────────────────────────────
+const CELEBS_M = [
+  // 🇯🇵 Japan — straight (直線・メリハリ)
+  {name:'木村拓哉',      bone:'straight',face:'oval',    country:'jp',genre:'俳優',      desc:'日本最高のカリスマ。ストレートの象徴的存在。',  init:'KT'},
+  {name:'山田涼介',      bone:'straight',face:'oval',    country:'jp',genre:'アイドル',  desc:'Hey! Say! JUMP。シャープな直線系イケメン。',    init:'YR'},
+  {name:'岡田准一',      bone:'straight',face:'oval',    country:'jp',genre:'俳優',      desc:'V6。引き締まった直線的な骨格の知的系俳優。',    init:'OK'},
+  {name:'坂口健太郎',    bone:'straight',face:'long',    country:'jp',genre:'俳優',      desc:'長身＆面長の直線ラインでモデル系の美男子。',    init:'SK'},
+  {name:'菅田将暉',      bone:'natural', face:'oval',    country:'jp',genre:'俳優',      desc:'骨格感＆個性が際立つナチュラル系俳優。',        init:'SM'},
+  // 🇯🇵 Japan — wave
+  {name:'横浜流星',      bone:'wave',    face:'oval',    country:'jp',genre:'俳優',      desc:'柔らかい曲線美と端正な顔立ちのウェーブ系。',    init:'YR'},
+  {name:'松坂桃李',      bone:'wave',    face:'oval',    country:'jp',genre:'俳優',      desc:'優しい印象のウェーブ骨格の二枚目俳優。',        init:'MT'},
+  {name:'竹内涼真',      bone:'wave',    face:'oval',    country:'jp',genre:'俳優',      desc:'爽やかな曲線ラインのイケメン俳優。',            init:'TK'},
+  // 🇯🇵 Japan — natural
+  {name:'福山雅治',      bone:'natural', face:'long',    country:'jp',genre:'アーティスト',desc:'骨格感と面長が映えるナチュラル系カリスマ。',   init:'FM'},
+  {name:'佐藤健',        bone:'natural', face:'oval',    country:'jp',genre:'俳優',      desc:'骨感ある彫り深い顔立ちのナチュラル系。',        init:'ST'},
+  {name:'三浦春馬',      bone:'wave',    face:'oval',    country:'jp',genre:'俳優',      desc:'柔らかい美しさと骨格感が共存したウェーブ系。',  init:'MH'},
+  // 🇰🇷 Korea — straight
+  {name:'BTS ジン',      bone:'straight',face:'oval',    country:'kr',genre:'K-POP',    desc:'ワールドワイド・ハンサム。直線美の代名詞。',      init:'JN'},
+  {name:'BTS ジョングク', bone:'straight',face:'oval',   country:'kr',genre:'K-POP',    desc:'黄金マンネ。ストレートの圧倒的ビジュアル。',     init:'JK'},
+  {name:'EXO スホ',      bone:'straight',face:'oval',    country:'kr',genre:'K-POP',    desc:'端正でシャープな直線系K-POPアイドル。',         init:'SH'},
+  {name:'チャ・ウヌ',    bone:'straight',face:'oval',    country:'kr',genre:'K-POP',    desc:'ASTRO。長身モデル系の直線ライン俳優アイドル。', init:'CU'},
+  {name:'イ・ジュンギ',  bone:'natural', face:'long',    country:'kr',genre:'俳優',      desc:'骨格感と面長が印象的なナチュラル系韓流俳優。',  init:'LJ'},
+  // 🇰🇷 Korea — wave/natural
+  {name:'BTS ジミン',    bone:'wave',    face:'round',   country:'kr',genre:'K-POP',    desc:'小顔丸顔のウェーブ系。BTS随一の柔らかい印象。', init:'JM'},
+  {name:'SHINee テミン', bone:'wave',    face:'oval',    country:'kr',genre:'K-POP',    desc:'ダンス神。柔らかい曲線美のウェーブ系アイドル。', init:'TM'},
+  {name:'パク・ボゴム',  bone:'wave',    face:'oval',    country:'kr',genre:'俳優',      desc:'清純で柔らかい印象の韓国の国民的俳優。',        init:'PB'},
+  {name:'ヒョンビン',    bone:'natural', face:'square',  country:'kr',genre:'俳優',      desc:'ベース型の力強い骨格が映えるナチュラル系。',     init:'HB'},
+  {name:'ソン・ジュンギ', bone:'wave',   face:'oval',    country:'kr',genre:'俳優',      desc:'端正で柔らかい曲線ラインの韓流トップ俳優。',    init:'SJ'},
+  // 🌍 USA — straight
+  {name:'ブラッド・ピット',bone:'straight',face:'oval',  country:'us',genre:'俳優',      desc:'ハリウッド屈指の美男子。ストレートの代名詞。',   init:'BP'},
+  {name:'ザック・エフロン',bone:'straight',face:'square',country:'us',genre:'俳優',      desc:'ベース型×ストレートの典型的ハリウッドスター。', init:'ZE'},
+  {name:'ティモシー・シャラメ',bone:'natural',face:'oval',country:'us',genre:'俳優',     desc:'繊細な骨格感のナチュラル系・次世代ハリウッド。', init:'TC'},
+  {name:'ライアン・ゴズリング',bone:'natural',face:'square',country:'us',genre:'俳優',   desc:'骨格感あるベース型×ナチュラルのカリスマ俳優。', init:'RG'},
+  {name:'クリス・エヴァンス',bone:'straight',face:'square',country:'us',genre:'俳優',    desc:'キャプテン・アメリカ。ストレート×ベース型の理想形。',init:'CE'},
+  // 🌍 USA — wave/natural
+  {name:'ハリー・スタイルズ',bone:'natural',face:'oval',  country:'us',genre:'シンガー', desc:'骨格感を活かしたナチュラル系の世界的ポップスター。',init:'HS'},
+  {name:'ジョニー・デップ',bone:'natural', face:'oval',   country:'us',genre:'俳優',     desc:'ラフな骨格感と個性で唯一無二のナチュラル系。',   init:'JD'},
+  {name:'コリン・ファレル',bone:'natural', face:'square', country:'us',genre:'俳優',     desc:'骨格感とベース型の力強い顔立ちのナチュラル系。', init:'CF'},
+  // 🇨🇳 China
+  {name:'ルー・ハン',    bone:'wave',    face:'oval',    country:'cn',genre:'アーティスト',desc:'中国の国民的アイドル。柔らかいウェーブ系美男子。',init:'LH'},
+  {name:'ウー・イーファン',bone:'straight',face:'long',  country:'cn',genre:'アーティスト',desc:'長身面長のストレート系中華アーティスト。',       init:'WY'},
+  {name:'シャオ・ジャン',bone:'wave',    face:'oval',    country:'cn',genre:'俳優',      desc:'清純な柔らかさのウェーブ系中国トップ俳優。',    init:'XZ'},
+  {name:'ワン・イーボー', bone:'natural', face:'oval',   country:'cn',genre:'アーティスト',desc:'骨格感あるナチュラル系中国の超人気俳優兼アーティスト。',init:'WB'},
+  {name:'チェン・クン',  bone:'natural', face:'long',    country:'cn',genre:'俳優',      desc:'面長×ナチュラルの骨格美が映える中国の大御所俳優。',init:'CK'},
+  // 🌐 World
+  {name:'ロジェ・フェデラー',bone:'natural',face:'oval',  country:'world',genre:'スポーツ',desc:'テニス界の神様。骨格感あるナチュラル系の貴公子。',init:'RF'},
+  {name:'クリスティアーノ・ロナウド',bone:'straight',face:'square',country:'world',genre:'スポーツ',desc:'ストレート×ベース型の完璧なスポーツスター。',init:'CR'},
+  {name:'ルネ・ランソン',bone:'wave',    face:'oval',    country:'world',genre:'モデル',  desc:'ウェーブ骨格の柔らかい印象のトップモデル。',    init:'RL'},
+  {name:'ジャスティン・ビーバー',bone:'wave',face:'oval',country:'world',genre:'シンガー',desc:'ウェーブ系の柔らかい印象の世界的ポップスター。',  init:'JB'},
+  {name:'BTS RM',        bone:'natural', face:'square',  country:'world',genre:'K-POP',  desc:'BTSリーダー。骨格感×ベース型の知的カリスマ。',   init:'RM'},
+  {name:'BTS V',         bone:'straight',face:'oval',    country:'world',genre:'K-POP',  desc:'アートな感性×ストレートの世界的ビジュアル担当。',init:'BV'},
+  {name:'G-DRAGON',      bone:'natural', face:'oval',    country:'world',genre:'K-POP',  desc:'K-POPの神様。骨格感を活かした個性派ナチュラル。',init:'GD'},
+  {name:'ショーン・メンデス',bone:'wave', face:'oval',   country:'world',genre:'シンガー',desc:'爽やかな曲線美のウェーブ系世界的シンガー。',     init:'SM'},
+  {name:'ニコラス・ホルト',bone:'natural',face:'long',   country:'world',genre:'俳優',   desc:'骨格感×面長のナチュラル系英国俳優。',           init:'NH'},
+  {name:'オスカー・イサック',bone:'natural',face:'square',country:'world',genre:'俳優',  desc:'骨格感あるベース型×ナチュラルのハリウッド俳優。',init:'OI'},
+];
+
+// Male Wikipedia URLs
+const WIKI_M = {
+  '木村拓哉':'https://ja.wikipedia.org/wiki/木村拓哉',
+  '山田涼介':'https://ja.wikipedia.org/wiki/山田涼介',
+  '岡田准一':'https://ja.wikipedia.org/wiki/岡田准一',
+  '坂口健太郎':'https://ja.wikipedia.org/wiki/坂口健太郎',
+  '菅田将暉':'https://ja.wikipedia.org/wiki/菅田将暉',
+  '横浜流星':'https://ja.wikipedia.org/wiki/横浜流星',
+  '松坂桃李':'https://ja.wikipedia.org/wiki/松坂桃李',
+  '竹内涼真':'https://ja.wikipedia.org/wiki/竹内涼真',
+  '福山雅治':'https://ja.wikipedia.org/wiki/福山雅治',
+  '佐藤健':'https://ja.wikipedia.org/wiki/佐藤健_(俳優)',
+  '三浦春馬':'https://ja.wikipedia.org/wiki/三浦春馬',
+  'BTS ジン':'https://en.wikipedia.org/wiki/Jin_(singer)',
+  'BTS ジョングク':'https://en.wikipedia.org/wiki/Jungkook',
+  'EXO スホ':'https://en.wikipedia.org/wiki/Suho',
+  'チャ・ウヌ':'https://en.wikipedia.org/wiki/Cha_Eun-woo',
+  'イ・ジュンギ':'https://en.wikipedia.org/wiki/Lee_Joon-gi',
+  'BTS ジミン':'https://en.wikipedia.org/wiki/Jimin',
+  'SHINee テミン':'https://en.wikipedia.org/wiki/Taemin',
+  'パク・ボゴム':'https://en.wikipedia.org/wiki/Park_Bo-gum',
+  'ヒョンビン':'https://en.wikipedia.org/wiki/Hyun_Bin',
+  'ソン・ジュンギ':'https://en.wikipedia.org/wiki/Song_Joong-ki',
+  'ブラッド・ピット':'https://en.wikipedia.org/wiki/Brad_Pitt',
+  'ザック・エフロン':'https://en.wikipedia.org/wiki/Zac_Efron',
+  'ティモシー・シャラメ':'https://en.wikipedia.org/wiki/Timothée_Chalamet',
+  'ライアン・ゴズリング':'https://en.wikipedia.org/wiki/Ryan_Gosling',
+  'クリス・エヴァンス':'https://en.wikipedia.org/wiki/Chris_Evans',
+  'ハリー・スタイルズ':'https://en.wikipedia.org/wiki/Harry_Styles',
+  'ジョニー・デップ':'https://en.wikipedia.org/wiki/Johnny_Depp',
+  'コリン・ファレル':'https://en.wikipedia.org/wiki/Colin_Farrell',
+  'ルー・ハン':'https://en.wikipedia.org/wiki/Lu_Han',
+  'ウー・イーファン':'https://en.wikipedia.org/wiki/Kris_Wu',
+  'シャオ・ジャン':'https://en.wikipedia.org/wiki/Xiao_Zhan',
+  'ワン・イーボー':'https://en.wikipedia.org/wiki/Wang_Yibo',
+  'チェン・クン':'https://en.wikipedia.org/wiki/Chen_Kun',
+  'クリスティアーノ・ロナウド':'https://en.wikipedia.org/wiki/Cristiano_Ronaldo',
+  'ジャスティン・ビーバー':'https://en.wikipedia.org/wiki/Justin_Bieber',
+  'BTS RM':'https://en.wikipedia.org/wiki/RM_(rapper)',
+  'BTS V':'https://en.wikipedia.org/wiki/V_(singer)',
+  'G-DRAGON':'https://en.wikipedia.org/wiki/G-Dragon',
+  'ショーン・メンデス':'https://en.wikipedia.org/wiki/Shawn_Mendes',
+  'ニコラス・ホルト':'https://en.wikipedia.org/wiki/Nicholas_Hoult',
+  'オスカー・イサック':'https://en.wikipedia.org/wiki/Oscar_Isaac',
+};
+
+// Male Wikipedia page titles
+const WIKI_TITLE_M = {
+  '木村拓哉':    {lang:'ja', title:'木村拓哉'},
+  '山田涼介':    {lang:'ja', title:'山田涼介_(俳優)'},
+  '岡田准一':    {lang:'ja', title:'岡田准一'},
+  '坂口健太郎':  {lang:'ja', title:'坂口健太郎'},
+  '菅田将暉':    {lang:'ja', title:'菅田将暉'},
+  '横浜流星':    {lang:'ja', title:'横浜流星'},
+  '松坂桃李':    {lang:'ja', title:'松坂桃李'},
+  '竹内涼真':    {lang:'ja', title:'竹内涼真'},
+  '福山雅治':    {lang:'ja', title:'福山雅治'},
+  '佐藤健':      {lang:'ja', title:'佐藤健_(俳優)'},
+  '三浦春馬':    {lang:'ja', title:'三浦春馬'},
+  'BTS ジン':    {lang:'en', title:'Jin_(singer)'},
+  'BTS ジョングク':{lang:'en',title:'Jungkook'},
+  'EXO スホ':    {lang:'en', title:'Suho'},
+  'チャ・ウヌ':  {lang:'en', title:'Cha_Eun-woo'},
+  'イ・ジュンギ':{lang:'en', title:'Lee_Joon-gi'},
+  'BTS ジミン':  {lang:'en', title:'Jimin'},
+  'SHINee テミン':{lang:'en',title:'Taemin'},
+  'パク・ボゴム': {lang:'en', title:'Park_Bo-gum'},
+  'ヒョンビン':   {lang:'en', title:'Hyun_Bin'},
+  'ソン・ジュンギ':{lang:'en',title:'Song_Joong-ki'},
+  'ブラッド・ピット':{lang:'en',title:'Brad_Pitt'},
+  'ザック・エフロン':{lang:'en',title:'Zac_Efron'},
+  'ティモシー・シャラメ':{lang:'en',title:'Timothée_Chalamet'},
+  'ライアン・ゴズリング':{lang:'en',title:'Ryan_Gosling'},
+  'クリス・エヴァンス':{lang:'en',title:'Chris_Evans_(actor)'},
+  'ハリー・スタイルズ':{lang:'en',title:'Harry_Styles'},
+  'ジョニー・デップ':{lang:'en',title:'Johnny_Depp'},
+  'コリン・ファレル':{lang:'en',title:'Colin_Farrell'},
+  'ルー・ハン':   {lang:'en', title:'Lu_Han'},
+  'ウー・イーファン':{lang:'en',title:'Kris_Wu'},
+  'シャオ・ジャン':{lang:'en',title:'Xiao_Zhan'},
+  'ワン・イーボー':{lang:'en',title:'Wang_Yibo'},
+  'チェン・クン': {lang:'zh', title:'陈坤'},
+  'クリスティアーノ・ロナウド':{lang:'en',title:'Cristiano_Ronaldo'},
+  'ジャスティン・ビーバー':{lang:'en',title:'Justin_Bieber'},
+  'BTS RM':      {lang:'en', title:'RM_(rapper)'},
+  'BTS V':       {lang:'en', title:'V_(singer)'},
+  'G-DRAGON':    {lang:'en', title:'G-Dragon'},
+  'ショーン・メンデス':{lang:'en',title:'Shawn_Mendes'},
+  'ニコラス・ホルト':{lang:'en',title:'Nicholas_Hoult'},
+  'オスカー・イサック':{lang:'en',title:'Oscar_Isaac'},
 };
 
 const HAIR = [
@@ -1202,7 +1356,7 @@ const photoCache = {};
 
 async function fetchCelebPhoto(name) {
   if (photoCache[name] !== undefined) return photoCache[name];
-  const w = WIKI_TITLE[name];
+  const w = WIKI_TITLE[name] || WIKI_TITLE_M[name];
   if (!w) { photoCache[name] = null; return null; }
   try {
     const url = `https://${w.lang}.wikipedia.org/api/rest_v1/page/summary/${encodeURIComponent(w.title)}`;
@@ -1224,6 +1378,19 @@ async function fetchCelebPhoto(name) {
 //  CELEB
 // ═══════════════════════════════════════
 let cState={tab:'bone',val:'all'};
+let celebGender = 'female'; // 'female' | 'male'
+
+function setCelebGender(gender, btn) {
+  celebGender = gender;
+  document.getElementById('celeb-gender-bar').querySelectorAll('.gender-btn').forEach(b=>b.classList.remove('on'));
+  btn.classList.add('on');
+  cState.val='all'; cState.typeVal='all'; cState.country='all';
+  // Reset filter chips
+  const bar = document.getElementById('celeb-filters');
+  bar.querySelectorAll('.chip').forEach(c=>c.classList.remove('on'));
+  bar.querySelector('.chip').classList.add('on');
+  renderCelebs();
+}
 function celebTab(btn,tab){
   document.querySelectorAll('#pg-celeb .seg-tab').forEach(t=>t.classList.remove('active'));
   btn.classList.add('active');
@@ -1252,7 +1419,8 @@ const FLABEL={oval:'卵型',long:'面長',round:'丸顔',triangle:'逆三角',sq
 function renderCelebs(){
   const {tab,typeVal,country}=cState;
   const countries=['jp','kr','us','cn','world'];
-  let list=CELEBS.filter(c=>{
+  const srcList = celebGender === 'male' ? CELEBS_M : CELEBS;
+  let list=srcList.filter(c=>{
     if(country && country!=='all' && c.country!==country) return false;
     if(typeVal && typeVal!=='all'){
       if(tab==='bone' && c.bone!==typeVal) return false;
@@ -1279,7 +1447,7 @@ function renderCelebs(){
         <div class="celeb-type">${BLABEL[c.bone]} / ${FLABEL[c.face]||c.face}</div>
         <div class="celeb-desc">${c.desc}</div>
       </div>
-      ${WIKI[c.name]?`<a class="celeb-wiki" href="${WIKI[c.name]}" target="_blank" rel="noopener">Wikipedia で見る →</a>`:''}
+      ${((celebGender==='male'?WIKI_M:WIKI)[c.name])?`<a class="celeb-wiki" href="${(celebGender==='male'?WIKI_M:WIKI)[c.name]}" target="_blank" rel="noopener">Wikipedia で見る →</a>`:''}
     </div>`).join('');
 
   // Lazy load photos with staggered requests
