@@ -20,6 +20,13 @@ html,body { width:100%; max-width:430px; margin:0 auto; background:var(--white);
 
 /* NAV */
 nav { position:fixed; top:0; left:50%; transform:translateX(-50%); width:100%; max-width:430px; z-index:200; display:flex; align-items:center; justify-content:space-between; padding:0 20px; height:52px; background:var(--black); border-bottom:2px solid var(--red); }
+.nav-login-btn { background:none; border:1px solid #444; color:#aaa; padding:4px 10px; font-family:'Bebas Neue',sans-serif; font-size:11px; letter-spacing:2px; cursor:pointer; transition:all .15s; }
+.nav-login-btn:active { border-color:var(--red); color:var(--red); }
+.nav-avatar-wrap { display:flex; align-items:center; gap:6px; }
+.nav-avatar { width:26px; height:26px; border-radius:50%; background:var(--red); display:flex; align-items:center; justify-content:center; font-family:'Bebas Neue',sans-serif; font-size:12px; color:#fff; overflow:hidden; flex-shrink:0; }
+.nav-avatar img { width:100%; height:100%; object-fit:cover; }
+.nav-logout-btn { background:none; border:1px solid #333; color:#666; font-size:9px; letter-spacing:1px; padding:3px 8px; cursor:pointer; font-family:'Bebas Neue',sans-serif; }
+.nav-logout-btn:active { color:var(--red); border-color:var(--red); }
 .nav-logo { font-family:'Bebas Neue',sans-serif; font-size:19px; color:var(--white); letter-spacing:3px; }
 .nav-logo span { color:var(--red); }
 .nav-btn { background:var(--red); color:#fff; padding:8px 16px; border:none; cursor:pointer; font-family:'Bebas Neue',sans-serif; font-size:13px; letter-spacing:2px; }
@@ -421,7 +428,7 @@ footer { background:var(--black); padding:24px 20px; border-top:2px solid var(--
 
 /* ══ RECORD PAGE ══ */
 .rec-page-wrap { padding: 0 0 100px; }
-.rec-month-nav { display:flex; align-items:center; justify-content:space-between; padding:14px 20px 10px; background:var(--black); position:sticky; top:52px; z-index:10; border-bottom:1px solid #1e1e1e; }
+.rec-month-nav { display:flex; align-items:center; justify-content:space-between; padding:14px 20px 10px; background:var(--black); position:sticky; top:52px; z-index:10; border-bottom:1px solid #1e1e1e; margin-top:0; }
 .rec-month-label { font-family:'Bebas Neue',sans-serif; font-size:22px; color:var(--white); letter-spacing:3px; }
 .rec-nav-btn { background:none; border:1px solid #333; color:#888; width:32px; height:32px; cursor:pointer; font-size:16px; display:flex; align-items:center; justify-content:center; transition:all .15s; }
 .rec-nav-btn:active { background:#222; color:var(--white); }
@@ -538,14 +545,6 @@ footer { background:var(--black); padding:24px 20px; border-top:2px solid var(--
 .auth-success.show { display:block; }
 
 /* User bar in header area */
-.user-bar { background:var(--black); border-bottom:1px solid #1e1e1e; padding:8px 16px; display:flex; align-items:center; justify-content:space-between; }
-.user-bar-info { display:flex; align-items:center; gap:8px; }
-.user-bar-avatar { width:26px; height:26px; border-radius:50%; background:var(--red); display:flex; align-items:center; justify-content:center; font-family:'Bebas Neue',sans-serif; font-size:13px; color:#fff; overflow:hidden; }
-.user-bar-avatar img { width:100%; height:100%; object-fit:cover; }
-.user-bar-name { font-size:11px; color:#ccc; letter-spacing:.5px; max-width:180px; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
-.user-bar-logout { background:none; border:1px solid #333; color:#888; font-size:9px; letter-spacing:1px; padding:4px 10px; cursor:pointer; font-family:'Bebas Neue',sans-serif; }
-.user-bar-logout:active { background:#1e1e1e; }
-.user-bar-login-btn { background:var(--red); color:#fff; border:none; font-family:'Bebas Neue',sans-serif; font-size:11px; letter-spacing:2px; padding:5px 14px; cursor:pointer; }
 
 </style>
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
@@ -556,7 +555,11 @@ footer { background:var(--black); padding:24px 20px; border-top:2px solid var(--
 <nav>
   <div class="nav-logo">Re-Palette <span>β</span></div>
   <div class="nav-user">
-
+    <button class="nav-login-btn" id="nav-login-btn" onclick="openAuth()">LOGIN</button>
+    <div class="nav-avatar-wrap" id="nav-avatar-wrap" style="display:none">
+      <div class="nav-avatar" id="nav-avatar">?</div>
+      <button class="nav-logout-btn" onclick="signOut()">OUT</button>
+    </div>
     <button class="nav-btn" onclick="openModal()">診断する</button>
   </div>
 </nav>
@@ -606,21 +609,6 @@ footer { background:var(--black); padding:24px 20px; border-top:2px solid var(--
   </div>
 </div>
 
-<!-- ══════ USER BAR ══════ -->
-<div class="user-bar" id="user-bar" style="display:none">
-  <div class="user-bar-info">
-    <div class="user-bar-avatar" id="user-avatar">?</div>
-    <span class="user-bar-name" id="user-name">ゲスト</span>
-  </div>
-  <button class="user-bar-logout" onclick="signOut()">ログアウト</button>
-</div>
-<div class="user-bar" id="guest-bar">
-  <div class="user-bar-info">
-    <div class="user-bar-avatar" style="background:#444">G</div>
-    <span class="user-bar-name" style="color:#666">ログインして記録をクラウド保存</span>
-  </div>
-  <button class="user-bar-login-btn" onclick="openAuth()">ログイン</button>
-</div>
 
 <div id="pg-home" class="page active">
 
@@ -684,10 +672,10 @@ footer { background:var(--black); padding:24px 20px; border-top:2px solid var(--
   <div class="home-features" style="margin-top:44px;">
     <div class="sec-label"><div class="sec-label-line"></div><span class="sec-label-text">Core Features</span></div>
     <div class="feat-grid">
-      <div class="feat-card"><div class="feat-num">01</div><div class="feat-icon">🔬</div><div class="feat-name">顔型AI診断</div><p class="feat-desc">468点の座標を取得。黄金比・骨格タイプを精密計測します。</p></div>
-      <div class="feat-card"><div class="feat-num">02</div><div class="feat-icon">💄</div><div class="feat-name">メイクレシピ</div><p class="feat-desc">診断結果にもとづく個別メイク手順を自動生成します。</p></div>
-      <div class="feat-card"><div class="feat-num">03</div><div class="feat-icon">🎯</div><div class="feat-name">習慣クイズ</div><p class="feat-desc">日常ルーティンから「自己流の間違い」をクイズ化します。</p></div>
-      <div class="feat-card"><div class="feat-num">04</div><div class="feat-icon">📈</div><div class="feat-name">成長記録</div><p class="feat-desc">過去と現在を数値で比較。上達を可視化します。</p></div>
+      <div class="feat-card"><div class="feat-num">01</div><div class="feat-icon">✨</div><div class="feat-name">顔型AI診断</div><p class="feat-desc">468点の座標を取得。黄金比・骨格タイプを精密計測します。</p></div>
+      <div class="feat-card"><div class="feat-num">02</div><div class="feat-icon">✨</div><div class="feat-name">メイクレシピ</div><p class="feat-desc">診断結果にもとづく個別メイク手順を自動生成します。</p></div>
+      <div class="feat-card"><div class="feat-num">03</div><div class="feat-icon">✨</div><div class="feat-name">習慣クイズ</div><p class="feat-desc">日常ルーティンから「自己流の間違い」をクイズ化します。</p></div>
+      <div class="feat-card"><div class="feat-num">04</div><div class="feat-icon">✨</div><div class="feat-name">成長記録</div><p class="feat-desc">過去と現在を数値で比較。上達を可視化します。</p></div>
     </div>
   </div>
 
@@ -1411,7 +1399,7 @@ function goPage(name) {
     if(name==='hair') renderHair();
     if(name==='makeup') renderMakeup();
     if(name==='quiz') initQuiz();
-    if(name==='record') renderRecord();
+    if(name==='record') { rendered['record']=false; renderRecord(); }
   }
 }
 
@@ -2974,27 +2962,26 @@ async function initAuth() {
 
 function onSignedIn(user) {
   currentUser = user;
-  document.getElementById('user-bar').style.display='flex';
-  document.getElementById('guest-bar').style.display='none';
+  // Nav UI
+  document.getElementById('nav-login-btn').style.display = 'none';
+  document.getElementById('nav-avatar-wrap').style.display = 'flex';
   const meta = user.user_metadata;
   const name = meta?.full_name || meta?.name || user.email || 'User';
-  document.getElementById('user-name').textContent = name;
-  const av = document.getElementById('user-avatar');
+  const av = document.getElementById('nav-avatar');
   if(meta?.avatar_url) {
     av.innerHTML = `<img src="${meta.avatar_url}" alt="">`;
   } else {
     av.textContent = name[0].toUpperCase();
   }
   closeAuth();
-  // Reload record page if open
   rendered['record'] = false;
   if(document.getElementById('pg-record').classList.contains('active')) renderRecord();
 }
 
 function onSignedOut() {
   currentUser = null;
-  document.getElementById('user-bar').style.display='none';
-  document.getElementById('guest-bar').style.display='flex';
+  document.getElementById('nav-login-btn').style.display = '';
+  document.getElementById('nav-avatar-wrap').style.display = 'none';
   rendered['record'] = false;
   if(document.getElementById('pg-record').classList.contains('active')) renderRecord();
 }
@@ -3080,6 +3067,16 @@ async function sendPasswordReset() {
 // ═══════════════════════════════════════════════════════════
 //  CLOUD RECORD STORAGE (Supabase)
 // ═══════════════════════════════════════════════════════════
+const RECORDS_KEY = 'rp_records_v1';
+
+let _lastDiagData = null;
+
+function loadRecords() {
+  try { return JSON.parse(localStorage.getItem(RECORDS_KEY) || '{}'); } catch(e) { return {}; }
+}
+function saveRecords(data) {
+  try { localStorage.setItem(RECORDS_KEY, JSON.stringify(data)); } catch(e) {}
+}
 
 async function saveRecordToCloud(entry) {
   if(!currentUser) return false;
@@ -3149,6 +3146,150 @@ async function saveRecord() {
     if(btn) { btn.textContent='✓ 端末に保存しました'; btn.classList.add('saved'); btn.disabled=true; }
   }
   rendered['record'] = false;
+}
+
+
+// ── カレンダー状態 ───────────────────────────────────────
+let recYear       = new Date().getFullYear();
+let recMonth      = new Date().getMonth();   // 0-based
+let recSelectedDate = null;
+
+function todayStr() {
+  const d = new Date();
+  return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`;
+}
+
+function recChangeMonth(delta) {
+  recMonth += delta;
+  if(recMonth < 0)  { recMonth = 11; recYear--; }
+  if(recMonth > 11) { recMonth = 0;  recYear++; }
+  recSelectedDate = null;
+  renderRecord();
+}
+
+function renderRecMonthSummary(records) {
+  const prefix = `${recYear}-${String(recMonth+1).padStart(2,'0')}-`;
+  const entries = Object.entries(records)
+    .filter(([k]) => k.startsWith(prefix))
+    .flatMap(([,v]) => v);
+  const count   = entries.length;
+  const avgG    = count ? Math.round(entries.reduce((s,e)=>s+(e.goldenScore||0),0)/count) : 0;
+  const avgS    = count ? Math.round(entries.reduce((s,e)=>s+(e.symmetryScore||0),0)/count) : 0;
+  document.getElementById('rec-month-label').textContent = `${recYear}年 ${recMonth+1}月`;
+  document.getElementById('rec-month-summary').innerHTML = `
+    <div class="rec-summ-item"><div class="rec-summ-val">${count}</div><div class="rec-summ-lbl">診断回数</div></div>
+    <div class="rec-summ-item"><div class="rec-summ-val">${avgG||'—'}</div><div class="rec-summ-lbl">黄金比 AVG</div></div>
+    <div class="rec-summ-item"><div class="rec-summ-val">${avgS||'—'}</div><div class="rec-summ-lbl">対称 AVG</div></div>`;
+}
+
+function renderRecCalendar(records) {
+  const today    = todayStr();
+  const firstDay = new Date(recYear, recMonth, 1).getDay();
+  const daysInM  = new Date(recYear, recMonth+1, 0).getDate();
+  const prevDays = new Date(recYear, recMonth, 0).getDate();
+  let cells = '';
+
+  for(let i = firstDay-1; i >= 0; i--) {
+    cells += `<div class="rec-day other-month"><span class="rec-day-num">${prevDays-i}</span></div>`;
+  }
+  for(let d = 1; d <= daysInM; d++) {
+    const ds  = `${recYear}-${String(recMonth+1).padStart(2,'0')}-${String(d).padStart(2,'0')}`;
+    const dow = new Date(recYear, recMonth, d).getDay();
+    const hasRec = (records[ds]||[]).length > 0;
+    const cls = [
+      'rec-day',
+      dow===0 ? 'sun' : (dow===6 ? 'sat' : ''),
+      ds===today ? 'today' : '',
+      hasRec ? 'has-record' : '',
+      ds===recSelectedDate ? 'selected' : '',
+    ].filter(Boolean).join(' ');
+    cells += `<div class="${cls}" onclick="recSelectDate('${ds}')">
+      <span class="rec-day-num">${d}</span>
+      ${hasRec ? '<div class="rec-day-dot"></div>' : ''}
+    </div>`;
+  }
+  const total  = firstDay + daysInM;
+  const remain = total % 7 === 0 ? 0 : 7 - (total % 7);
+  for(let i = 1; i <= remain; i++) {
+    cells += `<div class="rec-day other-month"><span class="rec-day-num">${i}</span></div>`;
+  }
+  document.getElementById('rec-cal-grid').innerHTML = cells;
+}
+
+function recSelectDate(ds) {
+  recSelectedDate = ds;
+  const records = currentUser ? null : loadRecords();
+  if(records) {
+    renderRecCalendar(records);
+    renderRecDetail(records, ds);
+  } else {
+    // cloud: re-render full
+    renderRecord();
+  }
+  setTimeout(()=>{
+    const el = document.getElementById('rec-detail-wrap');
+    if(el) el.scrollIntoView({ behavior:'smooth', block:'start' });
+  }, 80);
+}
+
+const BONE_JP2 = {straight:'ストレート骨格', wave:'ウェーブ骨格', natural:'ナチュラル骨格'};
+const FACE_JP2 = {oval:'卵型', round:'丸顔', long:'面長', square:'ベース型', triangle:'逆三角型'};
+
+function renderRecDetail(records, ds) {
+  const wrap = document.getElementById('rec-detail-wrap');
+  if(!ds) { wrap.innerHTML=''; return; }
+  const entries = records[ds] || [];
+  const [y,m,d] = ds.split('-');
+  const label = `${y}年${parseInt(m)}月${parseInt(d)}日`;
+  if(!entries.length) {
+    wrap.innerHTML = `
+      <div class="rec-detail-empty">
+        <div class="rec-detail-empty-icon">📋</div>
+        <div class="rec-detail-empty-txt">${label}の記録はありません<br>診断して「記録に保存」を押してください</div>
+      </div>`;
+    return;
+  }
+  wrap.innerHTML = `
+    <div style="font-family:'Bebas Neue',sans-serif;font-size:11px;letter-spacing:3px;color:var(--red);padding:14px 14px 8px;">${label} の記録</div>
+    ${entries.map((e,i) => renderRecEntry(e, i, ds)).join('')}`;
+}
+
+function renderRecEntry(e, idx, ds) {
+  const boneLabel  = BONE_JP2[e.boneType]  || e.boneType  || '—';
+  const faceLabel  = FACE_JP2[e.faceType]  || e.faceType  || '—';
+  const celebsHtml = (e.celebMatches||[]).slice(0,3).map(c=>
+    `<div class="rec-celeb-chip"><strong>${c.name}</strong>${c.similarity}% 一致</div>`).join('');
+  const eid = `${ds}_${e.id||idx}`;
+  return `
+    <div class="rec-entry">
+      <div class="rec-entry-hd">
+        <span class="rec-entry-date">${e.time||''} — ${boneLabel}</span>
+        <button class="rec-entry-del" onclick="deleteRecord('${ds}',${e.id||idx})">✕</button>
+      </div>
+      <div class="rec-entry-body">
+        <div class="rec-entry-types">
+          <span class="rec-entry-bone">${boneLabel}</span>
+          <span class="rec-entry-face">顔型 ${faceLabel}</span>
+          ${e.impression?`<span class="rec-entry-face">${e.impression}</span>`:''}
+        </div>
+        <div class="rec-entry-scores">
+          <div class="rec-score-box"><div class="rec-score-val">${e.goldenScore||'—'}</div><div class="rec-score-lbl">黄金比</div></div>
+          <div class="rec-score-box"><div class="rec-score-val">${e.symmetryScore||'—'}</div><div class="rec-score-lbl">左右対称</div></div>
+          <div class="rec-score-box"><div class="rec-score-val">${e.midFaceScore||'—'}</div><div class="rec-score-lbl">中顔面</div></div>
+        </div>
+        ${celebsHtml?`<div style="font-size:9px;letter-spacing:2px;color:#aaa;margin-bottom:5px">CELEB MATCH</div><div class="rec-entry-celebs">${celebsHtml}</div>`:''}
+        <div class="rec-entry-tips">
+          ${e.makeupTip?`<div class="rec-tip-row"><span class="rec-tip-cat">MAKEUP</span><span>${e.makeupTip}</span></div>`:''}
+          ${e.hairTip?`<div class="rec-tip-row"><span class="rec-tip-cat">HAIR</span><span>${e.hairTip}</span></div>`:''}
+          ${e.skincareTip?`<div class="rec-tip-row"><span class="rec-tip-cat">SKIN</span><span>${e.skincareTip}</span></div>`:''}
+        </div>
+        <div class="rec-entry-note-wrap">
+          <div class="rec-note-label">メモ</div>
+          <textarea class="rec-note-input" id="note-${eid}" placeholder="今日の気づき、使ったコスメなど...">${e.note||''}</textarea>
+          <button class="rec-note-save" onclick="saveNote('${ds}',${e.id||idx},'${eid}')">メモを保存</button>
+        </div>
+      </div>
+    </div>`;
 }
 
 async function renderRecord() {
