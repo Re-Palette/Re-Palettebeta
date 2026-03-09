@@ -489,17 +489,139 @@ footer { background:var(--black); padding:24px 20px; border-top:2px solid var(--
 .res-save-btn:active { background:var(--red); }
 .res-save-btn.saved { background:var(--red); border-color:var(--red); }
 
+
+/* ══ AUTH ══ */
+.auth-sheet { width:100%; max-width:430px; background:var(--white); padding:28px 24px 40px; max-height:92vh; overflow-y:auto; transform:translateY(30px); transition:transform .25s; }
+.auth-tabs { display:flex; border-bottom:2px solid var(--border); margin-bottom:20px; }
+.auth-tab { flex:1; padding:10px 0; font-family:'Bebas Neue',sans-serif; font-size:14px; letter-spacing:2px; color:#aaa; background:none; border:none; cursor:pointer; border-bottom:2px solid transparent; margin-bottom:-2px; transition:all .15s; }
+.auth-tab.on { color:var(--black); border-bottom-color:var(--red); }
+.auth-divider { display:flex; align-items:center; gap:10px; margin:16px 0; }
+.auth-divider-line { flex:1; height:1px; background:var(--border); }
+.auth-divider-txt { font-size:10px; color:#aaa; letter-spacing:1px; }
+.auth-google-btn { width:100%; background:#fff; border:1px solid var(--border); padding:12px 0; display:flex; align-items:center; justify-content:center; gap:10px; cursor:pointer; font-size:13px; color:#333; font-family:'Noto Sans JP',sans-serif; transition:background .15s; }
+.auth-google-btn:active { background:#f5f5f5; }
+.auth-google-btn svg { flex-shrink:0; }
+
+/* Nav user area */
+.nav-user { display:flex; align-items:center; gap:8px; }
+
+/* User menu dropdown */
+.user-menu-item:last-child { border-bottom:none; }
+
+
+/* ══ AUTH MODAL ══ */
+.auth-ov { position:fixed; inset:0; background:rgba(0,0,0,.85); z-index:3000; display:none; align-items:flex-end; justify-content:center; }
+.auth-ov.open { display:flex; }
+.auth-sheet { background:var(--white); width:100%; max-width:430px; border-radius:0; padding:0 0 40px; animation:slideUp .3s ease; max-height:92vh; overflow-y:auto; }
+.auth-hd { background:var(--black); padding:16px 20px; display:flex; align-items:center; justify-content:space-between; }
+.auth-hd-title { font-family:'Bebas Neue',sans-serif; font-size:20px; color:var(--white); letter-spacing:3px; }
+.auth-x { background:none; border:none; color:#888; font-size:18px; cursor:pointer; padding:2px 8px; }
+.auth-body { padding:24px 20px 0; }
+.auth-tabs { display:flex; gap:0; margin-bottom:24px; border-bottom:2px solid var(--border); }
+.auth-tab { flex:1; background:none; border:none; padding:10px 0; font-family:'Bebas Neue',sans-serif; font-size:15px; letter-spacing:2px; color:#aaa; cursor:pointer; border-bottom:2px solid transparent; margin-bottom:-2px; transition:all .15s; }
+.auth-tab.on { color:var(--black); border-bottom-color:var(--red); }
+.auth-label { font-size:10px; letter-spacing:2px; color:#888; margin-bottom:6px; }
+.auth-input { width:100%; border:1px solid var(--border); padding:11px 12px; font-size:13px; font-family:'Noto Sans JP',sans-serif; outline:none; background:#fff; margin-bottom:12px; box-sizing:border-box; }
+.auth-input:focus { border-color:var(--red); }
+.auth-btn { width:100%; background:var(--black); color:var(--white); border:none; padding:14px; font-family:'Bebas Neue',sans-serif; font-size:16px; letter-spacing:3px; cursor:pointer; margin-bottom:12px; transition:background .15s; }
+.auth-btn:active { background:#222; }
+.auth-btn.loading { opacity:.6; pointer-events:none; }
+.auth-divider { display:flex; align-items:center; gap:10px; margin:4px 0 16px; }
+.auth-divider-line { flex:1; height:1px; background:var(--border); }
+.auth-divider-txt { font-size:10px; color:#aaa; letter-spacing:1px; }
+.auth-google-btn { width:100%; background:#fff; border:1.5px solid var(--border); padding:12px; display:flex; align-items:center; justify-content:center; gap:10px; cursor:pointer; font-size:13px; color:#333; font-family:'Noto Sans JP',sans-serif; transition:background .15s; }
+.auth-google-btn:active { background:#f5f5f5; }
+.auth-google-btn svg { flex-shrink:0; }
+.auth-err { background:#fff0f0; border-left:3px solid var(--red); padding:8px 12px; font-size:11px; color:#c00; margin-bottom:12px; line-height:1.6; display:none; }
+.auth-err.show { display:block; }
+.auth-success { background:#f0fff4; border-left:3px solid #22c55e; padding:8px 12px; font-size:11px; color:#166534; margin-bottom:12px; line-height:1.6; display:none; }
+.auth-success.show { display:block; }
+
+/* User bar in header area */
+.user-bar { background:var(--black); border-bottom:1px solid #1e1e1e; padding:8px 16px; display:flex; align-items:center; justify-content:space-between; }
+.user-bar-info { display:flex; align-items:center; gap:8px; }
+.user-bar-avatar { width:26px; height:26px; border-radius:50%; background:var(--red); display:flex; align-items:center; justify-content:center; font-family:'Bebas Neue',sans-serif; font-size:13px; color:#fff; overflow:hidden; }
+.user-bar-avatar img { width:100%; height:100%; object-fit:cover; }
+.user-bar-name { font-size:11px; color:#ccc; letter-spacing:.5px; max-width:180px; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
+.user-bar-logout { background:none; border:1px solid #333; color:#888; font-size:9px; letter-spacing:1px; padding:4px 10px; cursor:pointer; font-family:'Bebas Neue',sans-serif; }
+.user-bar-logout:active { background:#1e1e1e; }
+.user-bar-login-btn { background:var(--red); color:#fff; border:none; font-family:'Bebas Neue',sans-serif; font-size:11px; letter-spacing:2px; padding:5px 14px; cursor:pointer; }
+
 </style>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 </head>
 <body>
 
 <!-- NAV -->
 <nav>
   <div class="nav-logo">Re-Palette <span>β</span></div>
-  <button class="nav-btn" onclick="openModal()">診断する</button>
+  <div class="nav-user">
+
+    <button class="nav-btn" onclick="openModal()">診断する</button>
+  </div>
 </nav>
 
 <!-- ══════ HOME PAGE ══════ -->
+<!-- ══════ AUTH MODAL ══════ -->
+<div class="auth-ov" id="auth-ov">
+  <div class="auth-sheet">
+    <div class="auth-hd">
+      <span class="auth-hd-title">Re-Palette アカウント</span>
+      <button class="auth-x" onclick="closeAuth()">✕</button>
+    </div>
+    <div class="auth-body">
+      <div class="auth-tabs">
+        <button class="auth-tab on" onclick="authSwitchTab('login',this)">ログイン</button>
+        <button class="auth-tab" onclick="authSwitchTab('signup',this)">新規登録</button>
+      </div>
+      <!-- Google -->
+      <button class="auth-google-btn" onclick="signInGoogle()">
+        <svg width="18" height="18" viewBox="0 0 24 24"><path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/><path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/><path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l3.66-2.84z"/><path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"/></svg>
+        Googleで続ける
+      </button>
+      <div class="auth-divider"><div class="auth-divider-line"></div><span class="auth-divider-txt">または</span><div class="auth-divider-line"></div></div>
+      <!-- Error / Success -->
+      <div class="auth-err" id="auth-err"></div>
+      <div class="auth-success" id="auth-success"></div>
+      <!-- Login form -->
+      <div id="auth-form-login">
+        <div class="auth-label">メールアドレス</div>
+        <input class="auth-input" id="login-email" type="email" placeholder="example@email.com" autocomplete="email">
+        <div class="auth-label">パスワード</div>
+        <input class="auth-input" id="login-pass" type="password" placeholder="パスワード" autocomplete="current-password">
+        <button class="auth-btn" id="login-btn" onclick="signInEmail()">ログイン</button>
+        <div style="text-align:center;margin-top:4px;">
+          <span style="font-size:10px;color:#aaa;cursor:pointer;text-decoration:underline;" onclick="sendPasswordReset()">パスワードを忘れた方</span>
+        </div>
+      </div>
+      <!-- Signup form -->
+      <div id="auth-form-signup" style="display:none">
+        <div class="auth-label">メールアドレス</div>
+        <input class="auth-input" id="signup-email" type="email" placeholder="example@email.com" autocomplete="email">
+        <div class="auth-label">パスワード（6文字以上）</div>
+        <input class="auth-input" id="signup-pass" type="password" placeholder="パスワード" autocomplete="new-password">
+        <button class="auth-btn" id="signup-btn" onclick="signUpEmail()">アカウントを作成</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════ USER BAR ══════ -->
+<div class="user-bar" id="user-bar" style="display:none">
+  <div class="user-bar-info">
+    <div class="user-bar-avatar" id="user-avatar">?</div>
+    <span class="user-bar-name" id="user-name">ゲスト</span>
+  </div>
+  <button class="user-bar-logout" onclick="signOut()">ログアウト</button>
+</div>
+<div class="user-bar" id="guest-bar">
+  <div class="user-bar-info">
+    <div class="user-bar-avatar" style="background:#444">G</div>
+    <span class="user-bar-name" style="color:#666">ログインして記録をクラウド保存</span>
+  </div>
+  <button class="user-bar-login-btn" onclick="openAuth()">ログイン</button>
+</div>
+
 <div id="pg-home" class="page active">
 
   <!-- Hero -->
@@ -2827,230 +2949,267 @@ function showResults(metrics, ai, previewDataUrl) {
 }
 
 
+
 // ═══════════════════════════════════════════════════════════
-//  RECORD — growth log with calendar
+//  SUPABASE + RECORDS
 // ═══════════════════════════════════════════════════════════
-const RECORDS_KEY = 'rp_records_v1';
 
-function loadRecords() {
-  try { return JSON.parse(localStorage.getItem(RECORDS_KEY) || '{}'); } catch(e) { return {}; }
+const SUPA_URL  = 'https://njrzpgelssydkcyonvyi.supabase.co';
+const SUPA_ANON = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im5qcnpwZ2Vsc3N5ZGtjeW9udnlpIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzMwNDgyMjgsImV4cCI6MjA4ODYyNDIyOH0.HBP6EEc1k-nZFn3cfnrG68aDaUw11kTbrJfsC4DBD_M';
+const supa = supabase.createClient(SUPA_URL, SUPA_ANON);
+
+let currentUser = null;
+
+// ── Init ──────────────────────────────────────────────────
+async function initAuth() {
+  const { data: { session } } = await supa.auth.getSession();
+  if(session?.user) onSignedIn(session.user);
+  else onSignedOut();
+
+  supa.auth.onAuthStateChange((event, session) => {
+    if(session?.user) onSignedIn(session.user);
+    else onSignedOut();
+  });
 }
-function saveRecords(data) {
-  try { localStorage.setItem(RECORDS_KEY, JSON.stringify(data)); } catch(e) {}
+
+function onSignedIn(user) {
+  currentUser = user;
+  document.getElementById('user-bar').style.display='flex';
+  document.getElementById('guest-bar').style.display='none';
+  const meta = user.user_metadata;
+  const name = meta?.full_name || meta?.name || user.email || 'User';
+  document.getElementById('user-name').textContent = name;
+  const av = document.getElementById('user-avatar');
+  if(meta?.avatar_url) {
+    av.innerHTML = `<img src="${meta.avatar_url}" alt="">`;
+  } else {
+    av.textContent = name[0].toUpperCase();
+  }
+  closeAuth();
+  // Reload record page if open
+  rendered['record'] = false;
+  if(document.getElementById('pg-record').classList.contains('active')) renderRecord();
 }
 
-// Called from result screen
-let _lastDiagData = null; // set by showResults
+function onSignedOut() {
+  currentUser = null;
+  document.getElementById('user-bar').style.display='none';
+  document.getElementById('guest-bar').style.display='flex';
+  rendered['record'] = false;
+  if(document.getElementById('pg-record').classList.contains('active')) renderRecord();
+}
 
-function saveRecord() {
+// ── Auth Modal ────────────────────────────────────────────
+function openAuth() {
+  document.getElementById('auth-ov').classList.add('open');
+  clearAuthMsg();
+}
+function closeAuth() {
+  document.getElementById('auth-ov').classList.remove('open');
+}
+document.getElementById('auth-ov').addEventListener('click', e => {
+  if(e.target === document.getElementById('auth-ov')) closeAuth();
+});
+
+function authSwitchTab(tab, btn) {
+  document.querySelectorAll('.auth-tab').forEach(t=>t.classList.remove('on'));
+  btn.classList.add('on');
+  document.getElementById('auth-form-login').style.display = tab==='login' ? '' : 'none';
+  document.getElementById('auth-form-signup').style.display = tab==='signup' ? '' : 'none';
+  clearAuthMsg();
+}
+
+function showAuthErr(msg) {
+  const el = document.getElementById('auth-err');
+  el.textContent = msg; el.classList.add('show');
+  document.getElementById('auth-success').classList.remove('show');
+}
+function showAuthSuccess(msg) {
+  const el = document.getElementById('auth-success');
+  el.textContent = msg; el.classList.add('show');
+  document.getElementById('auth-err').classList.remove('show');
+}
+function clearAuthMsg() {
+  document.getElementById('auth-err').classList.remove('show');
+  document.getElementById('auth-success').classList.remove('show');
+}
+
+async function signInEmail() {
+  const email = document.getElementById('login-email').value.trim();
+  const pass  = document.getElementById('login-pass').value;
+  if(!email||!pass) { showAuthErr('メールとパスワードを入力してください'); return; }
+  const btn = document.getElementById('login-btn');
+  btn.classList.add('loading'); btn.textContent='ログイン中...';
+  const { error } = await supa.auth.signInWithPassword({ email, password:pass });
+  btn.classList.remove('loading'); btn.textContent='ログイン';
+  if(error) showAuthErr(error.message === 'Invalid login credentials' ? 'メールかパスワードが間違っています' : error.message);
+}
+
+async function signUpEmail() {
+  const email = document.getElementById('signup-email').value.trim();
+  const pass  = document.getElementById('signup-pass').value;
+  if(!email||!pass) { showAuthErr('メールとパスワードを入力してください'); return; }
+  if(pass.length < 6) { showAuthErr('パスワードは6文字以上にしてください'); return; }
+  const btn = document.getElementById('signup-btn');
+  btn.classList.add('loading'); btn.textContent='作成中...';
+  const { error } = await supa.auth.signUp({ email, password:pass });
+  btn.classList.remove('loading'); btn.textContent='アカウントを作成';
+  if(error) showAuthErr(error.message);
+  else showAuthSuccess('確認メールを送信しました。メールのリンクをクリックして登録を完了してください。');
+}
+
+async function signInGoogle() {
+  await supa.auth.signInWithOAuth({
+    provider: 'google',
+    options: { redirectTo: location.href }
+  });
+}
+
+async function signOut() {
+  await supa.auth.signOut();
+}
+
+async function sendPasswordReset() {
+  const email = document.getElementById('login-email').value.trim();
+  if(!email) { showAuthErr('メールアドレスを入力してください'); return; }
+  const { error } = await supa.auth.resetPasswordForEmail(email, { redirectTo: location.href });
+  if(error) showAuthErr(error.message);
+  else showAuthSuccess('パスワードリセットメールを送信しました');
+}
+
+// ═══════════════════════════════════════════════════════════
+//  CLOUD RECORD STORAGE (Supabase)
+// ═══════════════════════════════════════════════════════════
+
+async function saveRecordToCloud(entry) {
+  if(!currentUser) return false;
+  const { error } = await supa.from('records').insert({
+    user_id: currentUser.id,
+    date: entry.date,
+    data: entry,
+  });
+  if(error) console.warn('saveRecordToCloud error:', error.message);
+  return !error;
+}
+
+async function loadRecordsFromCloud() {
+  if(!currentUser) return null;
+  const { data, error } = await supa
+    .from('records')
+    .select('*')
+    .eq('user_id', currentUser.id)
+    .order('created_at', { ascending: false });
+  if(error || !data) return null;
+  const result = {};
+  data.forEach(row => {
+    if(!result[row.date]) result[row.date] = [];
+    result[row.date].push({ ...row.data, _cloudId: row.id });
+  });
+  return result;
+}
+
+async function deleteRecordFromCloud(cloudId) {
+  if(!currentUser || !cloudId) return;
+  await supa.from('records').delete().eq('id', cloudId);
+}
+
+async function updateNoteInCloud(cloudId, note) {
+  if(!currentUser || !cloudId) return;
+  const { data } = await supa.from('records').select('data').eq('id', cloudId).single();
+  if(data) {
+    await supa.from('records').update({ data: { ...data.data, note } }).eq('id', cloudId);
+  }
+}
+
+// ── Unified record functions (local + cloud) ─────────────
+
+async function saveRecord() {
   if(!_lastDiagData) return;
-  const records = loadRecords();
   const today = todayStr();
-  if(!records[today]) records[today] = [];
   const entry = {
     ..._lastDiagData,
     id: Date.now(),
     date: today,
-    time: new Date().toLocaleTimeString('ja-JP',{hour:'2-digit',minute:'2-digit'}),
+    time: new Date().toLocaleTimeString('ja-JP', { hour:'2-digit', minute:'2-digit' }),
     note: '',
   };
-  records[today].unshift(entry);
-  saveRecords(records);
-
-  // Update button
   const btn = document.getElementById('res-save-btn');
-  if(btn){ btn.textContent='✓ 保存しました'; btn.classList.add('saved'); btn.disabled=true; }
-
-  // Invalidate record page render cache
+  if(currentUser) {
+    if(btn) { btn.textContent='保存中...'; btn.disabled=true; }
+    const ok = await saveRecordToCloud(entry);
+    if(btn) {
+      if(ok) { btn.textContent='✓ クラウドに保存しました'; btn.classList.add('saved'); }
+      else   { btn.textContent='⚠ 保存に失敗しました'; btn.disabled=false; }
+    }
+  } else {
+    const records = loadRecords();
+    if(!records[today]) records[today] = [];
+    records[today].unshift(entry);
+    saveRecords(records);
+    if(btn) { btn.textContent='✓ 端末に保存しました'; btn.classList.add('saved'); btn.disabled=true; }
+  }
   rendered['record'] = false;
 }
 
-function todayStr() {
-  const d = new Date();
-  return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`;
-}
-
-// ── Calendar state ────────────────────────────────────────
-let recYear  = new Date().getFullYear();
-let recMonth = new Date().getMonth(); // 0-based
-let recSelectedDate = todayStr();
-
-function recChangeMonth(delta) {
-  recMonth += delta;
-  if(recMonth < 0)  { recMonth = 11; recYear--; }
-  if(recMonth > 11) { recMonth = 0;  recYear++; }
-  recSelectedDate = null;
-  renderRecord();
-}
-
-function renderRecord() {
-  const records = loadRecords();
+async function renderRecord() {
+  let records;
+  if(currentUser) {
+    const wrap = document.getElementById('rec-detail-wrap');
+    if(wrap) wrap.innerHTML='<div style="padding:30px;text-align:center;color:#aaa;font-size:11px;">読み込み中...</div>';
+    records = await loadRecordsFromCloud() || {};
+  } else {
+    records = loadRecords();
+  }
   renderRecMonthSummary(records);
   renderRecCalendar(records);
   renderRecDetail(records, recSelectedDate);
 }
 
-function renderRecMonthSummary(records) {
-  // Count sessions and compute average scores for this month
-  const prefix = `${recYear}-${String(recMonth+1).padStart(2,'0')}-`;
-  const monthEntries = Object.entries(records)
-    .filter(([k]) => k.startsWith(prefix))
-    .flatMap(([,v]) => v);
-  const count = monthEntries.length;
-  const avgGolden = count ? Math.round(monthEntries.reduce((s,e)=>s+(e.goldenScore||0),0)/count) : 0;
-  const avgSym    = count ? Math.round(monthEntries.reduce((s,e)=>s+(e.symmetryScore||0),0)/count) : 0;
-
-  document.getElementById('rec-month-label').textContent =
-    `${recYear}年 ${recMonth+1}月`;
-
-  document.getElementById('rec-month-summary').innerHTML = `
-    <div class="rec-summ-item"><div class="rec-summ-val">${count}</div><div class="rec-summ-lbl">診断回数</div></div>
-    <div class="rec-summ-item"><div class="rec-summ-val">${avgGolden||'—'}</div><div class="rec-summ-lbl">黄金比 AVG</div></div>
-    <div class="rec-summ-item"><div class="rec-summ-val">${avgSym||'—'}</div><div class="rec-summ-lbl">対称 AVG</div></div>
-  `;
-}
-
-function renderRecCalendar(records) {
-  const today = todayStr();
-  const firstDay = new Date(recYear, recMonth, 1).getDay(); // 0=Sun
-  const daysInMonth = new Date(recYear, recMonth+1, 0).getDate();
-  const prevDays = new Date(recYear, recMonth, 0).getDate();
-
-  let cells = '';
-  // Prev month padding
-  for(let i=firstDay-1; i>=0; i--){
-    cells += `<div class="rec-day other-month"><span class="rec-day-num">${prevDays-i}</span></div>`;
-  }
-  // This month
-  for(let d=1; d<=daysInMonth; d++){
-    const dateStr = `${recYear}-${String(recMonth+1).padStart(2,'0')}-${String(d).padStart(2,'0')}`;
-    const dow = new Date(recYear, recMonth, d).getDay();
-    const hasRec = records[dateStr]?.length > 0;
-    const isToday = dateStr === today;
-    const isSel = dateStr === recSelectedDate;
-    const cls = [
-      'rec-day',
-      dow===0?'sun':'', dow===6?'sat':'',
-      isToday?'today':'',
-      hasRec?'has-record':'',
-      isSel?'selected':'',
-    ].filter(Boolean).join(' ');
-    cells += `<div class="${cls}" onclick="recSelectDate('${dateStr}')">
-      <span class="rec-day-num">${d}</span>
-      ${hasRec?'<div class="rec-day-dot"></div>':''}
-    </div>`;
-  }
-  // Next month padding to fill grid
-  const total = firstDay + daysInMonth;
-  const remain = total % 7 === 0 ? 0 : 7 - (total % 7);
-  for(let i=1; i<=remain; i++){
-    cells += `<div class="rec-day other-month"><span class="rec-day-num">${i}</span></div>`;
-  }
-
-  document.getElementById('rec-cal-grid').innerHTML = cells;
-}
-
-function recSelectDate(dateStr) {
-  recSelectedDate = dateStr;
-  const records = loadRecords();
-  renderRecCalendar(records);
-  renderRecDetail(records, dateStr);
-  // Scroll to detail
-  setTimeout(()=>document.getElementById('rec-detail-wrap').scrollIntoView({behavior:'smooth', block:'start'}), 50);
-}
-
-const BONE_JP2 = {straight:'ストレート骨格',wave:'ウェーブ骨格',natural:'ナチュラル骨格'};
-const FACE_JP2 = {oval:'卵型',round:'丸顔',long:'面長',square:'ベース型',triangle:'逆三角型'};
-
-function renderRecDetail(records, dateStr) {
-  const wrap = document.getElementById('rec-detail-wrap');
-  if(!dateStr){ wrap.innerHTML=''; return; }
-
-  const entries = records[dateStr] || [];
-  const [y,m,d] = dateStr.split('-');
-  const dateLabel = `${y}年${parseInt(m)}月${parseInt(d)}日`;
-
-  if(!entries.length){
-    wrap.innerHTML = `
-      <div class="rec-detail-empty">
-        <div class="rec-detail-empty-icon">📋</div>
-        <div class="rec-detail-empty-txt">${dateLabel}の記録はありません<br>診断して「記録に保存」を押してください</div>
-      </div>`;
-    return;
-  }
-
-  wrap.innerHTML = `
-    <div style="font-family:'Bebas Neue',sans-serif;font-size:11px;letter-spacing:3px;color:var(--red);padding:14px 14px 8px;">${dateLabel} の記録</div>
-    ${entries.map((e,i) => renderRecEntry(e, i, dateStr)).join('')}
-  `;
-}
-
-function renderRecEntry(e, idx, dateStr) {
-  const boneLabel = BONE_JP2[e.boneType] || e.boneType || '—';
-  const faceLabel = FACE_JP2[e.faceType] || e.faceType || '—';
-  const celebs = (e.celebMatches||[]).slice(0,3).map(c=>
-    `<div class="rec-celeb-chip"><strong>${c.name}</strong>${c.similarity}% 一致</div>`
-  ).join('');
-  const entryId = `${dateStr}_${e.id||idx}`;
-  return `
-    <div class="rec-entry" id="entry-${entryId}">
-      <div class="rec-entry-hd">
-        <span class="rec-entry-date">${e.time||''} — ${boneLabel}</span>
-        <button class="rec-entry-del" onclick="deleteRecord('${dateStr}',${e.id||idx})" title="削除">✕</button>
-      </div>
-      <div class="rec-entry-body">
-        <div class="rec-entry-types">
-          <span class="rec-entry-bone">${boneLabel}</span>
-          <span class="rec-entry-face">顔型 ${faceLabel}</span>
-          ${e.impression?`<span class="rec-entry-face">${e.impression}</span>`:''}
-        </div>
-        <div class="rec-entry-scores">
-          <div class="rec-score-box"><div class="rec-score-val">${e.goldenScore||'—'}</div><div class="rec-score-lbl">黄金比</div></div>
-          <div class="rec-score-box"><div class="rec-score-val">${e.symmetryScore||'—'}</div><div class="rec-score-lbl">左右対称</div></div>
-          <div class="rec-score-box"><div class="rec-score-val">${e.midFaceScore||'—'}</div><div class="rec-score-lbl">中顔面</div></div>
-        </div>
-        ${celebs?`<div style="font-size:9px;letter-spacing:2px;color:#aaa;margin-bottom:5px">CELEB MATCH</div><div class="rec-entry-celebs">${celebs}</div>`:''}
-        <div class="rec-entry-tips">
-          ${e.makeupTip?`<div class="rec-tip-row"><span class="rec-tip-cat">MAKEUP</span><span>${e.makeupTip}</span></div>`:''}
-          ${e.hairTip?`<div class="rec-tip-row"><span class="rec-tip-cat">HAIR</span><span>${e.hairTip}</span></div>`:''}
-          ${e.skincareTip?`<div class="rec-tip-row"><span class="rec-tip-cat">SKIN</span><span>${e.skincareTip}</span></div>`:''}
-        </div>
-        <div class="rec-entry-note-wrap">
-          <div class="rec-note-label">メモ</div>
-          <textarea class="rec-note-input" id="note-${entryId}" placeholder="今日の気づき、使ったコスメなど...">${e.note||''}</textarea>
-          <button class="rec-note-save" onclick="saveNote('${dateStr}',${e.id||idx},'${entryId}')">メモを保存</button>
-        </div>
-      </div>
-    </div>`;
-}
-
-function deleteRecord(dateStr, id) {
+async function deleteRecord(dateStr, id) {
   if(!confirm('この記録を削除しますか？')) return;
-  const records = loadRecords();
-  if(records[dateStr]){
-    records[dateStr] = records[dateStr].filter(e => (e.id||0) !== id);
-    if(!records[dateStr].length) delete records[dateStr];
+  if(currentUser) {
+    const records = await loadRecordsFromCloud() || {};
+    const entry = (records[dateStr]||[]).find(e => e._cloudId && (e.id||0)===id);
+    if(entry?._cloudId) await deleteRecordFromCloud(entry._cloudId);
+  } else {
+    const records = loadRecords();
+    if(records[dateStr]) {
+      records[dateStr] = records[dateStr].filter(e => (e.id||0) !== id);
+      if(!records[dateStr].length) delete records[dateStr];
+    }
+    saveRecords(records);
   }
-  saveRecords(records);
   rendered['record'] = false;
   renderRecord();
 }
 
-function saveNote(dateStr, id, entryId) {
+async function saveNote(dateStr, id, entryId) {
   const note = document.getElementById('note-'+entryId)?.value || '';
-  const records = loadRecords();
-  if(records[dateStr]){
-    const e = records[dateStr].find(e=>(e.id||0)===id);
-    if(e) e.note = note;
-  }
-  saveRecords(records);
   const btn = event.target;
-  btn.textContent = '✓ 保存済み';
+  btn.textContent = '保存中...'; btn.disabled = true;
+  if(currentUser) {
+    const records = await loadRecordsFromCloud() || {};
+    const entry = (records[dateStr]||[]).find(e => (e.id||0)===id);
+    if(entry?._cloudId) await updateNoteInCloud(entry._cloudId, note);
+  } else {
+    const records = loadRecords();
+    if(records[dateStr]) {
+      const e = records[dateStr].find(e => (e.id||0)===id);
+      if(e) e.note = note;
+    }
+    saveRecords(records);
+  }
+  btn.textContent='✓ 保存済み';
+  btn.disabled = false;
   setTimeout(()=>btn.textContent='メモを保存', 1500);
 }
+
+// Init on load
+window.addEventListener('DOMContentLoaded', initAuth);
 
 function sleep(ms){ return new Promise(r=>setTimeout(r,ms)); }
 
 </script>
+
 </body>
 </html>
