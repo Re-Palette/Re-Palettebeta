@@ -29,6 +29,11 @@ nav { position:fixed; top:0; left:50%; transform:translateX(-50%); width:100%; m
 .nav-logout-btn:active { color:var(--red); border-color:var(--red); }
 .nav-logo { font-family:'Bebas Neue',sans-serif; font-size:19px; color:var(--white); letter-spacing:3px; }
 .nav-logo span { color:var(--red); }
+/* Language selector */
+.lang-sel { display:flex; gap:2px; margin-right:6px; }
+.lang-btn { background:none; border:1px solid #333; color:#666; font-family:'Bebas Neue',sans-serif; font-size:9px; letter-spacing:1px; padding:3px 6px; cursor:pointer; transition:all .15s; }
+.lang-btn.active { border-color:var(--red); color:var(--red); }
+.lang-btn:active { opacity:.7; }
 .nav-btn { background:var(--red); color:#fff; padding:8px 16px; border:none; cursor:pointer; font-family:'Bebas Neue',sans-serif; font-size:13px; letter-spacing:2px; }
 
 /* TAB BAR */
@@ -1166,13 +1171,19 @@ function renderSkinRoutine() {
 <!-- NAV -->
 <nav>
   <div class="nav-logo">Re-Palette <span>β</span></div>
+  <div class="lang-sel">
+    <button class="lang-btn active" data-lang="ja" onclick="applyLang('ja')">JP</button>
+    <button class="lang-btn" data-lang="en" onclick="applyLang('en')">EN</button>
+    <button class="lang-btn" data-lang="ko" onclick="applyLang('ko')">KR</button>
+    <button class="lang-btn" data-lang="zh" onclick="applyLang('zh')">CN</button>
+  </div>
   <div class="nav-user">
-    <button class="nav-login-btn" id="nav-login-btn" onclick="openAuth()">LOGIN</button>
+    <button class="nav-login-btn" id="nav-login-btn" onclick="openAuth()" data-i18n="login">LOGIN</button>
     <div class="nav-avatar-wrap" id="nav-avatar-wrap" style="display:none">
       <div class="nav-avatar" id="nav-avatar">?</div>
-      <button class="nav-logout-btn" onclick="signOut()">OUT</button>
+      <button class="nav-logout-btn" onclick="signOut()" data-i18n="logout">OUT</button>
     </div>
-    <button class="nav-btn" onclick="openModal()">診断する</button>
+    <button class="nav-btn" onclick="openModal()" data-i18n="nav_diag">診断する</button>
   </div>
 </nav>
 
@@ -1181,41 +1192,41 @@ function renderSkinRoutine() {
 <div class="auth-ov" id="auth-ov">
   <div class="auth-sheet">
     <div class="auth-hd">
-      <span class="auth-hd-title">Re-Palette アカウント</span>
+      <span class="auth-hd-title" data-i18n="auth_title">Re-Palette アカウント</span>
       <button class="auth-x" onclick="closeAuth()">✕</button>
     </div>
     <div class="auth-body">
       <div class="auth-tabs">
-        <button class="auth-tab on" onclick="authSwitchTab('login',this)">ログイン</button>
-        <button class="auth-tab" onclick="authSwitchTab('signup',this)">新規登録</button>
+        <button class="auth-tab on" onclick="authSwitchTab('login',this)" data-i18n="auth_login_tab" data-i18n="login_btn">ログイン</button>
+        <button class="auth-tab" onclick="authSwitchTab('signup',this)" data-i18n="auth_signup_tab">新規登録</button>
       </div>
       <!-- Google -->
       <button class="auth-google-btn" onclick="signInGoogle()">
         <svg width="18" height="18" viewBox="0 0 24 24"><path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/><path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/><path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l3.66-2.84z"/><path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"/></svg>
-        Googleで続ける
+        <span data-i18n="google_btn">Googleで続ける</span>
       </button>
-      <div class="auth-divider"><div class="auth-divider-line"></div><span class="auth-divider-txt">または</span><div class="auth-divider-line"></div></div>
+      <div class="auth-divider"><div class="auth-divider-line"></div><span class="auth-divider-txt" data-i18n="or">または</span><div class="auth-divider-line"></div></div>
       <!-- Error / Success -->
       <div class="auth-err" id="auth-err"></div>
       <div class="auth-success" id="auth-success"></div>
       <!-- Login form -->
       <div id="auth-form-login">
-        <div class="auth-label">メールアドレス</div>
+        <div class="auth-label" data-i18n="email_label">メールアドレス</div>
         <input class="auth-input" id="login-email" type="email" placeholder="example@email.com" autocomplete="email">
-        <div class="auth-label">パスワード</div>
+        <div class="auth-label" data-i18n="pass_label">パスワード</div>
         <input class="auth-input" id="login-pass" type="password" placeholder="パスワード" autocomplete="current-password">
         <button class="auth-btn" id="login-btn" onclick="signInEmail()">ログイン</button>
         <div style="text-align:center;margin-top:4px;">
-          <span style="font-size:10px;color:#aaa;cursor:pointer;text-decoration:underline;" onclick="sendPasswordReset()">パスワードを忘れた方</span>
+          <span style="font-size:10px;color:#aaa;cursor:pointer;text-decoration:underline;" onclick="sendPasswordReset()"><span data-i18n="forgot_pass">パスワードを忘れた方</span></span>
         </div>
       </div>
       <!-- Signup form -->
       <div id="auth-form-signup" style="display:none">
         <div class="auth-label">メールアドレス</div>
         <input class="auth-input" id="signup-email" type="email" placeholder="example@email.com" autocomplete="email">
-        <div class="auth-label">パスワード（6文字以上）</div>
+        <div class="auth-label" data-i18n="pass_label2">パスワード（6文字以上）</div>
         <input class="auth-input" id="signup-pass" type="password" placeholder="パスワード" autocomplete="new-password">
-        <button class="auth-btn" id="signup-btn" onclick="signUpEmail()">アカウントを作成</button>
+        <button class="auth-btn" id="signup-btn" onclick="signUpEmail()" data-i18n="signup_btn">アカウントを作成</button>
       </div>
     </div>
   </div>
@@ -1228,7 +1239,7 @@ function renderSkinRoutine() {
   <div class="hero">
     <div class="hero-tag">AI Powered Beauty Analysis</div>
     <h1 class="hero-title">YOUR<br>FACE.<br><em>Decoded.</em></h1>
-    <p class="hero-sub">AIが顔の黄金比を精密解析。あなた専用のメイクレシピと習慣クイズで、なりたい自分へ最短距離で到達する。</p>
+    <p class="hero-sub"><span data-i18n="hero_sub">AIが顔の黄金比を精密解析。あなた専用のメイクレシピと習慣クイズで、なりたい自分へ最短距離で到達する。</span></p>
     <div class="scan-card">
       <div class="scan-card-hd">
         <span class="scan-card-hd-t">FACE ANALYSIS</span>
@@ -1253,8 +1264,8 @@ function renderSkinRoutine() {
       </div>
     </div>
     <div class="hero-btns">
-      <button class="btn-red" onclick="openModal()">無料で診断する</button>
-      <button class="btn-dark" onclick="goPage('quiz')">クイズを試す</button>
+      <button class="btn-red" onclick="openModal()" data-i18n="hero_btn1">無料で診断する</button>
+      <button class="btn-dark" onclick="goPage('quiz')" data-i18n="hero_btn2">クイズを試す</button>
     </div>
   </div>
 
@@ -1264,27 +1275,27 @@ function renderSkinRoutine() {
     <div class="browse-grid">
       <div class="browse-card" onclick="goPage('makeup')">
         <div class="browse-bg">M</div>
-        <div><div class="browse-lbl">Makeup</div><div class="browse-name">骨格別<br>メイク術</div><div class="browse-desc">ストレート・ウェーブ・ナチュラル別に最適なメイクを解説。</div></div>
+        <div><div class="browse-lbl">Makeup</div><div class="browse-name">骨格別<br data-i18n="pg_makeup">メイク術</div><div class="browse-desc">ストレート・ウェーブ・ナチュラル別に最適なメイクを解説。</div></div>
         <div class="browse-arr"></div>
       </div>
       <div class="browse-card" onclick="goPage('hair')">
         <div class="browse-bg">H</div>
-        <div><div class="browse-lbl">Hair</div><div class="browse-name">顔型別<br>ヘアセット</div><div class="browse-desc">顔型・骨格に合ったスタイルを一覧で確認できます。</div></div>
+        <div><div class="browse-lbl">Hair</div><div class="browse-name" data-i18n="browse_hair">顔型別<br>ヘアセット</div><div class="browse-desc">顔型・骨格に合ったスタイルを一覧で確認できます。</div></div>
         <div class="browse-arr"></div>
       </div>
       <div class="browse-card wide" onclick="goPage('celeb')">
         <div class="browse-bg">C</div>
-        <div style="flex:1"><div class="browse-lbl">Celebrity</div><div class="browse-name">タイプ別 有名人を見る</div><div class="browse-desc">日本・韓国・欧米・中国・世界の芸能人を骨格・顔型別に検索。</div></div>
+        <div style="flex:1"><div class="browse-lbl">Celebrity</div><div class="browse-name" data-i18n="browse_celeb">タイプ別 有名人を見る</div><div class="browse-desc">日本・韓国・欧米・中国・世界の芸能人を骨格・顔型別に検索。</div></div>
         <div class="browse-arr"></div>
       </div>
       <div class="browse-card" onclick="goPage('skin')">
         <div class="browse-bg">S</div>
-        <div><div class="browse-lbl">Skincare</div><div class="browse-name">肌タイプ別<br>スキンケア</div><div class="browse-desc">成分辞典・おすすめ商品・朝夜ルーティンを肌タイプ別に提案。</div></div>
+        <div><div class="browse-lbl">Skincare</div><div class="browse-name">肌タイプ別<br data-i18n="pg_skin">スキンケア</div><div class="browse-desc">成分辞典・おすすめ商品・朝夜ルーティンを肌タイプ別に提案。</div></div>
         <div class="browse-arr"></div>
       </div>
       <div class="browse-card" onclick="goPage('quiz')">
         <div class="browse-bg">Q</div>
-        <div><div class="browse-lbl">Quiz</div><div class="browse-name">習慣<br>クイズ</div><div class="browse-desc">スキンケア・メイクの「なんとなく」を正しい知識に変える。</div></div>
+        <div><div class="browse-lbl">Quiz</div><div class="browse-name" data-i18n="browse_quiz">習慣<br>クイズ</div><div class="browse-desc">スキンケア・メイクの「なんとなく」を正しい知識に変える。</div></div>
         <div class="browse-arr"></div>
       </div>
     </div>
@@ -1294,10 +1305,10 @@ function renderSkinRoutine() {
   <div class="home-features" style="margin-top:44px;">
     <div class="sec-label"><div class="sec-label-line"></div><span class="sec-label-text">Core Features</span></div>
     <div class="feat-grid">
-      <div class="feat-card"><div class="feat-num">01</div><div class="feat-icon">✨</div><div class="feat-name">顔型AI診断</div><p class="feat-desc">468点の座標を取得。黄金比・骨格タイプを精密計測します。</p></div>
-      <div class="feat-card"><div class="feat-num">02</div><div class="feat-icon">✨</div><div class="feat-name">メイクレシピ</div><p class="feat-desc">診断結果にもとづく個別メイク手順を自動生成します。</p></div>
-      <div class="feat-card"><div class="feat-num">03</div><div class="feat-icon">✨</div><div class="feat-name">習慣クイズ</div><p class="feat-desc">日常ルーティンから「自己流の間違い」をクイズ化します。</p></div>
-      <div class="feat-card"><div class="feat-num">04</div><div class="feat-icon">✨</div><div class="feat-name">成長記録</div><p class="feat-desc">過去と現在を数値で比較。上達を可視化します。</p></div>
+      <div class="feat-card"><div class="feat-num">01</div><div class="feat-icon">✨</div><div class="feat-name" data-i18n="feat1_name">顔型AI診断</div><p class="feat-desc">468点の座標を取得。黄金比・骨格タイプを精密計測します。</p></div>
+      <div class="feat-card"><div class="feat-num">02</div><div class="feat-icon">✨</div><div class="feat-name" data-i18n="feat2_name">メイクレシピ</div><p class="feat-desc">診断結果にもとづく個別メイク手順を自動生成します。</p></div>
+      <div class="feat-card"><div class="feat-num">03</div><div class="feat-icon">✨</div><div class="feat-name" data-i18n="feat3_name">習慣クイズ</div><p class="feat-desc">日常ルーティンから「自己流の間違い」をクイズ化します。</p></div>
+      <div class="feat-card"><div class="feat-num">04</div><div class="feat-icon">✨</div><div class="feat-name" data-i18n="pg_record" data-i18n="feat4_name">成長記録</div><p class="feat-desc">過去と現在を数値で比較。上達を可視化します。</p></div>
     </div>
   </div>
 
@@ -1315,10 +1326,10 @@ function renderSkinRoutine() {
   <!-- CTA -->
   <div class="home-cta">
     <h2 class="home-cta-title">今すぐ<br><em>始める</em></h2>
-    <p class="home-cta-sub">無料・登録不要・1分で完了。あなたの顔の可能性を、AIが解き明かします。</p>
+    <p class="home-cta-sub"><span data-i18n="cta_sub">無料・登録不要・1分で完了。あなたの顔の可能性を、AIが解き明かします。</span></p>
     <div class="home-cta-btns">
-      <button class="btn-red" onclick="openModal()">診断を始める →</button>
-      <button class="btn-dark" onclick="goPage('quiz')">クイズだけ試す</button>
+      <button class="btn-red" onclick="openModal()" data-i18n="cta_btn1">診断を始める →</button>
+      <button class="btn-dark" onclick="goPage('quiz')" data-i18n="cta_btn2">クイズだけ試す</button>
     </div>
   </div>
 
@@ -1331,15 +1342,15 @@ function renderSkinRoutine() {
 <!-- ══════ CELEB PAGE ══════ -->
 <div id="pg-celeb" class="page">
   <div class="page-hd">
-    <div class="page-hd-title">タイプ別 有名人</div>
+    <div class="page-hd-title" data-i18n="pg_celeb">タイプ別 有名人</div>
     <div class="seg-tabs">
-      <button class="seg-tab active" onclick="celebTab(this,'bone')">骨格タイプ</button>
-      <button class="seg-tab" onclick="celebTab(this,'face')">顔タイプ</button>
+      <button class="seg-tab active" onclick="celebTab(this,'bone')" data-i18n="celeb_bone">骨格タイプ</button>
+      <button class="seg-tab" onclick="celebTab(this,'face')" data-i18n="celeb_face">顔タイプ</button>
     </div>
   </div>
   <div class="gender-bar" id="celeb-gender-bar">
-    <button class="gender-btn female on" onclick="setCelebGender('female',this)">♀ 女性</button>
-    <button class="gender-btn male" onclick="setCelebGender('male',this)">♂ 男性</button>
+    <button class="gender-btn female on" onclick="setCelebGender('female',this)" data-i18n="female">♀ 女性</button>
+    <button class="gender-btn male" onclick="setCelebGender('male',this)" data-i18n="male">♂ 男性</button>
   </div>
   <div class="filter-bar" id="celeb-filters">
     <button class="chip on" onclick="celebChip(this,'all')">すべて</button>
@@ -1358,10 +1369,10 @@ function renderSkinRoutine() {
 <!-- ══════ HAIR PAGE ══════ -->
 <div id="pg-hair" class="page">
   <div class="page-hd">
-    <div class="page-hd-title">ヘアスタイル</div>
+    <div class="page-hd-title" data-i18n="pg_hair">ヘアスタイル</div>
     <div class="seg-tabs">
-      <button class="seg-tab active" onclick="hairTab(this,'bone')">骨格別</button>
-      <button class="seg-tab" onclick="hairTab(this,'face')">顔型別</button>
+      <button class="seg-tab active" onclick="hairTab(this,'bone')" data-i18n="bone_tab">骨格別</button>
+      <button class="seg-tab" onclick="hairTab(this,'face')" data-i18n="face_tab">顔型別</button>
     </div>
   </div>
   <div class="gender-bar" id="hair-gender-bar"><button class="gender-btn female on" onclick="setGender('hair','female',this)">♀ 女性</button><button class="gender-btn male" onclick="setGender('hair','male',this)">♂ 男性</button></div><div class="filter-bar" id="hair-filters">
@@ -1380,7 +1391,7 @@ function renderSkinRoutine() {
     <div class="seg-tabs">
       <button class="seg-tab active" onclick="makeupTab(this,'bone')">骨格別</button>
       <button class="seg-tab" onclick="makeupTab(this,'face')">顔型別</button>
-      <button class="seg-tab" onclick="makeupTab(this,'style')">系統別</button>
+      <button class="seg-tab" onclick="makeupTab(this,'style')" data-i18n="style_tab">系統別</button>
     </div>
   </div>
   <div class="gender-bar" id="makeup-gender-bar"><button class="gender-btn female on" onclick="setGender('makeup','female',this)">♀ 女性</button><button class="gender-btn male" onclick="setGender('makeup','male',this)">♂ 男性</button></div><div class="filter-bar" id="makeup-filters">
@@ -1397,43 +1408,43 @@ function renderSkinRoutine() {
   <div class="page-hd">
     <div class="page-hd-title">スキンケア</div>
     <div class="seg-tabs" style="flex-wrap:wrap;gap:4px">
-      <button class="seg-tab active" onclick="skinPageTab(this,'type')">肌タイプ別</button>
-      <button class="seg-tab" onclick="skinPageTab(this,'concern')">悩み別</button>
-      <button class="seg-tab" onclick="skinPageTab(this,'ingredient')">成分辞典</button>
-      <button class="seg-tab" onclick="skinPageTab(this,'routine')">ルーティン</button>
+      <button class="seg-tab active" onclick="skinPageTab(this,'type')" data-i18n="skin_tab_type">肌タイプ別</button>
+      <button class="seg-tab" onclick="skinPageTab(this,'concern')" data-i18n="skin_tab_concern">悩み別</button>
+      <button class="seg-tab" onclick="skinPageTab(this,'ingredient')" data-i18n="skin_tab_ingr">成分辞典</button>
+      <button class="seg-tab" onclick="skinPageTab(this,'routine')" data-i18n="skin_tab_routine">ルーティン</button>
     </div>
   </div>
 
   <!-- TYPE SELECT TAB -->
   <div id="skin-tab-type">
-    <div style="padding:14px 16px 8px;font-size:10px;color:#888;letter-spacing:1px;">あなたの肌タイプを選んでください</div>
+    <div style="padding:14px 16px 8px;font-size:10px;color:#888;letter-spacing:1px;"><span data-i18n="skin_select_prompt">あなたの肌タイプを選んでください</span></div>
     <div class="skin-type-grid">
       <div class="skin-type-card active" onclick="selectSkinType(this,'oily')">
         <div class="skin-type-card-icon"><svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2C8 2 5 6 5 10c0 2 .8 4 2 5.5V20h10v-4.5C18.2 14 19 12 19 10c0-4-3-8-7-8z"/><path d="M9 20v1.5A1.5 1.5 0 0010.5 23h3A1.5 1.5 0 0015 21.5V20"/><line x1="12" y1="7" x2="12" y2="13"/><line x1="9" y1="10" x2="15" y2="10"/></svg></div>
-        <div class="skin-type-card-name">オイリー肌</div>
-        <div class="skin-type-card-desc">テカリ・毛穴が気になる</div>
+        <div class="skin-type-card-name" data-i18n="skin_oily">オイリー肌</div>
+        <div class="skin-type-card-desc"><span data-i18n="skin_oily_sub">テカリ・毛穴が気になる</span></div>
       </div>
       <div class="skin-type-card" onclick="selectSkinType(this,'dry')">
         <div class="skin-type-card-icon"><svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2L8 9H4l3 2.9-1.2 3.8L12 13l6.2 2.7L17 11.9 20 9h-4L12 2z"/><path d="M9 17c0 2 1.3 4 3 4s3-2 3-4"/><line x1="8" y1="21" x2="16" y2="21"/></svg></div>
-        <div class="skin-type-card-name">乾燥肌</div>
-        <div class="skin-type-card-desc">粉感・小ジワが気になる</div>
+        <div class="skin-type-card-name" data-i18n="skin_dry">乾燥肌</div>
+        <div class="skin-type-card-desc"><span data-i18n="skin_dry_sub">粉感・小ジワが気になる</span></div>
       </div>
       <div class="skin-type-card" onclick="selectSkinType(this,'combination')">
         <div class="skin-type-card-icon"><svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><line x1="12" y1="3" x2="12" y2="21"/><path d="M12 7c-2 0-3.5 1.3-3.5 3S10 13 12 13"/><path d="M12 13c2.5 0 3.5-1 3.5-2.5S14.5 7 12 7"/></svg></div>
-        <div class="skin-type-card-name">混合肌</div>
-        <div class="skin-type-card-desc">部位によって違う</div>
+        <div class="skin-type-card-name" data-i18n="skin_combo">混合肌</div>
+        <div class="skin-type-card-desc"><span data-i18n="skin_combo_sub">部位によって違う</span></div>
       </div>
       <div class="skin-type-card" onclick="selectSkinType(this,'sensitive')">
         <div class="skin-type-card-icon"><svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M12 21.7C5.4 17 2 12.5 2 9a7 7 0 0114 0c0 1-.3 2-.8 2.9"/><path d="M16 14l-4 4-2-2"/><circle cx="17" cy="19" r="4"/></svg></div>
-        <div class="skin-type-card-name">敏感肌</div>
-        <div class="skin-type-card-desc">赤み・刺激に反応しやすい</div>
+        <div class="skin-type-card-name" data-i18n="skin_sensitive">敏感肌</div>
+        <div class="skin-type-card-desc"><span data-i18n="skin_sens_sub">赤み・刺激に反応しやすい</span></div>
       </div>
       <div class="skin-type-card" style="grid-column:1/-1" onclick="selectSkinType(this,'normal')">
         <div style="display:flex;align-items:center;gap:12px">
           <div class="skin-type-card-icon"><svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M9 9h.01M15 9h.01"/><path d="M9 15c.8 1.2 2 2 3 2s2.2-.8 3-2"/></svg></div>
           <div>
-            <div class="skin-type-card-name">普通肌</div>
-            <div class="skin-type-card-desc">大きなトラブルがない理想肌</div>
+            <div class="skin-type-card-name" data-i18n="skin_normal">普通肌</div>
+            <div class="skin-type-card-desc"><span data-i18n="skin_norm_sub">大きなトラブルがない理想肌</span></div>
           </div>
         </div>
       </div>
@@ -1509,7 +1520,7 @@ function renderSkinRoutine() {
         <polyline points="3 11 12 3 21 11"/><rect x="5" y="11" width="5" height="9"/><rect x="14" y="14" width="5" height="6"/>
       </svg>
     </span>
-    <span class="tab-label">ホーム</span>
+    <span class="tab-label" data-i18n="tab_home">ホーム</span>
   </button>
   <button class="tab-item" onclick="openModal()">
     <span class="tab-icon">
@@ -1519,7 +1530,7 @@ function renderSkinRoutine() {
         <line x1="16.5" y1="8" x2="20" y2="8"/><line x1="16.5" y1="11" x2="21" y2="11"/><line x1="16.5" y1="14" x2="20" y2="14"/>
       </svg>
     </span>
-    <span class="tab-label">診断</span>
+    <span class="tab-label" data-i18n="tab_diag">診断</span>
   </button>
   <button class="tab-item" onclick="goPage('celeb')">
     <span class="tab-icon">
@@ -1529,7 +1540,7 @@ function renderSkinRoutine() {
         <path d="M2 20c0-2.2 1.3-4 3-5"/><path d="M22 20c0-2.2-1.3-4-3-5"/>
       </svg>
     </span>
-    <span class="tab-label">有名人</span>
+    <span class="tab-label" data-i18n="tab_celeb">有名人</span>
   </button>
   <button class="tab-item" onclick="goPage('makeup')">
     <span class="tab-icon">
@@ -1540,7 +1551,7 @@ function renderSkinRoutine() {
         <line x1="5" y1="21" x2="19" y2="21"/>
       </svg>
     </span>
-    <span class="tab-label">メイク</span>
+    <span class="tab-label" data-i18n="tab_makeup">メイク</span>
   </button>
   <button class="tab-item" onclick="goPage('hair')">
     <span class="tab-icon">
@@ -1550,7 +1561,7 @@ function renderSkinRoutine() {
         <line x1="6" y1="20" x2="6" y2="22"/><line x1="12" y1="20" x2="12" y2="22"/><line x1="18" y1="20" x2="18" y2="22"/>
       </svg>
     </span>
-    <span class="tab-label">ヘア</span>
+    <span class="tab-label" data-i18n="tab_hair">ヘア</span>
   </button>
   <button class="tab-item" onclick="goPage('skin')">
     <span class="tab-icon">
@@ -1562,7 +1573,7 @@ function renderSkinRoutine() {
         <path d="M12 9V7M12 15v2M9 12H7M15 12h2"/>
       </svg>
     </span>
-    <span class="tab-label">スキン</span>
+    <span class="tab-label" data-i18n="tab_skin">スキン</span>
   </button>
   <button class="tab-item" onclick="goPage('record')">
     <span class="tab-icon">
@@ -1573,7 +1584,7 @@ function renderSkinRoutine() {
         <circle cx="16" cy="15" r="1.2" fill="currentColor" stroke="none"/>
       </svg>
     </span>
-    <span class="tab-label">記録</span>
+    <span class="tab-label" data-i18n="tab_record">記録</span>
   </button>
 </div>
 
@@ -1584,25 +1595,25 @@ function renderSkinRoutine() {
     <!-- STEP 0: Upload -->
     <div id="diag-step-upload">
       <div class="modal-hd">
-        <span class="modal-hd-t">AI 顔解析診断</span>
+        <span class="modal-hd-t" data-i18n="diag_title">AI 顔解析診断</span>
         <button class="modal-x" onclick="closeModal()">✕</button>
       </div>
       <div class="modal-body">
         <div class="priv-notice">
           <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#22c55e" stroke-width="2" stroke-linecap="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
-          写真はブラウザ内のみで処理。外部送信・保存なし
+          <span data-i18n="diag_priv">写真はブラウザ内のみで処理。外部送信・保存なし</span>
         </div>
 
         <!-- Gender selector -->
-        <div class="diag-gender-label">あなたの性別を選択</div>
+        <div class="diag-gender-label"><span data-i18n="diag_gender_label">あなたの性別を選択</span></div>
         <div class="diag-gender-sel">
           <button class="diag-gender-btn female on" id="dg-female" onclick="setDiagGender('female')">
             <span class="dg-icon">♀</span>
-            <span class="dg-lbl">女性</span>
+            <span class="dg-lbl" data-i18n="female_lbl">女性</span>
           </button>
           <button class="diag-gender-btn male" id="dg-male" onclick="setDiagGender('male')">
             <span class="dg-icon">♂</span>
-            <span class="dg-lbl">男性</span>
+            <span class="dg-lbl" data-i18n="male_lbl">男性</span>
           </button>
         </div>
 
@@ -1611,36 +1622,36 @@ function renderSkinRoutine() {
             <rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/>
             <polyline points="21 15 16 10 5 21"/>
           </svg>
-          <div class="upload-txt"><strong>タップして写真を選択</strong>正面・明るい環境・メガネなしを推奨<br>JPG / PNG / WEBP 対応</div>
+          <div class="upload-txt"><strong data-i18n="upload_tap">タップして写真を選択</strong><span data-i18n="upload_hint">正面・明るい環境・メガネなしを推奨<br>JPG / PNG / WEBP 対応</span></div>
           <input type="file" id="fi1" accept="image/*" style="display:none" onchange="handleFile(event)">
         </div>
         <div class="modal-or">— または —</div>
         <button class="modal-cam" onclick="document.getElementById('fi2').click()">
           <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" style="vertical-align:middle;margin-right:6px"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/><circle cx="12" cy="13" r="4"/></svg>
-          カメラで今すぐ撮影する
+          <span data-i18n="cam_btn">カメラで今すぐ撮影する</span>
         </button>
         <input type="file" id="fi2" accept="image/*" capture="user" style="display:none" onchange="handleFile(event)">
 
         <div class="upload-tips">
-          <div class="tip-item">✓ 正面向き・自然光</div>
-          <div class="tip-item">✓ 無表情か軽い笑顔</div>
-          <div class="tip-item">✓ メガネ・マスクなし</div>
-          <div class="tip-item">✓ 髪が顔にかかっていない</div>
+          <div class="tip-item" data-i18n="tip1">✓ 正面向き・自然光</div>
+          <div class="tip-item" data-i18n="tip2">✓ 無表情か軽い笑顔</div>
+          <div class="tip-item" data-i18n="tip3">✓ メガネ・マスクなし</div>
+          <div class="tip-item" data-i18n="tip4">✓ 髪が顔にかかっていない</div>
         </div>
       </div>
     </div>
 
     <!-- STEP 1: Analyzing -->
     <div id="diag-step-analyzing" style="display:none">
-      <div class="modal-hd"><span class="modal-hd-t">解析中...</span></div>
+      <div class="modal-hd"><span class="modal-hd-t" data-i18n="analyzing">解析中...</span></div>
       <div class="modal-body" style="padding:32px 20px;text-align:center">
         <canvas id="diag-canvas" style="max-width:100%;border:1px solid #1e1e1e;display:block;margin:0 auto 20px"></canvas>
         <div class="analyze-steps">
-          <div class="analyze-step" id="as1"><div class="as-dot"></div><span>顔を検出中...</span></div>
-          <div class="analyze-step" id="as2"><div class="as-dot"></div><span>468点のランドマーク計測中...</span></div>
-          <div class="analyze-step" id="as3"><div class="as-dot"></div><span>黄金比・左右対称を計算中...</span></div>
-          <div class="analyze-step" id="as4"><div class="as-dot"></div><span>AIが骨格・顔型を判定中...</span></div>
-          <div class="analyze-step" id="as5"><div class="as-dot"></div><span>レコメンドを生成中...</span></div>
+          <div class="analyze-step" id="as1"><div class="as-dot"></div><span data-i18n="as1">顔を検出中...</span></div>
+          <div class="analyze-step" id="as2"><div class="as-dot"></div><span data-i18n="as2">468点のランドマーク計測中...</span></div>
+          <div class="analyze-step" id="as3"><div class="as-dot"></div><span data-i18n="as3">黄金比・左右対称を計算中...</span></div>
+          <div class="analyze-step" id="as4"><div class="as-dot"></div><span data-i18n="as4">AIが骨格・顔型を判定中...</span></div>
+          <div class="analyze-step" id="as5"><div class="as-dot"></div><span data-i18n="as5">レコメンドを生成中...</span></div>
         </div>
       </div>
     </div>
@@ -1648,9 +1659,9 @@ function renderSkinRoutine() {
     <!-- STEP 2: Results -->
     <div id="diag-step-result" style="display:none">
       <div class="modal-hd" style="justify-content:space-between">
-        <span class="modal-hd-t">診断結果</span>
+        <span class="modal-hd-t" data-i18n="result_title">診断結果</span>
         <div style="display:flex;gap:8px">
-          <button class="res-action-btn" onclick="retryDiag()">再診断</button>
+          <button class="res-action-btn" onclick="retryDiag()" data-i18n="retry">再診断</button>
           <button class="modal-x" onclick="closeModal()">✕</button>
         </div>
       </div>
@@ -4220,9 +4231,154 @@ async function saveNote(dateStr, id, entryId) {
 }
 
 // Init on load
-window.addEventListener('DOMContentLoaded', initAuth);
+window.addEventListener('DOMContentLoaded', () => { initAuth(); applyLang(currentLang); });
 
 function sleep(ms){ return new Promise(r=>setTimeout(r,ms)); }
+
+// ═══════════════════════════════════════════════════════════════
+//  I18N — MULTI-LANGUAGE SUPPORT
+// ═══════════════════════════════════════════════════════════════
+let currentLang = localStorage.getItem('rp_lang') || 'ja';
+
+const I18N = {
+  ja: {
+    login:'LOGIN', logout:'OUT', nav_diag:'診断する',
+    tab_home:'ホーム', tab_diag:'診断', tab_celeb:'有名人', tab_makeup:'メイク', tab_hair:'ヘア', tab_skin:'スキン', tab_record:'記録',
+    pg_celeb:'タイプ別 有名人', pg_hair:'ヘアスタイル', pg_makeup:'メイク術', pg_skin:'スキンケア', pg_record:'成長記録',
+    skin_tab_type:'肌タイプ別', skin_tab_concern:'悩み別', skin_tab_ingr:'成分辞典', skin_tab_routine:'ルーティン',
+    skin_select_prompt:'あなたの肌タイプを選んでください',
+    skin_oily:'オイリー肌', skin_dry:'乾燥肌', skin_combo:'混合肌', skin_sensitive:'敏感肌', skin_normal:'普通肌',
+    skin_oily_sub:'テカリ・毛穴が気になる', skin_dry_sub:'粉感・小ジワが気になる', skin_combo_sub:'部位によって違う',
+    skin_sens_sub:'赤み・刺激に反応しやすい', skin_norm_sub:'大きなトラブルがない理想肌',
+    celeb_bone:'骨格タイプ', celeb_face:'顔タイプ', bone_tab:'骨格別', face_tab:'顔型別', style_tab:'系統別',
+    female:'♀ 女性', male:'♂ 男性', female_lbl:'女性', male_lbl:'男性',
+    hero_sub:'AIが顔の黄金比を精密解析。あなた専用のメイクレシピと習慣クイズで、なりたい自分へ最短距離で到達する。',
+    hero_btn1:'無料で診断する', hero_btn2:'クイズを試す', cta_btn1:'診断を始める →', cta_btn2:'クイズだけ試す',
+    browse_makeup:'骨格別<br>メイク術', browse_hair:'顔型別<br>ヘアセット', browse_celeb:'タイプ別 有名人を見る',
+    browse_skin:'肌タイプ別<br>スキンケア', browse_quiz:'習慣<br>クイズ',
+    feat1_name:'顔型AI診断', feat2_name:'メイクレシピ', feat3_name:'習慣クイズ', feat4_name:'成長記録',
+    cta_sub:'無料・登録不要・1分で完了。あなたの顔の可能性を、AIが解き明かします。',
+    diag_title:'AI 顔解析診断', diag_priv:'写真はブラウザ内のみで処理。外部送信・保存なし',
+    diag_gender_label:'あなたの性別を選択',
+    upload_tap:'タップして写真を選択', upload_hint:'正面・明るい環境・メガネなしを推奨<br>JPG / PNG / WEBP 対応',
+    cam_btn:'カメラで今すぐ撮影する',
+    tip1:'✓ 正面向き・自然光', tip2:'✓ 無表情か軽い笑顔', tip3:'✓ メガネ・マスクなし', tip4:'✓ 髪が顔にかかっていない',
+    analyzing:'解析中...', result_title:'診断結果', retry:'再診断',
+    as1:'顔を検出中...', as2:'468点のランドマーク計測中...', as3:'黄金比・左右対称を計算中...',
+    as4:'AIが骨格・顔型を判定中...', as5:'レコメンドを生成中...',
+    auth_title:'Re-Palette アカウント', auth_login_tab:'ログイン', auth_signup_tab:'新規登録',
+    google_btn:'Googleで続ける', or:'または',
+    email_label:'メールアドレス', pass_label:'パスワード', pass_label2:'パスワード（6文字以上）',
+    login_btn:'ログイン', forgot_pass:'パスワードを忘れた方', signup_btn:'アカウントを作成',
+  },
+  en: {
+    login:'LOGIN', logout:'OUT', nav_diag:'Analyze',
+    tab_home:'Home', tab_diag:'Scan', tab_celeb:'Celebs', tab_makeup:'Makeup', tab_hair:'Hair', tab_skin:'Skin', tab_record:'Log',
+    pg_celeb:'Celebrity Types', pg_hair:'Hairstyles', pg_makeup:'Makeup Guide', pg_skin:'Skincare', pg_record:'Progress Log',
+    skin_tab_type:'By Skin Type', skin_tab_concern:'Concerns', skin_tab_ingr:'Ingredients', skin_tab_routine:'Routine',
+    skin_select_prompt:'Select your skin type',
+    skin_oily:'Oily Skin', skin_dry:'Dry Skin', skin_combo:'Combination', skin_sensitive:'Sensitive', skin_normal:'Normal',
+    skin_oily_sub:'Shine & visible pores', skin_dry_sub:'Flakiness & fine lines', skin_combo_sub:'Varies by area',
+    skin_sens_sub:'Reacts easily to irritants', skin_norm_sub:'Balanced, minimal issues',
+    celeb_bone:'Body Type', celeb_face:'Face Shape', bone_tab:'Body Type', face_tab:'Face Shape', style_tab:'Style',
+    female:'♀ Female', male:'♂ Male', female_lbl:'Female', male_lbl:'Male',
+    hero_sub:'AI precisely analyzes your facial golden ratio. Get a personalized makeup recipe and quiz to become your ideal self.',
+    hero_btn1:'Analyze for Free', hero_btn2:'Try Quiz', cta_btn1:'Start Analysis →', cta_btn2:'Quiz Only',
+    browse_makeup:'Body Type<br>Makeup', browse_hair:'Face Shape<br>Hair', browse_celeb:'View Celebs by Type',
+    browse_skin:'Skin Type<br>Skincare', browse_quiz:'Habit<br>Quiz',
+    feat1_name:'AI Face Analysis', feat2_name:'Makeup Recipe', feat3_name:'Habit Quiz', feat4_name:'Progress Log',
+    cta_sub:'Free · No sign-up · Done in 1 min. AI reveals your face\'s full potential.',
+    diag_title:'AI Face Analysis', diag_priv:'Processed in browser only. Nothing uploaded or stored.',
+    diag_gender_label:'Select your gender',
+    upload_tap:'Tap to select a photo', upload_hint:'Face forward · Good lighting · No glasses<br>JPG / PNG / WEBP supported',
+    cam_btn:'Take a photo now',
+    tip1:'✓ Face forward · Natural light', tip2:'✓ Neutral or slight smile', tip3:'✓ No glasses or mask', tip4:'✓ Hair not covering face',
+    analyzing:'Analyzing...', result_title:'Results', retry:'Re-analyze',
+    as1:'Detecting face...', as2:'Measuring 468 landmarks...', as3:'Calculating golden ratio & symmetry...',
+    as4:'AI determining bone structure & face type...', as5:'Generating recommendations...',
+    auth_title:'Re-Palette Account', auth_login_tab:'Log In', auth_signup_tab:'Sign Up',
+    google_btn:'Continue with Google', or:'or',
+    email_label:'Email Address', pass_label:'Password', pass_label2:'Password (6+ characters)',
+    login_btn:'Log In', forgot_pass:'Forgot password?', signup_btn:'Create Account',
+  },
+  ko: {
+    login:'로그인', logout:'로그아웃', nav_diag:'진단하기',
+    tab_home:'홈', tab_diag:'진단', tab_celeb:'셀럽', tab_makeup:'메이크업', tab_hair:'헤어', tab_skin:'스킨케어', tab_record:'기록',
+    pg_celeb:'타입별 셀럽', pg_hair:'헤어스타일', pg_makeup:'메이크업 가이드', pg_skin:'스킨케어', pg_record:'성장 기록',
+    skin_tab_type:'피부 타입별', skin_tab_concern:'고민별', skin_tab_ingr:'성분 사전', skin_tab_routine:'루틴',
+    skin_select_prompt:'피부 타입을 선택하세요',
+    skin_oily:'지성 피부', skin_dry:'건성 피부', skin_combo:'복합성 피부', skin_sensitive:'민감성 피부', skin_normal:'중성 피부',
+    skin_oily_sub:'번들거림·모공이 신경 쓰여', skin_dry_sub:'각질·잔주름이 신경 쓰여', skin_combo_sub:'부위마다 달라',
+    skin_sens_sub:'자극에 민감하게 반응', skin_norm_sub:'큰 트러블 없는 이상 피부',
+    celeb_bone:'체형 타입', celeb_face:'얼굴형', bone_tab:'체형별', face_tab:'얼굴형별', style_tab:'스타일별',
+    female:'♀ 여성', male:'♂ 남성', female_lbl:'여성', male_lbl:'남성',
+    hero_sub:'AI가 얼굴 황금비를 정밀 분석. 나만을 위한 메이크업 레시피와 퀴즈로 이상적인 나에게 최단거리로 도달.',
+    hero_btn1:'무료로 진단하기', hero_btn2:'퀴즈 해보기', cta_btn1:'진단 시작 →', cta_btn2:'퀴즈만 해보기',
+    browse_makeup:'체형별<br>메이크업', browse_hair:'얼굴형별<br>헤어', browse_celeb:'타입별 셀럽 보기',
+    browse_skin:'피부 타입별<br>스킨케어', browse_quiz:'습관<br>퀴즈',
+    feat1_name:'얼굴형 AI 진단', feat2_name:'메이크업 레시피', feat3_name:'습관 퀴즈', feat4_name:'성장 기록',
+    cta_sub:'무료 · 가입 불필요 · 1분 완료. AI가 당신 얼굴의 가능성을 밝혀냅니다.',
+    diag_title:'AI 얼굴 분석 진단', diag_priv:'사진은 브라우저 내에서만 처리. 외부 전송·저장 없음',
+    diag_gender_label:'성별을 선택하세요',
+    upload_tap:'탭하여 사진 선택', upload_hint:'정면·밝은 환경·안경 없이 권장<br>JPG / PNG / WEBP 지원',
+    cam_btn:'지금 바로 촬영하기',
+    tip1:'✓ 정면·자연광', tip2:'✓ 무표정 또는 가벼운 미소', tip3:'✓ 안경·마스크 없이', tip4:'✓ 머리카락이 얼굴을 가리지 않게',
+    analyzing:'분석 중...', result_title:'진단 결과', retry:'다시 진단',
+    as1:'얼굴 감지 중...', as2:'468개 랜드마크 측정 중...', as3:'황금비·좌우 대칭 계산 중...',
+    as4:'AI가 골격·얼굴형 판정 중...', as5:'추천 생성 중...',
+    auth_title:'Re-Palette 계정', auth_login_tab:'로그인', auth_signup_tab:'회원가입',
+    google_btn:'Google로 계속하기', or:'또는',
+    email_label:'이메일 주소', pass_label:'비밀번호', pass_label2:'비밀번호 (6자 이상)',
+    login_btn:'로그인', forgot_pass:'비밀번호를 잊으셨나요?', signup_btn:'계정 만들기',
+  },
+  zh: {
+    login:'登录', logout:'退出', nav_diag:'开始诊断',
+    tab_home:'主页', tab_diag:'诊断', tab_celeb:'明星', tab_makeup:'美妆', tab_hair:'发型', tab_skin:'护肤', tab_record:'记录',
+    pg_celeb:'按类型的明星', pg_hair:'发型指南', pg_makeup:'美妆指南', pg_skin:'护肤指南', pg_record:'成长记录',
+    skin_tab_type:'按肤质', skin_tab_concern:'按烦恼', skin_tab_ingr:'成分词典', skin_tab_routine:'护肤程序',
+    skin_select_prompt:'请选择您的肤质',
+    skin_oily:'油性肌肤', skin_dry:'干性肌肤', skin_combo:'混合性肌肤', skin_sensitive:'敏感性肌肤', skin_normal:'中性肌肤',
+    skin_oily_sub:'出油·毛孔粗大', skin_dry_sub:'干燥·细纹困扰', skin_combo_sub:'各部位状况不同',
+    skin_sens_sub:'易受刺激红肿', skin_norm_sub:'状态良好的理想肌肤',
+    celeb_bone:'体型类型', celeb_face:'脸型', bone_tab:'按体型', face_tab:'按脸型', style_tab:'按风格',
+    female:'♀ 女性', male:'♂ 男性', female_lbl:'女性', male_lbl:'男性',
+    hero_sub:'AI精密分析面部黄金比例。通过专属美妆方案和习惯测验，以最短路径实现理想容颜。',
+    hero_btn1:'免费诊断', hero_btn2:'试试测验', cta_btn1:'开始诊断 →', cta_btn2:'只做测验',
+    browse_makeup:'按体型<br>美妆方案', browse_hair:'按脸型<br>发型推荐', browse_celeb:'查看各类型明星',
+    browse_skin:'按肤质<br>护肤推荐', browse_quiz:'习惯<br>测验',
+    feat1_name:'AI脸型诊断', feat2_name:'美妆方案', feat3_name:'习惯测验', feat4_name:'成长记录',
+    cta_sub:'免费 · 无需注册 · 1分钟完成。AI揭示您面部的无限可能。',
+    diag_title:'AI 面部分析诊断', diag_priv:'照片仅在浏览器内处理，不上传或保存',
+    diag_gender_label:'请选择您的性别',
+    upload_tap:'点击选择照片', upload_hint:'正面·光线充足·不戴眼镜<br>支持 JPG / PNG / WEBP',
+    cam_btn:'立即拍照',
+    tip1:'✓ 正面·自然光', tip2:'✓ 自然表情或微笑', tip3:'✓ 不戴眼镜或口罩', tip4:'✓ 头发不遮挡面部',
+    analyzing:'分析中...', result_title:'诊断结果', retry:'重新诊断',
+    as1:'检测面部中...', as2:'测量468个关键点...', as3:'计算黄金比例与左右对称...',
+    as4:'AI判断骨骼与脸型...', as5:'生成推荐方案...',
+    auth_title:'Re-Palette 账户', auth_login_tab:'登录', auth_signup_tab:'注册',
+    google_btn:'使用Google继续', or:'或者',
+    email_label:'电子邮件地址', pass_label:'密码', pass_label2:'密码（6位以上）',
+    login_btn:'登录', forgot_pass:'忘记密码？', signup_btn:'创建账户',
+  },
+};
+
+function applyLang(lang) {
+  currentLang = lang;
+  localStorage.setItem('rp_lang', lang);
+  const t = I18N[lang] || I18N.ja;
+  document.querySelectorAll('[data-i18n]').forEach(function(el) {
+    const key = el.getAttribute('data-i18n');
+    if (t[key] !== undefined) el.innerHTML = t[key];
+  });
+  // Update lang selector active state
+  document.querySelectorAll('.lang-btn').forEach(function(b) {
+    b.classList.toggle('active', b.dataset.lang === lang);
+  });
+  // Update html lang attribute
+  const langMap = {ja:'ja', en:'en', ko:'ko', zh:'zh-CN'};
+  document.documentElement.lang = langMap[lang] || 'ja';
+}
 
 </script>
 
