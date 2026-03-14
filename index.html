@@ -502,7 +502,61 @@ footer { background:#f7f4f0; padding:24px 20px; border-top:2px solid var(--red);
 .res-save-btn.saved { background:var(--red); border-color:var(--red); color:#fff; }
 
 
-/* ══ BACK TO RESULT BANNER ══ */
+/* ══ MY PAGE SECTION (Home) ══════════════════════════════════ */
+.mypage-section { padding:44px 20px 0; }
+.mypage-guest { background:#f7f4f0; border:1px solid #e8e4e0; padding:24px 20px; text-align:center; }
+.mypage-guest-icon { font-size:36px; margin-bottom:10px; }
+.mypage-guest-title { font-family:'Bebas Neue',sans-serif; font-size:22px; color:var(--black); letter-spacing:2px; margin-bottom:6px; }
+.mypage-guest-desc { font-size:11px; color:#888; line-height:1.8; margin-bottom:16px; }
+
+/* Type badge row */
+.mypage-type-row { display:flex; gap:8px; margin-bottom:20px; }
+.mypage-type-badge { flex:1; background:#fff; border:1px solid #e8e4e0; padding:12px 10px; text-align:center; cursor:pointer; transition:border-color .15s; }
+.mypage-type-badge:active { border-color:var(--red); }
+.mypage-type-lbl { font-size:8px; letter-spacing:2px; color:var(--red); margin-bottom:4px; }
+.mypage-type-val { font-family:'Bebas Neue',sans-serif; font-size:17px; color:var(--black); letter-spacing:1px; line-height:1.1; }
+.mypage-type-val.empty { color:#ccc; font-size:12px; }
+
+/* Favorites */
+.mypage-fav-section { margin-bottom:20px; }
+.mypage-fav-hd { display:flex; align-items:center; justify-content:space-between; margin-bottom:10px; }
+.mypage-fav-title { font-family:'Bebas Neue',sans-serif; font-size:13px; letter-spacing:2px; color:var(--black); }
+.mypage-fav-add { background:none; border:1px solid var(--red); color:var(--red); font-family:'Bebas Neue',sans-serif; font-size:11px; letter-spacing:1px; padding:4px 10px; cursor:pointer; }
+.mypage-fav-add:active { background:var(--red); color:#fff; }
+.mypage-fav-empty { background:#f7f4f0; padding:16px; text-align:center; font-size:11px; color:#aaa; letter-spacing:.5px; }
+.mypage-fav-list { display:flex; flex-direction:column; gap:8px; }
+.mypage-fav-item { background:#fff; border:1px solid #e8e4e0; padding:11px 13px; display:flex; align-items:center; gap:10px; }
+.mypage-fav-cat { font-size:8px; letter-spacing:2px; color:var(--red); width:44px; flex-shrink:0; }
+.mypage-fav-body { flex:1; min-width:0; }
+.mypage-fav-name { font-size:12px; font-weight:700; color:var(--black); white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+.mypage-fav-brand { font-size:10px; color:#888; margin-top:1px; }
+.mypage-fav-del { background:none; border:none; color:#ccc; font-size:16px; cursor:pointer; padding:0 4px; flex-shrink:0; }
+.mypage-fav-del:active { color:var(--red); }
+.mypage-fav-shop { font-size:10px; color:var(--red); text-decoration:none; border:1px solid #fdd; padding:2px 7px; flex-shrink:0; font-family:'Bebas Neue',sans-serif; letter-spacing:1px; }
+.mypage-fav-shop:active { background:var(--red); color:#fff; }
+
+/* Add item modal */
+.mypage-add-ov { position:fixed; inset:0; background:rgba(0,0,0,.7); z-index:600; display:none; align-items:flex-end; justify-content:center; }
+.mypage-add-ov.open { display:flex; }
+.mypage-add-sheet { background:#fff; width:100%; max-width:430px; padding:0 0 40px; animation:slideUp .25s ease; max-height:85vh; overflow-y:auto; }
+.mypage-add-hd { background:#f7f4f0; padding:14px 18px; display:flex; align-items:center; justify-content:space-between; border-bottom:2px solid var(--red); }
+.mypage-add-title { font-family:'Bebas Neue',sans-serif; font-size:16px; letter-spacing:2px; color:var(--black); }
+.mypage-add-x { background:none; border:none; color:#888; font-size:18px; cursor:pointer; }
+.mypage-add-body { padding:18px 18px 0; }
+.mypage-add-label { font-size:10px; letter-spacing:2px; color:#888; margin-bottom:6px; margin-top:14px; }
+.mypage-add-label:first-child { margin-top:0; }
+.mypage-add-cats { display:flex; flex-wrap:wrap; gap:6px; margin-bottom:4px; }
+.mypage-add-cat { border:1px solid #ddd; background:none; padding:6px 12px; font-family:'Bebas Neue',sans-serif; font-size:11px; letter-spacing:1px; color:#888; cursor:pointer; transition:all .15s; }
+.mypage-add-cat.on { border-color:var(--red); color:var(--red); background:rgba(229,19,26,.05); }
+.mypage-add-input { width:100%; border:1px solid #e0dbd5; padding:10px 12px; font-size:13px; font-family:'Noto Sans JP',sans-serif; outline:none; background:#fff; box-sizing:border-box; margin-bottom:0; }
+.mypage-add-input:focus { border-color:var(--red); }
+.mypage-add-btn { width:100%; background:var(--red); color:#fff; border:none; padding:14px; font-family:'Bebas Neue',sans-serif; font-size:16px; letter-spacing:3px; cursor:pointer; margin-top:18px; }
+.mypage-add-btn:active { background:#c0000e; }
+
+/* Memo field */
+.mypage-memo { width:100%; border:1px solid #e0dbd5; padding:10px 12px; font-size:12px; font-family:'Noto Sans JP',sans-serif; outline:none; background:#fff; box-sizing:border-box; resize:none; height:58px; }
+.mypage-memo:focus { border-color:var(--red); }
+
 .back-result-bar { display:none; align-items:center; gap:10px; padding:10px 16px; background:#fff8f8; border-bottom:2px solid var(--red); position:sticky; top:48px; z-index:150; cursor:pointer; }
 .back-result-bar.show { display:flex; }
 .back-result-bar:active { background:#fff0f0; }
@@ -1286,6 +1340,65 @@ function renderSkinRoutine() {
     <div class="hero-btns">
       <button class="btn-red" onclick="openModal()" data-i18n="hero_btn1">無料で診断する</button>
       <button class="btn-dark" onclick="goPage('quiz')" data-i18n="hero_btn2">クイズを試す</button>
+    </div>
+  </div>
+
+  <!-- My Page Section -->
+  <div class="mypage-section" id="mypage-section">
+    <!-- Guest state -->
+    <div class="sec-label"><div class="sec-label-line"></div><span class="sec-label-text">My Page</span></div>
+    <div id="mypage-guest" style="display:none">
+      <div class="mypage-guest">
+        <div class="mypage-guest-icon">👤</div>
+        <div class="mypage-guest-title">マイページ</div>
+        <div class="mypage-guest-desc">ログインすると、あなたのタイプに合った<br>コスメ・ヘアを保存・管理できます。</div>
+        <button class="btn-red" style="max-width:220px;margin:0 auto;font-size:14px;padding:12px 0;" onclick="openAuth()">ログイン / 新規登録</button>
+      </div>
+    </div>
+    <!-- Logged-in state -->
+    <div id="mypage-loggedin" style="display:none">
+      <!-- Type Row -->
+      <div class="mypage-type-row">
+        <div class="mypage-type-badge" onclick="openModal()">
+          <div class="mypage-type-lbl">BONE TYPE</div>
+          <div class="mypage-type-val" id="mp-bone-val">— 未診断 —</div>
+        </div>
+        <div class="mypage-type-badge" onclick="openModal()">
+          <div class="mypage-type-lbl">FACE TYPE</div>
+          <div class="mypage-type-val" id="mp-face-val">— 未診断 —</div>
+        </div>
+        <div class="mypage-type-badge" onclick="goPage('skin')">
+          <div class="mypage-type-lbl">SKIN TYPE</div>
+          <div class="mypage-type-val" id="mp-skin-val">— 未診断 —</div>
+        </div>
+      </div>
+
+      <!-- Cosmetics Favorites -->
+      <div class="mypage-fav-section">
+        <div class="mypage-fav-hd">
+          <div class="mypage-fav-title">💄 お気に入りコスメ</div>
+          <button class="mypage-fav-add" onclick="openMypageAdd('cosmetic')">＋ 追加</button>
+        </div>
+        <div id="mp-cosmetic-list"></div>
+      </div>
+
+      <!-- Hair Favorites -->
+      <div class="mypage-fav-section">
+        <div class="mypage-fav-hd">
+          <div class="mypage-fav-title">💇 お気に入りヘア</div>
+          <button class="mypage-fav-add" onclick="openMypageAdd('hair')">＋ 追加</button>
+        </div>
+        <div id="mp-hair-list"></div>
+      </div>
+
+      <!-- Skincare Favorites -->
+      <div class="mypage-fav-section" style="margin-bottom:0">
+        <div class="mypage-fav-hd">
+          <div class="mypage-fav-title">🌿 お気に入りスキンケア</div>
+          <button class="mypage-fav-add" onclick="openMypageAdd('skincare')">＋ 追加</button>
+        </div>
+        <div id="mp-skincare-list"></div>
+      </div>
     </div>
   </div>
 
@@ -3994,6 +4107,7 @@ function onSignedIn(user) {
   closeAuth();
   rendered['record'] = false;
   if(document.getElementById('pg-record').classList.contains('active')) renderRecord();
+  renderMypage();
 }
 
 function onSignedOut() {
@@ -4002,6 +4116,7 @@ function onSignedOut() {
   document.getElementById('nav-avatar-wrap').style.display = 'none';
   rendered['record'] = false;
   if(document.getElementById('pg-record').classList.contains('active')) renderRecord();
+  renderMypage();
 }
 
 // ── Auth Modal ────────────────────────────────────────────
@@ -4143,6 +4258,7 @@ async function saveRecord() {
   const today = todayStr();
   const entry = {
     ..._lastDiagData,
+    skinType: _lastDiagData.skin?.type || null,
     id: Date.now(),
     date: today,
     time: new Date().toLocaleTimeString('ja-JP', { hour:'2-digit', minute:'2-digit' }),
@@ -4164,6 +4280,8 @@ async function saveRecord() {
     if(btn) { btn.textContent='✓ 端末に保存しました'; btn.classList.add('saved'); btn.disabled=true; }
   }
   rendered['record'] = false;
+  // refresh mypage type badges
+  setTimeout(renderMypage, 300);
 }
 
 
@@ -4496,6 +4614,146 @@ const I18N = {
   },
 };
 
+// ═══════════════════════════════════════════════════════════
+//  MY PAGE
+// ═══════════════════════════════════════════════════════════
+const MP_KEY = 'rp_mypage_v1';
+
+const MP_CATS = {
+  cosmetic: ['ベースメイク','アイメイク','リップ','チーク','ハイライト','その他'],
+  hair:     ['ショート','ボブ','ミディアム','ロング','カラー','スタイリング'],
+  skincare: ['洗顔','化粧水','美容液','乳液','クリーム','日焼け止め','クレンジング'],
+};
+
+function loadMypageData() {
+  try { return JSON.parse(localStorage.getItem(MP_KEY) || '{}'); } catch(e) { return {}; }
+}
+function saveMypageData(d) {
+  try { localStorage.setItem(MP_KEY, JSON.stringify(d)); } catch(e) {}
+}
+
+function renderMypage() {
+  if (!currentUser) {
+    document.getElementById('mypage-guest').style.display = '';
+    document.getElementById('mypage-loggedin').style.display = 'none';
+    return;
+  }
+  document.getElementById('mypage-guest').style.display = 'none';
+  document.getElementById('mypage-loggedin').style.display = '';
+
+  // タイプ表示（最新の診断記録から）
+  const records = loadRecords();
+  const allDates = Object.keys(records).sort().reverse();
+  if (allDates.length > 0) {
+    const latest = records[allDates[0]];
+    const arr = Array.isArray(latest) ? latest : [latest];
+    const entry = arr[arr.length - 1];
+    if (entry) {
+      const BONE_JP2 = {straight:'ストレート',wave:'ウェーブ',natural:'ナチュラル'};
+      const FACE_JP2 = {oval:'卵型',round:'丸顔',long:'面長',square:'ベース型',triangle:'逆三角型'};
+      const SKIN_JP2 = {oily:'オイリー肌',dry:'乾燥肌',combination:'混合肌',sensitive:'敏感肌',normal:'普通肌'};
+      setMpType('mp-bone-val', BONE_JP2[entry.boneType] || entry.boneType);
+      setMpType('mp-face-val', FACE_JP2[entry.faceType] || entry.faceType);
+      if (entry.skinType) setMpType('mp-skin-val', SKIN_JP2[entry.skinType] || entry.skinType);
+    }
+  }
+
+  renderMypageFavList('cosmetic');
+  renderMypageFavList('hair');
+  renderMypageFavList('skincare');
+}
+
+function setMpType(id, val) {
+  const el = document.getElementById(id);
+  if (!el) return;
+  el.textContent = val || '— 未診断 —';
+  el.style.color = val ? '' : '#ccc';
+  el.style.fontSize = val ? '' : '11px';
+}
+
+function renderMypageFavList(type) {
+  const listId = 'mp-' + type + '-list';
+  const el = document.getElementById(listId);
+  if (!el) return;
+  const data = loadMypageData();
+  const items = (data[type] || []);
+  if (items.length === 0) {
+    el.innerHTML = '<div class="mypage-fav-empty">まだ登録がありません</div>';
+    return;
+  }
+  el.innerHTML = '<div class="mypage-fav-list">' + items.map((item, i) =>
+    '<div class="mypage-fav-item">' +
+      '<div class="mypage-fav-cat">' + (item.cat || '') + '</div>' +
+      '<div class="mypage-fav-body">' +
+        '<div class="mypage-fav-name">' + escHtml(item.name) + '</div>' +
+        (item.brand ? '<div class="mypage-fav-brand">' + escHtml(item.brand) + (item.memo ? ' · ' + escHtml(item.memo) : '') + '</div>' : '') +
+      '</div>' +
+      (item.brand && item.name ? '<a class="mypage-fav-shop" href="' + getShopUrl(item.brand, item.name, type === 'skincare' ? '🇯🇵' : '') + '" target="_blank" rel="noopener">検索</a>' : '') +
+      '<button class="mypage-fav-del" onclick="deleteMypageItem(\'' + type + '\',' + i + ')" title="削除">×</button>' +
+    '</div>'
+  ).join('') + '</div>';
+}
+
+function escHtml(s) {
+  return (s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+}
+
+function deleteMypageItem(type, idx) {
+  const data = loadMypageData();
+  if (!data[type]) return;
+  data[type].splice(idx, 1);
+  saveMypageData(data);
+  renderMypageFavList(type);
+}
+
+// Add item modal
+let _addType = 'cosmetic';
+let _addCat  = '';
+
+function openMypageAdd(type) {
+  _addType = type;
+  _addCat  = '';
+  const titles = { cosmetic:'コスメを追加', hair:'ヘアスタイルを追加', skincare:'スキンケアを追加' };
+  document.getElementById('mypage-add-title').textContent = titles[type] || 'アイテムを追加';
+  document.getElementById('mypage-add-brand').value = '';
+  document.getElementById('mypage-add-name').value  = '';
+  document.getElementById('mypage-add-memo').value  = '';
+
+  const cats = MP_CATS[type] || [];
+  document.getElementById('mypage-add-cats').innerHTML = cats.map(c =>
+    '<button class="mypage-add-cat" onclick="selectMpCat(this,\'' + c + '\')">' + c + '</button>'
+  ).join('');
+
+  document.getElementById('mypage-add-ov').classList.add('open');
+}
+
+function selectMpCat(btn, cat) {
+  _addCat = cat;
+  document.querySelectorAll('.mypage-add-cat').forEach(b => b.classList.remove('on'));
+  btn.classList.add('on');
+}
+
+function closeMypageAdd(e) {
+  if (!e || e.target === document.getElementById('mypage-add-ov')) {
+    document.getElementById('mypage-add-ov').classList.remove('open');
+  }
+}
+
+function saveMypageItem() {
+  const brand = document.getElementById('mypage-add-brand').value.trim();
+  const name  = document.getElementById('mypage-add-name').value.trim();
+  const memo  = document.getElementById('mypage-add-memo').value.trim();
+  if (!name) { document.getElementById('mypage-add-name').focus(); return; }
+  const data = loadMypageData();
+  if (!data[_addType]) data[_addType] = [];
+  data[_addType].unshift({ cat: _addCat, brand, name, memo, addedAt: Date.now() });
+  saveMypageData(data);
+  document.getElementById('mypage-add-ov').classList.remove('open');
+  renderMypageFavList(_addType);
+}
+
+
+
 function applyLang(lang) {
   currentLang = lang;
   localStorage.setItem('rp_lang', lang);
@@ -4515,5 +4773,23 @@ function applyLang(lang) {
 
 </script>
 
-</body>
-</html>
+<!-- ══ MYPAGE ADD ITEM MODAL ══ -->
+<div class="mypage-add-ov" id="mypage-add-ov" onclick="closeMypageAdd(event)">
+  <div class="mypage-add-sheet">
+    <div class="mypage-add-hd">
+      <div class="mypage-add-title" id="mypage-add-title">アイテムを追加</div>
+      <button class="mypage-add-x" onclick="closeMypageAdd()">✕</button>
+    </div>
+    <div class="mypage-add-body">
+      <div class="mypage-add-label">カテゴリ</div>
+      <div class="mypage-add-cats" id="mypage-add-cats"></div>
+      <div class="mypage-add-label">ブランド名</div>
+      <input class="mypage-add-input" id="mypage-add-brand" placeholder="例：COSRX、INNISFREE…" style="margin-bottom:10px;">
+      <div class="mypage-add-label">商品名 / スタイル名</div>
+      <input class="mypage-add-input" id="mypage-add-name" placeholder="例：スネイルムチンエッセンス…" style="margin-bottom:10px;">
+      <div class="mypage-add-label">メモ（任意）</div>
+      <textarea class="mypage-memo" id="mypage-add-memo" placeholder="使い心地や購入場所など…"></textarea>
+      <button class="mypage-add-btn" onclick="saveMypageItem()">保存する</button>
+    </div>
+  </div>
+</div>
