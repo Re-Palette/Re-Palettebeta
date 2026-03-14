@@ -3459,6 +3459,23 @@ faceType: oval=卵型, round=丸顔, long=面長, square=ベース型, triangle=
 【似ている有名人の候補リスト（必ずこの中から選ぶこと）】
 ${celebListStr}
 
+【肌診断の判定基準（写真から視覚的に判定）】
+skin.type:
+- oily = Tゾーン・額・鼻に光沢・てかり、毛穴が目立つ、肌全体がなめらかに見えるがテカっている
+- dry = 肌にくすみ・粉感、ハリ不足・小じわが見える、血色が悪い
+- combination = 額・鼻はテカリ、頬・目周りは乾燥している印象
+- sensitive = 赤み・むら・皮むけが見える、肌の色ムラが多い
+- normal = 均一な肌色・適度なツヤ・毛穴目立たず
+
+各スコア（0-100）の判定：
+- hydration: 肌のツヤ・みずみずしさ（高いほど保湿されている）
+- oiliness: テカリ・光沢の強さ（高いほど皮脂多い）
+- poreVisibility: 毛穴の目立ち度（高いほど毛穴が目立つ）
+- clarity: 肌の透明感・均一さ（高いほど綺麗）
+- firmness: 肌のハリ・弾力感（高いほどハリあり）
+
+写真の肌の状態を実際に観察し、各タイプの特徴に基づいてスコアを決定すること。同じ値を繰り返さず、写真から読み取れる特徴を反映させること。
+
 【出力JSON（厳守）】
 {
   "boneType": "straight|wave|natural",
@@ -3576,43 +3593,87 @@ function getFallbackResult(metrics, gender) {
     strongPoints: isMale
       ? ['骨格の存在感','フェイスラインの力強さ','全体のバランス']
       : ['目元の印象','フェイスラインの綺麗さ','全体のバランスの良さ'],
-    skin: {
-      type: 'combination', typeConfidence: 65,
-      hydration: 58, oiliness: 62, poreVisibility: 55, clarity: 60, firmness: 70,
-      concerns: ['毛穴の開き', 'Tゾーンのテカリ', '乾燥による小ジワ'],
-      morningRoutine: [
-        {step:1, name:'洗顔', desc:'ぬるま湯で優しく泡立てて洗顔'},
-        {step:2, name:'化粧水', desc:'コットンで優しくパッティング'},
-        {step:3, name:'乳液', desc:'手のひらで温めてから馴染ませる'},
-        {step:4, name:'日焼け止め', desc:'SPF50+を毎日欠かさず使用'},
-      ],
-      nightRoutine: [
-        {step:1, name:'クレンジング', desc:'マッサージしながらメイクを落とす'},
-        {step:2, name:'洗顔', desc:'ダブル洗顔で毛穴の汚れをオフ'},
-        {step:3, name:'美容液', desc:'集中ケア成分を肌に浸透させる'},
-        {step:4, name:'ナイトクリーム', desc:'睡眠中の肌再生をサポート'},
-      ],
-      products: {
-        jp: [
-          {brand:'FANCL', name:'マイルドクレンジングオイル', desc:'毛穴汚れまで落とすW洗顔不要', price:'¥1,980', category:'クレンジング'},
-          {brand:'肌ラボ', name:'極潤ヒアルロン液', desc:'3種ヒアルロン酸で超保湿', price:'¥880', category:'化粧水'},
-          {brand:'ANESSA', name:'パーフェクトUV', desc:'SPF50+・PA++++毎日使い', price:'¥2,200', category:'日焼け止め'},
+    skin: (function() {
+      // Randomize fallback skin type meaningfully
+      const skinTypes = ['oily','dry','combination','sensitive','normal'];
+      const skinType = skinTypes[Math.floor(Math.random() * skinTypes.length)];
+      const skinProfiles = {
+        oily:        { hydration:45, oiliness:82, poreVisibility:78, clarity:55, firmness:72, concerns:['毛穴の開き・詰まり','Tゾーンのテカリ','ニキビ・吹き出物'] },
+        dry:         { hydration:35, oiliness:22, poreVisibility:30, clarity:65, firmness:58, concerns:['乾燥・粉感','小ジワ・ハリ不足','化粧崩れしやすい'] },
+        combination: { hydration:55, oiliness:60, poreVisibility:55, clarity:62, firmness:68, concerns:['Tゾーンのテカリ','Uゾーンの乾燥','毛穴の開き（鼻）'] },
+        sensitive:   { hydration:50, oiliness:35, poreVisibility:38, clarity:52, firmness:62, concerns:['赤み・かゆみ','刺激への反応','乾燥・ゆらぎ肌'] },
+        normal:      { hydration:68, oiliness:45, poreVisibility:35, clarity:78, firmness:75, concerns:['季節の変わり目の乾燥','くすみ・透明感','エイジングケア（予防）'] },
+      };
+      const p = skinProfiles[skinType];
+      const vary = (v) => Math.min(100, Math.max(0, v + Math.round((Math.random()-0.5)*16)));
+      return {
+        type: skinType,
+        typeConfidence: Math.round(62 + Math.random()*22),
+        hydration: vary(p.hydration), oiliness: vary(p.oiliness),
+        poreVisibility: vary(p.poreVisibility), clarity: vary(p.clarity), firmness: vary(p.firmness),
+        concerns: p.concerns,
+        morningRoutine: skinType === 'oily' ? [
+          {step:1, name:'洗顔（泡立て）', desc:'皮脂を落とすアミノ酸系洗顔で'},
+          {step:2, name:'化粧水（さっぱり）', desc:'ナイアシンアミド配合でテカリ抑制'},
+          {step:3, name:'乳液（軽め）', desc:'油分少なめのジェルタイプ'},
+          {step:4, name:'日焼け止め', desc:'SPF50+・ノンコメドジェニック'},
+        ] : skinType === 'dry' ? [
+          {step:1, name:'洗顔（ぬるま湯）', desc:'皮脂を落としすぎないやさしい洗顔'},
+          {step:2, name:'化粧水（とろみ）', desc:'セラミド・ヒアルロン酸配合'},
+          {step:3, name:'美容液', desc:'保湿特化型美容液を重ねる'},
+          {step:4, name:'日焼け止め（保湿型）', desc:'SPF50+・保湿成分配合'},
+        ] : skinType === 'sensitive' ? [
+          {step:1, name:'洗顔（低刺激）', desc:'界面活性剤フリーかアミノ酸系で'},
+          {step:2, name:'化粧水（シカ系）', desc:'ツボクサ・アラントイン配合で鎮静'},
+          {step:3, name:'保湿クリーム', desc:'バリア機能を補修するセラミド系'},
+          {step:4, name:'日焼け止め（ノンケミカル）', desc:'紫外線散乱剤のみの低刺激タイプ'},
+        ] : [
+          {step:1, name:'洗顔', desc:'ぬるま湯で優しく泡立てて洗顔'},
+          {step:2, name:'化粧水', desc:'コットンで優しくパッティング'},
+          {step:3, name:'乳液', desc:'手のひらで温めてから馴染ませる'},
+          {step:4, name:'日焼け止め', desc:'SPF50+を毎日欠かさず使用'},
         ],
-        kr: [
-          {brand:'COSRX', name:'ACニューリング', desc:'ニキビ跡・毛穴に効く低刺激', price:'¥1,500', category:'美容液'},
-          {brand:'INNISFREE', name:'グリーンティーヒアルロン酸', desc:'済州島緑茶で保湿', price:'¥1,200', category:'化粧水'},
-          {brand:'Some By Mi', name:'AHA・BHA・PHAトナー', desc:'角質ケア＋毛穴引き締め', price:'¥1,800', category:'化粧水'},
+        nightRoutine: skinType === 'oily' ? [
+          {step:1, name:'クレンジング（ジェル）', desc:'毛穴の皮脂汚れをしっかりオフ'},
+          {step:2, name:'洗顔（酵素）', desc:'週2〜3回の酵素洗顔で角栓除去'},
+          {step:3, name:'化粧水', desc:'ナイアシンアミドで夜間に毛穴ケア'},
+          {step:4, name:'ジェルクリーム', desc:'油分控えめの保湿でべたつかず'},
+        ] : skinType === 'dry' ? [
+          {step:1, name:'クレンジング（ミルク）', desc:'摩擦ゼロで素早くメイクを落とす'},
+          {step:2, name:'洗顔', desc:'洗浄力マイルドな洗顔フォーム'},
+          {step:3, name:'美容液', desc:'PDRN・セラミド系を重ね塗り'},
+          {step:4, name:'ナイトクリーム', desc:'こっくり保湿で睡眠中の肌再生'},
+        ] : skinType === 'sensitive' ? [
+          {step:1, name:'クレンジング（バーム）', desc:'刺激の少ないバームで丁寧にオフ'},
+          {step:2, name:'洗顔（低刺激）', desc:'しっかり泡立てて摩擦を最小化'},
+          {step:3, name:'美容液（CICA）', desc:'センテラで炎症・赤みを鎮静'},
+          {step:4, name:'バリアクリーム', desc:'セラミドでバリア機能を強化'},
+        ] : [
+          {step:1, name:'クレンジング', desc:'マッサージしながらメイクを落とす'},
+          {step:2, name:'洗顔', desc:'ダブル洗顔で毛穴の汚れをオフ'},
+          {step:3, name:'美容液', desc:'集中ケア成分を肌に浸透させる'},
+          {step:4, name:'ナイトクリーム', desc:'睡眠中の肌再生をサポート'},
         ],
-        global: [
-          {brand:'The Ordinary', name:'Niacinamide 10%', desc:'毛穴・テカリを一気に改善', price:'¥1,100', category:'美容液'},
-          {brand:'CeraVe', name:'フォーミング洗顔料', desc:'セラミド配合・pH調整済み', price:'¥1,500', category:'洗顔'},
-        ],
-      },
-    },
+        products: {
+          jp: [
+            {brand:'FANCL', name:'マイルドクレンジングオイル', desc:'毛穴汚れまで落とすW洗顔不要', price:'¥1,980', category:'クレンジング'},
+            {brand:'肌ラボ', name:'極潤ヒアルロン液', desc:'3種ヒアルロン酸で超保湿', price:'¥880', category:'化粧水'},
+            {brand:'ANESSA', name:'パーフェクトUV', desc:'SPF50+・PA++++毎日使い', price:'¥2,200', category:'日焼け止め'},
+          ],
+          kr: [
+            {brand:'COSRX', name:'ACニューリング', desc:'ニキビ跡・毛穴に効く低刺激', price:'¥1,500', category:'美容液'},
+            {brand:'INNISFREE', name:'グリーンティーヒアルロン酸', desc:'済州島緑茶で保湿', price:'¥1,200', category:'化粧水'},
+            {brand:'Some By Mi', name:'AHA・BHA・PHAトナー', desc:'角質ケア＋毛穴引き締め', price:'¥1,800', category:'化粧水'},
+          ],
+          global: [
+            {brand:'The Ordinary', name:'Niacinamide 10%', desc:'毛穴・テカリを一気に改善', price:'¥1,100', category:'美容液'},
+            {brand:'CeraVe', name:'フォーミング洗顔料', desc:'セラミド配合・pH調整済み', price:'¥1,500', category:'洗顔'},
+          ],
+        },
+      };
+    })(),
   };
 }
-
-// ── SKIN helpers (global) ─────────────────────────────────────────────────
 const SKIN_TYPE_MAP = {
   oily:        { label:'オイリー肌', icon:'💧', color:'#3b82f6', desc:'皮脂分泌が多く、テカリやすい。毛穴が目立ちやすく、ニキビができやすい肌質。' },
   dry:         { label:'乾燥肌',    icon:'🌵', color:'#e5a000', desc:'水分・油分ともに少なく、肌が乾燥しやすい。小ジワや粉感が出やすい肌質。' },
