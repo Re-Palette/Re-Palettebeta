@@ -678,6 +678,12 @@ footer { background:#f7f4f0; padding:24px 20px; border-top:2px solid var(--red);
 /* product badge */
 .skin-prod-badge { display:inline-block; background:var(--red); color:#fff; font-size:9px; padding:1px 6px; letter-spacing:.5px; border-radius:0; margin-left:4px; vertical-align:middle; }
 
+/* clickable product card */
+.skin-prod-link { text-decoration:none; color:inherit; display:flex; cursor:pointer; transition:border-color .15s, background .15s; }
+.skin-prod-link:active, .skin-prod-link:hover { border-color:var(--red) !important; background:#fff8f8 !important; }
+.skin-shop-btn { font-family:'Bebas Neue',sans-serif; font-size:10px; letter-spacing:1px; color:var(--red); border:1px solid var(--red); padding:2px 7px; white-space:nowrap; }
+.skin-prod-link:hover .skin-shop-btn, .skin-prod-link:active .skin-shop-btn { background:var(--red); color:#fff; }
+
 </style>
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
   <script>
@@ -1042,7 +1048,8 @@ function renderSkinTypeDetail() {
     var tagsHtml = (p.tags||[]).filter(function(t){ return t.indexOf('Qoo10')<0&&t.indexOf('LIPS')<0; })
       .map(function(t) { return '<span class="skin-prod-tag2">' + t + '</span>'; }).join('');
     var qooBadge = isQoo ? '<span class="skin-prod-badge">🔥 話題</span>' : '';
-    return '<div class="skin-prod-card2">' +
+    var shopUrl = getShopUrl(p.brand, p.name, p.flag);
+    return '<a class="skin-prod-card2 skin-prod-link" href="' + shopUrl + '" target="_blank" rel="noopener">' +
       '<div class="skin-prod-flag2">' + p.flag + '</div>' +
       '<div class="skin-prod-info2">' +
         '<div class="skin-prod-brand2">' + p.brand + (qooBadge ? ' ' + qooBadge : '') + '</div>' +
@@ -1050,8 +1057,11 @@ function renderSkinTypeDetail() {
         '<div class="skin-prod-desc2">' + p.desc + '</div>' +
         '<div class="skin-prod-tags2">' + tagsHtml + '</div>' +
       '</div>' +
-      '<div class="skin-prod-price2">' + p.price + '</div>' +
-    '</div>';
+      '<div style="display:flex;flex-direction:column;align-items:flex-end;gap:4px;flex-shrink:0">' +
+        '<div class="skin-prod-price2">' + p.price + '</div>' +
+        '<div class="skin-shop-btn">検索 →</div>' +
+      '</div>' +
+    '</a>';
   }).join('');
 
   var avoidHtml = (d.avoidIngredients||[]).map(function(a) {
@@ -3674,6 +3684,13 @@ function getFallbackResult(metrics, gender) {
     })(),
   };
 }
+// ── Shopping search URL helper ───────────────────────────────────────────────
+function getShopUrl(brand, name, flag) {
+  const q = encodeURIComponent(brand + ' ' + name);
+  if (flag === '🇰🇷' || flag === '🇯🇵') return 'https://www.qoo10.jp/sr/searchList.aspx?keyword=' + q;
+  return 'https://www.amazon.co.jp/s?k=' + q;
+}
+
 const SKIN_TYPE_MAP = {
   oily:        { label:'オイリー肌', icon:'💧', color:'#3b82f6', desc:'皮脂分泌が多く、テカリやすい。毛穴が目立ちやすく、ニキビができやすい肌質。' },
   dry:         { label:'乾燥肌',    icon:'🌵', color:'#e5a000', desc:'水分・油分ともに少なく、肌が乾燥しやすい。小ジワや粉感が出やすい肌質。' },
@@ -3728,15 +3745,19 @@ function buildSkinHtml(skin) {
   }
   function prodHtml(prods, flag) {
     return (prods||[]).map(function(p) {
-      return '<div class="res-skin-prod-card">' +
+      var shopUrl = getShopUrl(p.brand, p.name, flag);
+      return '<a class="res-skin-prod-card skin-prod-link" href="' + shopUrl + '" target="_blank" rel="noopener">' +
         '<div class="res-skin-prod-flag">' + flag + '</div>' +
         '<div class="res-skin-prod-info">' +
           '<div class="res-skin-prod-brand">' + p.brand + ' &middot; ' + p.category + '</div>' +
           '<div class="res-skin-prod-name">' + p.name + '</div>' +
           '<div class="res-skin-prod-desc">' + p.desc + '</div>' +
         '</div>' +
-        '<div class="res-skin-prod-price">' + p.price + '</div>' +
-      '</div>';
+        '<div style="display:flex;flex-direction:column;align-items:flex-end;gap:4px;flex-shrink:0">' +
+          '<div class="res-skin-prod-price">' + p.price + '</div>' +
+          '<div class="skin-shop-btn">検索 →</div>' +
+        '</div>' +
+      '</a>';
     }).join('');
   }
 
