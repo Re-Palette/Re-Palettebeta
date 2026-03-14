@@ -3687,7 +3687,11 @@ function getFallbackResult(metrics, gender) {
 // ── Shopping search URL helper ───────────────────────────────────────────────
 function getShopUrl(brand, name, flag) {
   const q = encodeURIComponent(brand + ' ' + name);
-  if (flag === '🇰🇷' || flag === '🇯🇵') return 'https://www.qoo10.jp/sr/searchList.aspx?keyword=' + q;
+  // Qoo10 Japan の正しい検索URL形式: /s/キーワード?keyword=キーワード
+  if (flag === '🇰🇷' || flag === '🇯🇵') {
+    return 'https://www.qoo10.jp/s/' + q + '?keyword=' + q;
+  }
+  // 海外ブランドはAmazon Japan
   return 'https://www.amazon.co.jp/s?k=' + q;
 }
 
