@@ -7,38 +7,38 @@
 <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Noto+Sans+JP:wght@300;400;700&family=DM+Serif+Display:ital@0;1&display=swap" rel="stylesheet">
 <style>
 :root {
-  --black: #0a0a0a;
-  --white: #f5f2ee;
+  --black: #1a1a1a;
+  --white: #ffffff;
   --red: #e5131a;
-  --gray: #2a2a2a;
+  --gray: #f0ece8;
   --mid: #888;
-  --light: #d4d0ca;
+  --light: #555555;
   --border: #e0dbd5;
 }
 * { margin:0; padding:0; box-sizing:border-box; -webkit-tap-highlight-color:transparent; }
-html,body { width:100%; max-width:430px; margin:0 auto; background:var(--white); color:var(--black); font-family:'Noto Sans JP',sans-serif; font-weight:300; overflow-x:hidden; }
+html,body { width:100%; max-width:430px; margin:0 auto; background:#ffffff; color:var(--black); font-family:'Noto Sans JP',sans-serif; font-weight:300; overflow-x:hidden; }
 
 /* NAV */
-nav { position:fixed; top:0; left:50%; transform:translateX(-50%); width:100%; max-width:430px; z-index:200; display:flex; align-items:center; justify-content:space-between; padding:0 12px; height:48px; background:var(--black); border-bottom:2px solid var(--red); gap:6px; }
-.nav-login-btn { background:none; border:1px solid #444; color:#aaa; padding:3px 8px; font-family:'Bebas Neue',sans-serif; font-size:10px; letter-spacing:1px; cursor:pointer; transition:all .15s; white-space:nowrap; }
+nav { position:fixed; top:0; left:50%; transform:translateX(-50%); width:100%; max-width:430px; z-index:200; display:flex; align-items:center; justify-content:space-between; padding:0 12px; height:48px; background:#ffffff; border-bottom:2px solid var(--red); gap:6px; box-shadow:0 2px 8px rgba(0,0,0,.08); }
+.nav-login-btn { background:none; border:1px solid #ddd; color:#555; padding:3px 8px; font-family:'Bebas Neue',sans-serif; font-size:10px; letter-spacing:1px; cursor:pointer; transition:all .15s; white-space:nowrap; }
 .nav-login-btn:active { border-color:var(--red); color:var(--red); }
 .nav-avatar-wrap { display:flex; align-items:center; gap:6px; }
 .nav-avatar { width:26px; height:26px; border-radius:50%; background:var(--red); display:flex; align-items:center; justify-content:center; font-family:'Bebas Neue',sans-serif; font-size:12px; color:#fff; overflow:hidden; flex-shrink:0; }
 .nav-avatar img { width:100%; height:100%; object-fit:cover; }
-.nav-logout-btn { background:none; border:1px solid #333; color:#666; font-size:9px; letter-spacing:1px; padding:3px 8px; cursor:pointer; font-family:'Bebas Neue',sans-serif; }
+.nav-logout-btn { background:none; border:1px solid #ddd; color:#888; font-size:9px; letter-spacing:1px; padding:3px 8px; cursor:pointer; font-family:'Bebas Neue',sans-serif; }
 .nav-logout-btn:active { color:var(--red); border-color:var(--red); }
-.nav-logo { font-family:'Bebas Neue',sans-serif; font-size:16px; color:var(--white); letter-spacing:2px; white-space:nowrap; flex-shrink:0; }
+.nav-logo { font-family:'Bebas Neue',sans-serif; font-size:16px; color:var(--black); letter-spacing:2px; white-space:nowrap; flex-shrink:0; }
 .nav-logo span { color:var(--red); }
 /* Language selector */
 .lang-sel { display:flex; gap:1px; flex-shrink:0; }
-.lang-btn { background:none; border:1px solid #2a2a2a; color:#555; font-family:'Bebas Neue',sans-serif; font-size:8px; letter-spacing:.5px; padding:2px 5px; cursor:pointer; transition:all .15s; }
+.lang-btn { background:none; border:1px solid #ddd; color:#888; font-family:'Bebas Neue',sans-serif; font-size:8px; letter-spacing:.5px; padding:2px 5px; cursor:pointer; transition:all .15s; }
 .lang-btn.active { border-color:var(--red); color:var(--red); }
 .lang-btn:active { opacity:.7; }
 .nav-btn { background:var(--red); color:#fff; padding:6px 12px; border:none; cursor:pointer; font-family:'Bebas Neue',sans-serif; font-size:11px; letter-spacing:1.5px; white-space:nowrap; flex-shrink:0; }
 
 /* TAB BAR */
-.tab-bar { position:fixed; bottom:0; left:50%; transform:translateX(-50%); width:100%; max-width:430px; z-index:200; display:flex; background:var(--black); border-top:1px solid #1e1e1e; padding-bottom:env(safe-area-inset-bottom,0); }
-.tab-item { flex:1; display:flex; flex-direction:column; align-items:center; padding:8px 0 6px; cursor:pointer; color:#555; border:none; background:none; transition:color .2s; }
+.tab-bar { position:fixed; bottom:0; left:50%; transform:translateX(-50%); width:100%; max-width:430px; z-index:200; display:flex; background:#ffffff; border-top:1px solid #e8e4e0; padding-bottom:env(safe-area-inset-bottom,0); box-shadow:0 -2px 8px rgba(0,0,0,.06); }
+.tab-item { flex:1; display:flex; flex-direction:column; align-items:center; padding:8px 0 6px; cursor:pointer; color:#bbb; border:none; background:none; transition:color .2s; }
 .tab-item.active { color:var(--red); }
 .tab-icon { display:flex; align-items:center; justify-content:center; margin-bottom:2px; }
 .tab-label { font-size:8px; letter-spacing:.3px; font-family:'Noto Sans JP',sans-serif; }
@@ -48,8 +48,8 @@ nav { position:fixed; top:0; left:50%; transform:translateX(-50%); width:100%; m
 .page.active { display:block; }
 
 /* PAGE HEADER */
-.page-hd { background:var(--black); padding:18px 20px 0; border-bottom:2px solid var(--red); position:sticky; top:48px; z-index:100; }
-.page-hd-title { font-family:'Bebas Neue',sans-serif; font-size:28px; color:var(--white); letter-spacing:2px; margin-bottom:14px; }
+.page-hd { background:#ffffff; padding:18px 20px 0; border-bottom:2px solid var(--red); position:sticky; top:48px; z-index:100; }
+.page-hd-title { font-family:'Bebas Neue',sans-serif; font-size:28px; color:var(--black); letter-spacing:2px; margin-bottom:14px; }
 .seg-tabs { display:flex; overflow-x:auto; scrollbar-width:none; }
 .seg-tabs::-webkit-scrollbar { display:none; }
 .seg-tab { flex-shrink:0; padding:9px 16px; font-family:'Bebas Neue',sans-serif; font-size:12px; letter-spacing:2px; color:var(--mid); background:none; border:none; border-bottom:2px solid transparent; cursor:pointer; transition:color .2s,border-color .2s; white-space:nowrap; }
@@ -69,23 +69,23 @@ nav { position:fixed; top:0; left:50%; transform:translateX(-50%); width:100%; m
 /* BUTTONS */
 .btn-red { background:var(--red); color:#fff; padding:14px 0; border:none; cursor:pointer; font-family:'Bebas Neue',sans-serif; font-size:18px; letter-spacing:3px; text-align:center; width:100%; display:block; }
 .btn-red:active { background:#c0000e; }
-.btn-dark { background:transparent; color:var(--light); padding:14px 0; border:1px solid #444; cursor:pointer; font-family:'Bebas Neue',sans-serif; font-size:18px; letter-spacing:3px; text-align:center; width:100%; display:block; }
+.btn-dark { background:transparent; color:var(--black); padding:14px 0; border:1px solid #ccc; cursor:pointer; font-family:'Bebas Neue',sans-serif; font-size:18px; letter-spacing:3px; text-align:center; width:100%; display:block; }
 
 /* ══════════════ HOME PAGE ══════════════ */
-.hero { background:var(--black); padding:36px 22px 28px; min-height:calc(100svh - 52px); display:flex; flex-direction:column; justify-content:center; position:relative; overflow:hidden; }
+.hero { background:#f7f4f0; padding:36px 22px 28px; min-height:calc(100svh - 52px); display:flex; flex-direction:column; justify-content:center; position:relative; overflow:hidden; }
 .hero::after { content:'FACE'; position:absolute; bottom:-8px; right:-16px; font-family:'Bebas Neue',sans-serif; font-size:120px; color:rgba(229,19,26,.07); letter-spacing:-6px; pointer-events:none; }
 .hero-tag { font-size:10px; letter-spacing:3px; color:var(--red); text-transform:uppercase; margin-bottom:14px; }
-.hero-title { font-family:'Bebas Neue',sans-serif; font-size:68px; line-height:.88; color:var(--white); letter-spacing:2px; margin-bottom:18px; }
+.hero-title { font-family:'Bebas Neue',sans-serif; font-size:68px; line-height:.88; color:var(--black); letter-spacing:2px; margin-bottom:18px; }
 .hero-title em { font-family:'DM Serif Display',serif; font-style:italic; color:var(--red); }
 .hero-sub { font-size:12px; line-height:2; color:var(--mid); margin-bottom:24px; }
 
 /* Scan card */
-.scan-card { background:var(--gray); border:1px solid #444; margin-bottom:24px; animation:floatY 4s ease-in-out infinite; }
+.scan-card { background:#ffffff; border:1px solid #e0dbd5; margin-bottom:24px; animation:floatY 4s ease-in-out infinite; box-shadow:0 4px 20px rgba(0,0,0,.08); }
 @keyframes floatY { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-8px)} }
-.scan-card-hd { background:var(--black); padding:11px 15px; display:flex; align-items:center; justify-content:space-between; border-bottom:2px solid var(--red); }
-.scan-card-hd-t { font-family:'Bebas Neue',sans-serif; font-size:12px; letter-spacing:3px; color:var(--light); }
+.scan-card-hd { background:#f5f2ee; padding:11px 15px; display:flex; align-items:center; justify-content:space-between; border-bottom:2px solid var(--red); }
+.scan-card-hd-t { font-family:'Bebas Neue',sans-serif; font-size:12px; letter-spacing:3px; color:var(--black); }
 .scan-card-badge { background:var(--red); color:#fff; font-size:8px; letter-spacing:2px; padding:2px 7px; }
-.scan-face-area { display:flex; align-items:center; justify-content:center; padding:22px; background:#1a1a1a; }
+.scan-face-area { display:flex; align-items:center; justify-content:center; padding:22px; background:#f0ece8; }
 .face-oval { width:82px; height:104px; border:2px solid var(--red); border-radius:50% 50% 45% 45%/60% 60% 40% 40%; position:relative; display:flex; align-items:center; justify-content:center; }
 .face-grid { position:absolute; inset:0; background:repeating-linear-gradient(0deg,transparent,transparent 10px,rgba(229,19,26,.1) 10px,rgba(229,19,26,.1) 11px),repeating-linear-gradient(90deg,transparent,transparent 10px,rgba(229,19,26,.1) 10px,rgba(229,19,26,.1) 11px); border-radius:inherit; }
 .scan-line { position:absolute; left:-8px; right:-8px; height:2px; background:linear-gradient(90deg,transparent,var(--red),transparent); animation:scan 2.5s ease-in-out infinite; top:50%; }
@@ -95,12 +95,12 @@ nav { position:fixed; top:0; left:50%; transform:translateX(-50%); width:100%; m
 .scan-metrics { padding:13px 15px; display:flex; flex-direction:column; gap:9px; }
 .m-row { display:flex; align-items:center; gap:9px; }
 .m-lbl { font-size:9px; letter-spacing:1px; color:var(--mid); width:58px; flex-shrink:0; }
-.m-bar { flex:1; height:3px; background:#444; }
+.m-bar { flex:1; height:3px; background:#ddd; }
 .m-fill { height:100%; background:var(--red); animation:fillBar 1.5s ease-out forwards; width:0; }
 @keyframes fillBar { to{width:var(--w)} }
-.m-val { font-family:'Bebas Neue',sans-serif; font-size:12px; color:var(--light); width:30px; text-align:right; }
-.scan-result { padding:11px 15px; border-top:1px solid #333; display:flex; align-items:center; justify-content:space-between; }
-.res-type { font-family:'Bebas Neue',sans-serif; font-size:17px; letter-spacing:2px; color:var(--white); }
+.m-val { font-family:'Bebas Neue',sans-serif; font-size:12px; color:var(--black); width:30px; text-align:right; }
+.scan-result { padding:11px 15px; border-top:1px solid #e8e4e0; display:flex; align-items:center; justify-content:space-between; }
+.res-type { font-family:'Bebas Neue',sans-serif; font-size:17px; letter-spacing:2px; color:var(--black); }
 .res-pct { font-family:'Bebas Neue',sans-serif; font-size:30px; color:var(--red); line-height:1; }
 .res-pct span { font-size:12px; }
 .hero-btns { display:flex; gap:10px; }
@@ -109,12 +109,12 @@ nav { position:fixed; top:0; left:50%; transform:translateX(-50%); width:100%; m
 /* Home browse section */
 .home-browse { padding:44px 20px 0; }
 .browse-grid { display:grid; grid-template-columns:1fr 1fr; gap:10px; }
-.browse-card { background:var(--black); border:1px solid #1e1e1e; padding:20px 16px 16px; cursor:pointer; position:relative; overflow:hidden; min-height:120px; display:flex; flex-direction:column; justify-content:space-between; transition:border-color .2s; }
+.browse-card { background:#f7f4f0; border:1px solid #e8e4e0; padding:20px 16px 16px; cursor:pointer; position:relative; overflow:hidden; min-height:120px; display:flex; flex-direction:column; justify-content:space-between; transition:border-color .2s; }
 .browse-card:active,.browse-card:hover { border-color:var(--red); }
 .browse-card.wide { grid-column:1/-1; min-height:80px; flex-direction:row; align-items:center; gap:16px; padding:16px 18px; }
 .browse-bg { position:absolute; bottom:-8px; right:-4px; font-family:'Bebas Neue',sans-serif; font-size:72px; color:rgba(229,19,26,.07); line-height:1; pointer-events:none; }
 .browse-lbl { font-size:9px; letter-spacing:2px; color:var(--red); margin-bottom:5px; }
-.browse-name { font-family:'Bebas Neue',sans-serif; font-size:17px; color:var(--white); line-height:1.1; margin-bottom:6px; }
+.browse-name { font-family:'Bebas Neue',sans-serif; font-size:17px; color:var(--black); line-height:1.1; margin-bottom:6px; }
 .browse-desc { font-size:10px; color:var(--mid); line-height:1.7; }
 .browse-arr { width:18px; height:1px; background:var(--red); position:relative; margin-top:10px; flex-shrink:0; }
 .browse-card.wide .browse-arr { margin-top:0; }
@@ -131,14 +131,14 @@ nav { position:fixed; top:0; left:50%; transform:translateX(-50%); width:100%; m
 .feat-desc { font-size:11px; line-height:1.8; color:#777; }
 
 /* Home steps */
-.home-steps { padding:44px 20px 0; background:var(--black); margin-top:44px; }
-.steps-title { font-family:'Bebas Neue',sans-serif; font-size:48px; color:var(--white); line-height:.9; margin-bottom:28px; }
-.step-list { border:1px solid #1e1e1e; }
-.step-item { padding:24px 20px; border-bottom:1px solid #1e1e1e; position:relative; }
+.home-steps { padding:44px 20px 0; background:#f7f4f0; margin-top:44px; }
+.steps-title { font-family:'Bebas Neue',sans-serif; font-size:48px; color:var(--black); line-height:.9; margin-bottom:28px; }
+.step-list { border:1px solid #e8e4e0; }
+.step-item { padding:24px 20px; border-bottom:1px solid #e8e4e0; position:relative; }
 .step-item:last-child { border-bottom:none; }
 .step-bg { position:absolute; top:10px; right:12px; font-family:'Bebas Neue',sans-serif; font-size:72px; color:rgba(229,19,26,.1); line-height:1; }
 .step-idx { font-size:9px; letter-spacing:2px; color:var(--red); margin-bottom:8px; }
-.step-name { font-family:'Bebas Neue',sans-serif; font-size:20px; color:var(--white); letter-spacing:1px; margin-bottom:8px; }
+.step-name { font-family:'Bebas Neue',sans-serif; font-size:20px; color:var(--black); letter-spacing:1px; margin-bottom:8px; }
 .step-desc { font-size:11px; line-height:1.9; color:var(--mid); }
 .step-arr { margin-top:14px; width:24px; height:2px; background:var(--red); position:relative; }
 .step-arr::after { content:''; position:absolute; right:0; top:-3px; border-left:6px solid var(--red); border-top:3px solid transparent; border-bottom:3px solid transparent; }
@@ -151,43 +151,43 @@ nav { position:fixed; top:0; left:50%; transform:translateX(-50%); width:100%; m
 .home-cta-btns { display:flex; flex-direction:column; gap:10px; }
 
 /* FOOTER */
-footer { background:var(--black); padding:24px 20px; border-top:2px solid var(--red); }
-.foot-logo { font-family:'Bebas Neue',sans-serif; font-size:20px; color:var(--white); letter-spacing:3px; margin-bottom:6px; }
+footer { background:#f7f4f0; padding:24px 20px; border-top:2px solid var(--red); }
+.foot-logo { font-family:'Bebas Neue',sans-serif; font-size:20px; color:var(--black); letter-spacing:3px; margin-bottom:6px; }
 .foot-logo span { color:var(--red); }
 .foot-copy { font-size:10px; color:var(--mid); line-height:1.8; }
 
 /* ══════════════ CELEB PAGE ══════════════ */
 .celeb-grid { padding:14px 14px 20px; display:grid; grid-template-columns:1fr 1fr; gap:10px; }
-.celeb-card { background:var(--black); border:1px solid #1e1e1e; cursor:pointer; overflow:hidden; transition:border-color .2s; }
+.celeb-card { background:#ffffff; border:1px solid #e8e4e0; cursor:pointer; overflow:hidden; transition:border-color .2s; }
 .celeb-card:active { border-color:var(--red); }
-.celeb-face { width:100%; aspect-ratio:3/4; background:#181818; display:flex; align-items:center; justify-content:center; position:relative; }
+.celeb-face { width:100%; aspect-ratio:3/4; background:#f0ece8; display:flex; align-items:center; justify-content:center; position:relative; }
 .c-flag { position:absolute; top:7px; right:7px; background:var(--red); color:#fff; font-size:8px; letter-spacing:1px; padding:2px 6px; font-family:'Bebas Neue',sans-serif; }
-.c-genre { position:absolute; bottom:7px; left:7px; background:rgba(0,0,0,.75); color:var(--light); font-size:8px; letter-spacing:1px; padding:2px 6px; font-family:'Bebas Neue',sans-serif; }
+.c-genre { position:absolute; bottom:7px; left:7px; background:rgba(255,255,255,.85); color:#555; font-size:8px; letter-spacing:1px; padding:2px 6px; font-family:'Bebas Neue',sans-serif; }
 .celeb-info { padding:9px 11px 11px; }
-.celeb-name { font-family:'Bebas Neue',sans-serif; font-size:15px; letter-spacing:1px; color:var(--white); margin-bottom:3px; }
+.celeb-name { font-family:'Bebas Neue',sans-serif; font-size:15px; letter-spacing:1px; color:var(--black); margin-bottom:3px; }
 .celeb-type { font-size:9px; color:var(--red); letter-spacing:1px; margin-bottom:3px; }
 .celeb-desc { font-size:10px; color:var(--mid); line-height:1.7; }
 
 /* ══════════════ HAIR PAGE ══════════════ */
 .hair-list { padding:14px 14px 20px; display:flex; flex-direction:column; gap:12px; }
-.hair-card { background:var(--black); border:1px solid #1e1e1e; display:flex; overflow:hidden; cursor:pointer; transition:border-color .2s; }
+.hair-card { background:#ffffff; border:1px solid #e8e4e0; display:flex; overflow:hidden; cursor:pointer; transition:border-color .2s; }
 .hair-card:active { border-color:var(--red); }
-.hair-thumb { width:90px; flex-shrink:0; background:#181818; display:flex; align-items:center; justify-content:center; }
+.hair-thumb { width:90px; flex-shrink:0; background:#f0ece8; display:flex; align-items:center; justify-content:center; }
 .hair-body { padding:13px 13px; flex:1; }
-.hair-name { font-family:'Bebas Neue',sans-serif; font-size:17px; letter-spacing:1px; color:var(--white); margin-bottom:3px; }
+.hair-name { font-family:'Bebas Neue',sans-serif; font-size:17px; letter-spacing:1px; color:var(--black); margin-bottom:3px; }
 .hair-badge { display:inline-block; background:var(--red); color:#fff; font-size:8px; letter-spacing:2px; padding:2px 7px; font-family:'Bebas Neue',sans-serif; margin-bottom:7px; }
 .hair-tags { display:flex; flex-wrap:wrap; gap:4px; margin-bottom:7px; }
-.hair-tag { border:1px solid #333; color:var(--mid); font-size:9px; padding:2px 6px; letter-spacing:.5px; }
+.hair-tag { border:1px solid #ddd; color:var(--mid); font-size:9px; padding:2px 6px; letter-spacing:.5px; }
 .hair-pts { font-size:11px; color:var(--mid); line-height:1.8; }
 .hair-pts b { color:var(--red); font-weight:normal; }
 
 /* ══════════════ MAKEUP PAGE ══════════════ */
 .makeup-list { padding:14px 14px 20px; display:flex; flex-direction:column; gap:8px; }
-.makeup-sect { border:1px solid #1e1e1e; overflow:hidden; }
-.makeup-sect-hd { background:var(--black); padding:16px 18px; display:flex; align-items:center; justify-content:space-between; cursor:pointer; border-bottom:2px solid var(--red); }
-.makeup-sect-name { font-family:'Bebas Neue',sans-serif; font-size:20px; color:var(--white); letter-spacing:2px; }
+.makeup-sect { border:1px solid #e8e4e0; overflow:hidden; }
+.makeup-sect-hd { background:#f7f4f0; padding:16px 18px; display:flex; align-items:center; justify-content:space-between; cursor:pointer; border-bottom:2px solid var(--red); }
+.makeup-sect-name { font-family:'Bebas Neue',sans-serif; font-size:20px; color:var(--black); letter-spacing:2px; }
 .makeup-sect-sub { font-size:10px; color:var(--mid); margin-top:2px; }
-.makeup-plus { width:22px; height:22px; border:1px solid #444; display:flex; align-items:center; justify-content:center; flex-shrink:0; transition:transform .3s; }
+.makeup-plus { width:22px; height:22px; border:1px solid #ccc; display:flex; align-items:center; justify-content:center; flex-shrink:0; transition:transform .3s; }
 .makeup-plus.open { transform:rotate(45deg); }
 .makeup-body { display:none; background:#fff; }
 .makeup-body.open { display:block; }
@@ -198,7 +198,7 @@ footer { background:var(--black); padding:24px 20px; border-top:2px solid var(--
 .makeup-items-wrap { padding:14px 14px; display:flex; flex-direction:column; gap:0; }
 .makeup-item { display:flex; gap:12px; align-items:flex-start; padding:12px 0; border-bottom:1px solid #f2ede9; }
 .makeup-item:last-child { border-bottom:none; }
-.makeup-ico { width:44px; height:44px; background:var(--black); border:1px solid #1e1e1e; flex-shrink:0; display:flex; align-items:center; justify-content:center; }
+.makeup-ico { width:44px; height:44px; background:#f0ece8; border:1px solid #e8e4e0; flex-shrink:0; display:flex; align-items:center; justify-content:center; }
 .makeup-ico-letter { font-family:'Bebas Neue',sans-serif; font-size:18px; color:var(--red); }
 .makeup-item-body { flex:1; }
 .makeup-item-name { font-family:'Bebas Neue',sans-serif; font-size:15px; color:var(--black); margin-bottom:3px; letter-spacing:.5px; }
@@ -212,19 +212,19 @@ footer { background:var(--black); padding:24px 20px; border-top:2px solid var(--
 .quiz-title { font-family:'Bebas Neue',sans-serif; font-size:48px; line-height:.88; margin-bottom:10px; }
 .quiz-title em { font-family:'DM Serif Display',serif; font-style:italic; color:var(--red); display:block; }
 .quiz-desc { font-size:12px; line-height:2; color:#666; margin-bottom:24px; }
-.quiz-card { background:var(--black); border:1px solid #1e1e1e; padding:24px 18px; position:relative; margin-bottom:16px; }
+.quiz-card { background:#f7f4f0; border:1px solid #e8e4e0; padding:24px 18px; position:relative; margin-bottom:16px; }
 .quiz-card::before { content:'QUIZ'; position:absolute; top:-13px; left:18px; background:var(--red); color:#fff; font-family:'Bebas Neue',sans-serif; font-size:11px; letter-spacing:4px; padding:3px 13px; }
-.quiz-q { font-size:13px; line-height:1.9; color:var(--light); margin-bottom:18px; }
+.quiz-q { font-size:13px; line-height:1.9; color:var(--black); margin-bottom:18px; }
 .quiz-opts { display:flex; flex-direction:column; gap:9px; }
-.quiz-opt { display:flex; align-items:flex-start; gap:11px; padding:11px 13px; border:1px solid #333; cursor:pointer; transition:border-color .2s,background .2s; }
+.quiz-opt { display:flex; align-items:flex-start; gap:11px; padding:11px 13px; border:1px solid #ddd; cursor:pointer; transition:border-color .2s,background .2s; }
 .quiz-opt:active { background:rgba(229,19,26,.05); }
 .quiz-opt.correct { border-color:#22c55e; background:rgba(34,197,94,.1); }
 .quiz-opt.wrong { border-color:var(--red); background:rgba(229,19,26,.1); }
-.quiz-opt-m { width:22px; height:22px; border:1px solid #444; display:flex; align-items:center; justify-content:center; font-family:'Bebas Neue',sans-serif; font-size:12px; color:var(--mid); flex-shrink:0; }
-.quiz-opt-t { font-size:12px; color:var(--light); line-height:1.7; }
+.quiz-opt-m { width:22px; height:22px; border:1px solid #ccc; display:flex; align-items:center; justify-content:center; font-family:'Bebas Neue',sans-serif; font-size:12px; color:var(--mid); flex-shrink:0; }
+.quiz-opt-t { font-size:12px; color:var(--black); line-height:1.7; }
 .quiz-feedback { margin-top:12px; font-size:11px; color:var(--mid); padding:10px 13px; border-left:2px solid var(--red); background:rgba(229,19,26,.05); display:none; line-height:1.8; }
 .quiz-feedback.show { display:block; }
-.quiz-next { margin-top:14px; background:var(--gray); color:var(--light); border:none; width:100%; padding:12px; font-family:'Bebas Neue',sans-serif; font-size:15px; letter-spacing:2px; cursor:pointer; display:none; }
+.quiz-next { margin-top:14px; background:#f0ece8; color:var(--black); border:none; width:100%; padding:12px; font-family:'Bebas Neue',sans-serif; font-size:15px; letter-spacing:2px; cursor:pointer; display:none; }
 .quiz-next.show { display:block; }
 .quiz-progress { display:flex; align-items:center; gap:10px; margin-bottom:20px; }
 .quiz-prog-bar { flex:1; height:3px; background:#e0dbd5; }
@@ -234,33 +234,33 @@ footer { background:var(--black); padding:24px 20px; border-top:2px solid var(--
 /* MODAL */
 .modal-ov { display:none; position:fixed; inset:0; z-index:500; background:rgba(0,0,0,.88); align-items:flex-end; justify-content:center; }
 .modal-ov.open { display:flex; }
-.modal { background:var(--black); border-top:3px solid var(--red); width:100%; max-width:430px; animation:slideUp .3s ease-out; padding-bottom:env(safe-area-inset-bottom,12px); }
+.modal { background:#ffffff; border-top:3px solid var(--red); width:100%; max-width:430px; animation:slideUp .3s ease-out; padding-bottom:env(safe-area-inset-bottom,12px); }
 @keyframes slideUp { from{transform:translateY(100%)} to{transform:translateY(0)} }
-.modal-hd { padding:18px 18px 14px; display:flex; align-items:center; justify-content:space-between; border-bottom:1px solid #222; }
-.modal-hd-t { font-family:'Bebas Neue',sans-serif; font-size:15px; letter-spacing:2px; color:var(--white); }
+.modal-hd { padding:18px 18px 14px; display:flex; align-items:center; justify-content:space-between; border-bottom:1px solid #e8e4e0; }
+.modal-hd-t { font-family:'Bebas Neue',sans-serif; font-size:15px; letter-spacing:2px; color:var(--black); }
 .modal-x { background:none; border:none; color:var(--mid); font-size:20px; cursor:pointer; padding:4px 8px; }
 .modal-body { padding:22px 18px; }
-.upload-area { border:1px dashed #444; padding:36px 14px; display:flex; flex-direction:column; align-items:center; gap:10px; cursor:pointer; transition:border-color .2s; }
+.upload-area { border:1px dashed #ccc; padding:36px 14px; display:flex; flex-direction:column; align-items:center; gap:10px; cursor:pointer; transition:border-color .2s; }
 .upload-area:active { border-color:var(--red); }
 .upload-ico { font-size:32px; }
 .upload-txt { font-size:11px; color:var(--mid); text-align:center; line-height:1.9; }
-.upload-txt strong { color:var(--white); display:block; font-size:13px; margin-bottom:3px; }
-.modal-or { text-align:center; font-size:10px; color:#444; letter-spacing:2px; margin:14px 0; }
-.modal-cam { width:100%; background:var(--gray); color:var(--light); border:none; padding:13px; cursor:pointer; font-family:'Bebas Neue',sans-serif; font-size:15px; letter-spacing:2px; }
+.upload-txt strong { color:var(--black); display:block; font-size:13px; margin-bottom:3px; }
+.modal-or { text-align:center; font-size:10px; color:#aaa; letter-spacing:2px; margin:14px 0; }
+.modal-cam { width:100%; background:#f0ece8; color:var(--black); border:none; padding:13px; cursor:pointer; font-family:'Bebas Neue',sans-serif; font-size:15px; letter-spacing:2px; }
 
 ::-webkit-scrollbar { width:2px; }
 ::-webkit-scrollbar-thumb { background:var(--red); }
 
 /* GENDER TOGGLE */
-.gender-bar { display:flex; background:var(--black); border-bottom:1px solid #1e1e1e; }
-.gender-btn { flex:1; padding:11px 0; font-family:'Bebas Neue',sans-serif; font-size:13px; letter-spacing:3px; color:#555; border:none; background:none; cursor:pointer; position:relative; transition:color .2s; }
-.gender-btn.on { color:var(--white); }
+.gender-bar { display:flex; background:#f7f4f0; border-bottom:1px solid #e8e4e0; }
+.gender-btn { flex:1; padding:11px 0; font-family:'Bebas Neue',sans-serif; font-size:13px; letter-spacing:3px; color:#aaa; border:none; background:none; cursor:pointer; position:relative; transition:color .2s; }
+.gender-btn.on { color:var(--black); }
 .gender-btn.on::after { content:''; position:absolute; bottom:0; left:10%; right:10%; height:2px; background:var(--red); }
 .gender-btn.female.on::after { background:#e54b7a; }
 .gender-btn.female.on { color:#e54b7a; }
 
 /* CELEB wiki link */
-.celeb-wiki { display:block; text-align:center; padding:7px; background:rgba(229,19,26,.08); border-top:1px solid #1e1e1e; font-size:9px; letter-spacing:1.5px; color:var(--red); text-decoration:none; font-family:'Bebas Neue',sans-serif; }
+.celeb-wiki { display:block; text-align:center; padding:7px; background:rgba(229,19,26,.06); border-top:1px solid #e8e4e0; font-size:9px; letter-spacing:1.5px; color:var(--red); text-decoration:none; font-family:'Bebas Neue',sans-serif; }
 .celeb-wiki:active { background:rgba(229,19,26,.18); }
 
 /* male/female badge tint */
@@ -269,54 +269,54 @@ footer { background:var(--black); padding:24px 20px; border-top:2px solid var(--
 
 
 /* Celeb photo from Wikipedia */
-.celeb-face { position:relative; width:100%; aspect-ratio:3/4; background:#111; display:flex; align-items:center; justify-content:center; overflow:hidden; }
+.celeb-face { position:relative; width:100%; aspect-ratio:3/4; background:#f0ece8; display:flex; align-items:center; justify-content:center; overflow:hidden; }
 .celeb-photo { position:absolute; inset:0; width:100%; height:100%; object-fit:cover; object-position:top center; opacity:0; transition:opacity .4s; }
 .celeb-photo.loaded { opacity:1; }
 .celeb-placeholder { display:flex; flex-direction:column; align-items:center; justify-content:center; gap:6px; transition:opacity .4s; }
 .celeb-placeholder.hidden { opacity:0; }
-.celeb-loading { width:18px; height:18px; border:2px solid #333; border-top-color:var(--red); border-radius:50%; animation:spin .8s linear infinite; }
+.celeb-loading { width:18px; height:18px; border:2px solid #ddd; border-top-color:var(--red); border-radius:50%; animation:spin .8s linear infinite; }
 @keyframes spin { to{transform:rotate(360deg)} }
 
 
 /* ── DIAGNOSIS MODAL ── */
 .priv-notice { display:flex; align-items:center; gap:7px; font-size:10px; color:#22c55e; background:rgba(34,197,94,.08); border:1px solid rgba(34,197,94,.2); padding:9px 12px; margin-bottom:16px; letter-spacing:.5px; }
 .analyze-steps { display:flex; flex-direction:column; gap:10px; text-align:left; }
-.analyze-step { display:flex; align-items:center; gap:10px; font-size:12px; color:#555; }
-.analyze-step.done { color:var(--white); }
+.analyze-step { display:flex; align-items:center; gap:10px; font-size:12px; color:#aaa; }
+.analyze-step.done { color:#22c55e; }
 .analyze-step.active { color:var(--red); }
-.as-dot { width:8px; height:8px; border-radius:50%; background:#333; flex-shrink:0; transition:background .3s; }
+.as-dot { width:8px; height:8px; border-radius:50%; background:#ddd; flex-shrink:0; transition:background .3s; }
 .analyze-step.active .as-dot { background:var(--red); animation:pulse .8s ease-in-out infinite; }
 .analyze-step.done .as-dot { background:#22c55e; }
 @keyframes pulse { 0%,100%{transform:scale(1)} 50%{transform:scale(1.4)} }
 
 /* Result card */
-.res-hero { background:var(--black); padding:20px 18px; position:relative; overflow:hidden; }
-.res-hero-bg { position:absolute; inset:0; font-family:'Bebas Neue',sans-serif; font-size:96px; color:rgba(229,19,26,.06); letter-spacing:-4px; display:flex; align-items:center; justify-content:center; pointer-events:none; }
+.res-hero { background:#f7f4f0; padding:20px 18px; position:relative; overflow:hidden; }
+.res-hero-bg { position:absolute; inset:0; font-family:'Bebas Neue',sans-serif; font-size:96px; color:rgba(229,19,26,.05); letter-spacing:-4px; display:flex; align-items:center; justify-content:center; pointer-events:none; }
 .res-photo-row { display:flex; gap:14px; align-items:flex-start; margin-bottom:16px; position:relative; }
 .res-photo { width:90px; height:110px; object-fit:cover; object-position:top; border:2px solid var(--red); flex-shrink:0; }
 .res-types { flex:1; }
 .res-bone-badge { display:inline-block; background:var(--red); color:#fff; font-family:'Bebas Neue',sans-serif; font-size:11px; letter-spacing:3px; padding:3px 10px; margin-bottom:8px; }
-.res-bone-name { font-family:'Bebas Neue',sans-serif; font-size:28px; color:var(--white); letter-spacing:1px; line-height:1; margin-bottom:4px; }
+.res-bone-name { font-family:'Bebas Neue',sans-serif; font-size:28px; color:var(--black); letter-spacing:1px; line-height:1; margin-bottom:4px; }
 .res-face-name { font-size:11px; color:var(--mid); letter-spacing:1px; margin-bottom:10px; }
 .res-conf { font-size:10px; color:var(--red); letter-spacing:1px; }
 
 /* Metric bars */
-.res-metrics { padding:16px 18px; border-bottom:1px solid #1e1e1e; }
+.res-metrics { padding:16px 18px; border-bottom:1px solid #e8e4e0; }
 .res-metric-row { display:flex; align-items:center; gap:8px; margin-bottom:8px; }
 .res-metric-row:last-child { margin-bottom:0; }
 .res-m-lbl { font-size:10px; color:var(--mid); width:72px; flex-shrink:0; letter-spacing:.5px; }
-.res-m-bar { flex:1; height:4px; background:#1e1e1e; border-radius:2px; }
+.res-m-bar { flex:1; height:4px; background:#e8e4e0; border-radius:2px; }
 .res-m-fill { height:100%; border-radius:2px; background:var(--red); }
-.res-m-val { font-family:'Bebas Neue',sans-serif; font-size:14px; color:var(--white); width:38px; text-align:right; }
+.res-m-val { font-family:'Bebas Neue',sans-serif; font-size:14px; color:var(--black); width:38px; text-align:right; }
 
 /* Celeb match */
-.res-celeb-match { padding:16px 18px; border-bottom:1px solid #1e1e1e; }
+.res-celeb-match { padding:16px 18px; border-bottom:1px solid #e8e4e0; }
 .res-sub-title { font-family:'Bebas Neue',sans-serif; font-size:13px; letter-spacing:2px; color:var(--red); margin-bottom:10px; }
 .res-celeb-row { display:flex; gap:10px; overflow-x:auto; scrollbar-width:none; padding-bottom:2px; }
 .res-celeb-row::-webkit-scrollbar { display:none; }
-.res-celeb-chip { flex-shrink:0; background:#1a1a1a; border:1px solid #2a2a2a; padding:8px 12px; text-align:center; cursor:pointer; }
+.res-celeb-chip { flex-shrink:0; background:#f7f4f0; border:1px solid #e8e4e0; padding:8px 12px; text-align:center; cursor:pointer; }
 .res-celeb-chip:active { border-color:var(--red); }
-.res-celeb-chip-name { font-family:'Bebas Neue',sans-serif; font-size:13px; color:var(--white); letter-spacing:.5px; }
+.res-celeb-chip-name { font-family:'Bebas Neue',sans-serif; font-size:13px; color:var(--black); letter-spacing:.5px; }
 .res-celeb-chip-pct { font-size:10px; color:var(--red); }
 
 /* Recommend */
@@ -326,7 +326,7 @@ footer { background:var(--black); padding:24px 20px; border-top:2px solid var(--
 .res-rec-cat { font-size:9px; letter-spacing:2px; color:var(--red); text-transform:uppercase; margin-bottom:4px; }
 .res-rec-title { font-family:'Bebas Neue',sans-serif; font-size:16px; color:var(--black); margin-bottom:4px; }
 .res-rec-desc { font-size:11px; color:#666; line-height:1.8; }
-.res-action-btn { background:#1a1a1a; color:var(--light); border:1px solid #333; padding:6px 12px; font-family:'Bebas Neue',sans-serif; font-size:11px; letter-spacing:1px; cursor:pointer; }
+.res-action-btn { background:#f0ece8; color:var(--black); border:1px solid #ddd; padding:6px 12px; font-family:'Bebas Neue',sans-serif; font-size:11px; letter-spacing:1px; cursor:pointer; }
 .res-error { padding:32px 18px; text-align:center; }
 .res-error-icon { font-size:40px; margin-bottom:12px; }
 .res-error-msg { font-size:12px; color:#666; line-height:1.9; }
@@ -340,7 +340,7 @@ footer { background:var(--black); padding:24px 20px; border-top:2px solid var(--
 
 
 /* Result strong points */
-.res-strong-item { display:flex; align-items:center; gap:6px; font-size:10px; color:var(--light); margin:2px 0; }
+.res-strong-item { display:flex; align-items:center; gap:6px; font-size:10px; color:var(--black); margin:2px 0; }
 .res-strong-dot { width:5px; height:5px; background:var(--red); flex-shrink:0; }
 
 /* Recipe link button */
@@ -351,7 +351,7 @@ footer { background:var(--black); padding:24px 20px; border-top:2px solid var(--
 
 
 /* ── Missing result / API key styles ── */
-.res-strong-item { display:flex; align-items:center; gap:6px; font-size:10px; color:var(--light); letter-spacing:.5px; }
+.res-strong-item { display:flex; align-items:center; gap:6px; font-size:10px; color:var(--black); letter-spacing:.5px; }
 .res-strong-dot { width:5px; height:5px; background:var(--red); border-radius:50%; flex-shrink:0; }
 .res-privacy-footer { padding:12px 18px; font-size:9px; color:#888; line-height:1.8; border-top:1px solid #e0dbd5; display:flex; align-items:flex-start; gap:7px; }
 .res-rec-link { background:none; border:none; color:var(--red); font-size:10px; letter-spacing:1px; cursor:pointer; padding:6px 0 0; text-decoration:underline; }
@@ -370,20 +370,20 @@ footer { background:var(--black); padding:24px 20px; border-top:2px solid var(--
 .diag-gender-btn { flex:1; padding:12px 0; border:none; background:none; cursor:pointer; font-family:'Bebas Neue',sans-serif; font-size:15px; letter-spacing:3px; color:#999; transition:all .2s; display:flex; flex-direction:column; align-items:center; gap:3px; }
 .diag-gender-btn span.dg-icon { font-size:22px; line-height:1; }
 .diag-gender-btn span.dg-lbl { font-size:12px; }
-.diag-gender-btn.on { background:var(--black); color:var(--white); }
-.diag-gender-btn.on.female { background:#1a0a10; color:#f472b6; border-bottom:2px solid #e54b7a; }
-.diag-gender-btn.on.male   { background:#0a0e1a; color:#60a5fa; border-bottom:2px solid #3b82f6; }
+.diag-gender-btn.on { background:#f0ece8; color:var(--black); }
+.diag-gender-btn.on.female { background:#fff0f5; color:#e54b7a; border-bottom:2px solid #e54b7a; }
+.diag-gender-btn.on.male   { background:#f0f4ff; color:#3b82f6; border-bottom:2px solid #3b82f6; }
 .diag-gender-label { font-size:10px; color:var(--mid); letter-spacing:2px; margin-bottom:8px; }
 
 
 /* ── Makeup Style Cards ── */
-.style-hero { position:relative; overflow:hidden; background:var(--black); padding:20px 18px 16px; border-bottom:3px solid var(--red); cursor:pointer; }
-.style-hero-accent { position:absolute; top:-10px; right:-10px; font-family:'Bebas Neue',sans-serif; font-size:88px; opacity:.07; letter-spacing:-4px; color:var(--white); pointer-events:none; line-height:1; }
+.style-hero { position:relative; overflow:hidden; background:#f7f4f0; padding:20px 18px 16px; border-bottom:3px solid var(--red); cursor:pointer; }
+.style-hero-accent { position:absolute; top:-10px; right:-10px; font-family:'Bebas Neue',sans-serif; font-size:88px; opacity:.07; letter-spacing:-4px; color:var(--black); pointer-events:none; line-height:1; }
 .style-hero-tag { font-size:9px; letter-spacing:3px; color:var(--red); text-transform:uppercase; margin-bottom:6px; }
-.style-hero-name { font-family:'Bebas Neue',sans-serif; font-size:30px; color:var(--white); letter-spacing:2px; line-height:1.1; margin-bottom:6px; }
+.style-hero-name { font-family:'Bebas Neue',sans-serif; font-size:30px; color:var(--black); letter-spacing:2px; line-height:1.1; margin-bottom:6px; }
 .style-hero-sub  { font-size:11px; color:#888; line-height:1.7; margin-bottom:10px; }
 .style-hero-chips { display:flex; flex-wrap:wrap; gap:5px; margin-bottom:12px; }
-.style-chip { font-size:9px; letter-spacing:1px; padding:3px 8px; border:1px solid #333; color:#aaa; }
+.style-chip { font-size:9px; letter-spacing:1px; padding:3px 8px; border:1px solid #ccc; color:#888; }
 .style-expand-btn { display:flex; align-items:center; gap:6px; background:var(--red); border:none; color:#fff; font-family:'Bebas Neue',sans-serif; font-size:13px; letter-spacing:2px; padding:9px 16px; cursor:pointer; width:100%; justify-content:center; }
 .style-expand-btn svg { transition:transform .3s; }
 .style-expand-btn.open svg { transform:rotate(180deg); }
@@ -394,7 +394,7 @@ footer { background:var(--black); padding:24px 20px; border-top:2px solid var(--
 .style-step-wrap { padding:16px 18px; }
 .style-step { display:flex; gap:12px; margin-bottom:20px; }
 .style-step:last-child { margin-bottom:0; }
-.style-step-num { width:28px; height:28px; background:var(--black); color:var(--white); font-family:'Bebas Neue',sans-serif; font-size:14px; display:flex; align-items:center; justify-content:center; flex-shrink:0; border-radius:50%; }
+.style-step-num { width:28px; height:28px; background:var(--red); color:#fff; font-family:'Bebas Neue',sans-serif; font-size:14px; display:flex; align-items:center; justify-content:center; flex-shrink:0; border-radius:50%; }
 .style-step-body { flex:1; }
 .style-step-title { font-size:12px; font-weight:700; color:var(--black); margin-bottom:4px; letter-spacing:.5px; }
 .style-step-desc  { font-size:11px; color:#555; line-height:1.9; }
@@ -412,13 +412,13 @@ footer { background:var(--black); padding:24px 20px; border-top:2px solid var(--
 .mu-style-bar { display:flex; gap:6px; padding:10px 12px 8px; overflow-x:auto; scrollbar-width:none; border-top:1px solid #eee; background:#faf8f5; }
 .mu-style-bar::-webkit-scrollbar { display:none; }
 .mu-style-chip { flex-shrink:0; font-size:9px; letter-spacing:1px; padding:5px 10px; border:1px solid #ccc; background:#fff; color:#666; cursor:pointer; white-space:nowrap; transition:all .15s; }
-.mu-style-chip.on { background:var(--black); color:var(--white); border-color:var(--black); }
+.mu-style-chip.on { background:var(--red); color:#fff; border-color:var(--red); }
 
 /* Style mini-steps inside card */
 .mu-style-steps { padding:12px 14px; background:#fff; border-top:1px solid #f0ece8; }
 .mu-style-step-row { display:flex; gap:10px; margin-bottom:14px; }
 .mu-style-step-row:last-child { margin-bottom:0; }
-.mu-style-step-n { width:22px; height:22px; background:var(--black); color:var(--white); font-family:'Bebas Neue',sans-serif; font-size:12px; display:flex; align-items:center; justify-content:center; flex-shrink:0; border-radius:50%; }
+.mu-style-step-n { width:22px; height:22px; background:var(--red); color:#fff; font-family:'Bebas Neue',sans-serif; font-size:12px; display:flex; align-items:center; justify-content:center; flex-shrink:0; border-radius:50%; }
 .mu-style-step-b { flex:1; }
 .mu-style-step-t { font-size:11px; font-weight:700; color:var(--black); margin-bottom:3px; }
 .mu-style-step-d { font-size:10px; color:#555; line-height:1.8; }
@@ -433,10 +433,10 @@ footer { background:var(--black); padding:24px 20px; border-top:2px solid var(--
 
 /* ══ RECORD PAGE ══ */
 .rec-page-wrap { padding: 0 0 100px; }
-.rec-month-nav { display:flex; align-items:center; justify-content:space-between; padding:14px 20px 10px; background:var(--black); position:sticky; top:48px; z-index:10; border-bottom:1px solid #1e1e1e; margin-top:0; }
-.rec-month-label { font-family:'Bebas Neue',sans-serif; font-size:22px; color:var(--white); letter-spacing:3px; }
-.rec-nav-btn { background:none; border:1px solid #333; color:#888; width:32px; height:32px; cursor:pointer; font-size:16px; display:flex; align-items:center; justify-content:center; transition:all .15s; }
-.rec-nav-btn:active { background:#222; color:var(--white); }
+.rec-month-nav { display:flex; align-items:center; justify-content:space-between; padding:14px 20px 10px; background:#ffffff; position:sticky; top:48px; z-index:10; border-bottom:1px solid #e8e4e0; margin-top:0; }
+.rec-month-label { font-family:'Bebas Neue',sans-serif; font-size:22px; color:var(--black); letter-spacing:3px; }
+.rec-nav-btn { background:none; border:1px solid #ddd; color:#888; width:32px; height:32px; cursor:pointer; font-size:16px; display:flex; align-items:center; justify-content:center; transition:all .15s; }
+.rec-nav-btn:active { background:#f0ece8; color:var(--black); }
 
 /* Calendar grid */
 .rec-cal { padding:12px 14px 6px; }
@@ -460,8 +460,8 @@ footer { background:var(--black); padding:24px 20px; border-top:2px solid var(--
 .rec-day.selected .rec-day-dot { background:rgba(255,255,255,.7); }
 
 /* Month summary strip */
-.rec-month-summary { margin:8px 14px 14px; background:var(--black); padding:12px 16px; display:flex; gap:0; }
-.rec-summ-item { flex:1; text-align:center; border-right:1px solid #222; }
+.rec-month-summary { margin:8px 14px 14px; background:#f7f4f0; border:1px solid #e8e4e0; padding:12px 16px; display:flex; gap:0; }
+.rec-summ-item { flex:1; text-align:center; border-right:1px solid #e8e4e0; }
 .rec-summ-item:last-child { border-right:none; }
 .rec-summ-val { font-family:'Bebas Neue',sans-serif; font-size:26px; color:var(--red); line-height:1; }
 .rec-summ-lbl { font-size:8px; color:#888; letter-spacing:1px; margin-top:3px; }
@@ -472,13 +472,13 @@ footer { background:var(--black); padding:24px 20px; border-top:2px solid var(--
 .rec-detail-empty-icon { font-size:32px; margin-bottom:8px; }
 .rec-detail-empty-txt { font-size:11px; color:#aaa; line-height:1.8; }
 .rec-entry { background:#fff; border:1px solid var(--border); margin-bottom:10px; }
-.rec-entry-hd { background:var(--black); padding:10px 14px; display:flex; align-items:center; justify-content:space-between; }
-.rec-entry-date { font-family:'Bebas Neue',sans-serif; font-size:14px; color:var(--white); letter-spacing:2px; }
-.rec-entry-del { background:none; border:none; color:#555; font-size:14px; cursor:pointer; padding:2px 6px; }
+.rec-entry-hd { background:#f7f4f0; padding:10px 14px; display:flex; align-items:center; justify-content:space-between; border-bottom:1px solid #e8e4e0; }
+.rec-entry-date { font-family:'Bebas Neue',sans-serif; font-size:14px; color:var(--black); letter-spacing:2px; }
+.rec-entry-del { background:none; border:none; color:#aaa; font-size:14px; cursor:pointer; padding:2px 6px; }
 .rec-entry-del:active { color:#e54b7a; }
 .rec-entry-body { padding:12px 14px; }
 .rec-entry-types { display:flex; gap:8px; margin-bottom:10px; }
-.rec-entry-bone { background:var(--black); color:var(--white); font-family:'Bebas Neue',sans-serif; font-size:11px; letter-spacing:2px; padding:4px 10px; }
+.rec-entry-bone { background:var(--red); color:#fff; font-family:'Bebas Neue',sans-serif; font-size:11px; letter-spacing:2px; padding:4px 10px; }
 .rec-entry-face { background:#f5f0ea; color:var(--black); font-size:10px; padding:4px 10px; letter-spacing:1px; }
 .rec-entry-scores { display:grid; grid-template-columns:1fr 1fr 1fr; gap:6px; margin-bottom:10px; }
 .rec-score-box { background:#faf8f5; padding:7px 8px; text-align:center; }
@@ -494,15 +494,25 @@ footer { background:var(--black); padding:24px 20px; border-top:2px solid var(--
 .rec-note-label { font-size:9px; letter-spacing:2px; color:#aaa; margin-bottom:6px; }
 .rec-note-input { width:100%; border:1px solid var(--border); padding:8px 10px; font-size:11px; font-family:'Noto Sans JP',sans-serif; resize:none; height:64px; outline:none; background:#faf8f5; }
 .rec-note-input:focus { border-color:var(--red); }
-.rec-note-save { margin-top:5px; background:var(--black); color:var(--white); border:none; padding:7px 16px; font-family:'Bebas Neue',sans-serif; font-size:12px; letter-spacing:2px; cursor:pointer; }
+.rec-note-save { margin-top:5px; background:var(--red); color:#fff; border:none; padding:7px 16px; font-family:'Bebas Neue',sans-serif; font-size:12px; letter-spacing:2px; cursor:pointer; }
 
 /* Add record button on result screen */
-.res-save-btn { display:block; width:calc(100% - 32px); margin:12px 16px 0; background:var(--black); color:var(--white); border:2px solid var(--red); padding:12px 0; font-family:'Bebas Neue',sans-serif; font-size:15px; letter-spacing:3px; cursor:pointer; text-align:center; }
-.res-save-btn:active { background:var(--red); }
-.res-save-btn.saved { background:var(--red); border-color:var(--red); }
+.res-save-btn { display:block; width:calc(100% - 32px); margin:12px 16px 0; background:#ffffff; color:var(--black); border:2px solid var(--red); padding:12px 0; font-family:'Bebas Neue',sans-serif; font-size:15px; letter-spacing:3px; cursor:pointer; text-align:center; }
+.res-save-btn:active { background:var(--red); color:#fff; }
+.res-save-btn.saved { background:var(--red); border-color:var(--red); color:#fff; }
 
 
-/* ══ AUTH ══ */
+/* ══ BACK TO RESULT BANNER ══ */
+.back-result-bar { display:none; align-items:center; gap:10px; padding:10px 16px; background:#fff8f8; border-bottom:2px solid var(--red); position:sticky; top:48px; z-index:150; cursor:pointer; }
+.back-result-bar.show { display:flex; }
+.back-result-bar:active { background:#fff0f0; }
+.back-result-arrow { font-size:16px; color:var(--red); line-height:1; }
+.back-result-txt { font-family:'Bebas Neue',sans-serif; font-size:13px; letter-spacing:2px; color:var(--red); }
+.back-result-sub { font-size:10px; color:#aaa; margin-left:auto; letter-spacing:.5px; }
+/* when back bar is visible, push page-hd down */
+.back-result-bar.show ~ .page-hd { top:calc(48px + 42px); }
+
+
 .auth-sheet { width:100%; max-width:430px; background:var(--white); padding:28px 24px 40px; max-height:92vh; overflow-y:auto; transform:translateY(30px); transition:transform .25s; }
 .auth-tabs { display:flex; border-bottom:2px solid var(--border); margin-bottom:20px; }
 .auth-tab { flex:1; padding:10px 0; font-family:'Bebas Neue',sans-serif; font-size:14px; letter-spacing:2px; color:#aaa; background:none; border:none; cursor:pointer; border-bottom:2px solid transparent; margin-bottom:-2px; transition:all .15s; }
@@ -525,8 +535,8 @@ footer { background:var(--black); padding:24px 20px; border-top:2px solid var(--
 .auth-ov { position:fixed; inset:0; background:rgba(0,0,0,.85); z-index:3000; display:none; align-items:flex-end; justify-content:center; }
 .auth-ov.open { display:flex; }
 .auth-sheet { background:var(--white); width:100%; max-width:430px; border-radius:0; padding:0 0 40px; animation:slideUp .3s ease; max-height:92vh; overflow-y:auto; }
-.auth-hd { background:var(--black); padding:16px 20px; display:flex; align-items:center; justify-content:space-between; }
-.auth-hd-title { font-family:'Bebas Neue',sans-serif; font-size:20px; color:var(--white); letter-spacing:3px; }
+.auth-hd { background:#f7f4f0; padding:16px 20px; display:flex; align-items:center; justify-content:space-between; border-bottom:2px solid var(--red); }
+.auth-hd-title { font-family:'Bebas Neue',sans-serif; font-size:20px; color:var(--black); letter-spacing:3px; }
 .auth-x { background:none; border:none; color:#888; font-size:18px; cursor:pointer; padding:2px 8px; }
 .auth-body { padding:24px 20px 0; }
 .auth-tabs { display:flex; gap:0; margin-bottom:24px; border-bottom:2px solid var(--border); }
@@ -535,8 +545,8 @@ footer { background:var(--black); padding:24px 20px; border-top:2px solid var(--
 .auth-label { font-size:10px; letter-spacing:2px; color:#888; margin-bottom:6px; }
 .auth-input { width:100%; border:1px solid var(--border); padding:11px 12px; font-size:13px; font-family:'Noto Sans JP',sans-serif; outline:none; background:#fff; margin-bottom:12px; box-sizing:border-box; }
 .auth-input:focus { border-color:var(--red); }
-.auth-btn { width:100%; background:var(--black); color:var(--white); border:none; padding:14px; font-family:'Bebas Neue',sans-serif; font-size:16px; letter-spacing:3px; cursor:pointer; margin-bottom:12px; transition:background .15s; }
-.auth-btn:active { background:#222; }
+.auth-btn { width:100%; background:var(--red); color:#fff; border:none; padding:14px; font-family:'Bebas Neue',sans-serif; font-size:16px; letter-spacing:3px; cursor:pointer; margin-bottom:12px; transition:background .15s; }
+.auth-btn:active { background:#c0000e; }
 .auth-btn.loading { opacity:.6; pointer-events:none; }
 .auth-divider { display:flex; align-items:center; gap:10px; margin:4px 0 16px; }
 .auth-divider-line { flex:1; height:1px; background:var(--border); }
@@ -554,8 +564,8 @@ footer { background:var(--black); padding:24px 20px; border-top:2px solid var(--
 
 /* ══ SKIN DIAGNOSIS ══ */
 .res-skin { background:#fff; border:1px solid var(--border); margin:12px 16px; }
-.res-skin-hd { background:var(--black); padding:12px 16px; display:flex; align-items:center; justify-content:space-between; }
-.res-skin-title { font-family:'Bebas Neue',sans-serif; font-size:16px; color:var(--white); letter-spacing:3px; }
+.res-skin-hd { background:#f7f4f0; padding:12px 16px; display:flex; align-items:center; justify-content:space-between; border-bottom:2px solid var(--red); }
+.res-skin-title { font-family:'Bebas Neue',sans-serif; font-size:16px; color:var(--black); letter-spacing:3px; }
 .res-skin-type-badge { background:var(--red); color:#fff; font-family:'Bebas Neue',sans-serif; font-size:11px; letter-spacing:2px; padding:3px 10px; }
 
 /* Skin type overview */
@@ -584,7 +594,7 @@ footer { background:var(--black); padding:24px 20px; border-top:2px solid var(--
 .res-skin-routine { padding:0 16px 14px; border-top:1px solid var(--border); }
 .res-skin-routine-title { font-size:9px; letter-spacing:2px; color:var(--red); margin:12px 0 8px; }
 .res-skin-routine-step { display:flex; gap:10px; margin-bottom:8px; align-items:flex-start; }
-.res-skin-step-num { width:20px; height:20px; background:var(--black); color:#fff; font-family:'Bebas Neue',sans-serif; font-size:11px; display:flex; align-items:center; justify-content:center; flex-shrink:0; margin-top:1px; }
+.res-skin-step-num { width:20px; height:20px; background:var(--red); color:#fff; font-family:'Bebas Neue',sans-serif; font-size:11px; display:flex; align-items:center; justify-content:center; flex-shrink:0; margin-top:1px; }
 .res-skin-step-body { flex:1; }
 .res-skin-step-name { font-size:11px; font-weight:700; color:var(--black); margin-bottom:2px; }
 .res-skin-step-desc { font-size:10px; color:#666; line-height:1.6; }
@@ -627,7 +637,7 @@ footer { background:var(--black); padding:24px 20px; border-top:2px solid var(--
 .skin-ing-card { background:#faf8f5; padding:10px 12px; border-left:3px solid var(--red); }
 .skin-ing-name { font-size:12px; font-weight:700; color:var(--black); margin-bottom:2px; }
 .skin-ing-effect { font-size:10px; color:#666; line-height:1.6; }
-.skin-ing-tag { display:inline-block; background:var(--black); color:#fff; font-size:8px; letter-spacing:1px; padding:2px 6px; margin-right:4px; margin-bottom:4px; }
+.skin-ing-tag { display:inline-block; background:var(--red); color:#fff; font-size:8px; letter-spacing:1px; padding:2px 6px; margin-right:4px; margin-bottom:4px; }
 
 /* Products */
 .skin-prod-region-tabs { display:flex; border-bottom:1px solid var(--border); margin-bottom:10px; }
@@ -648,16 +658,16 @@ footer { background:var(--black); padding:24px 20px; border-top:2px solid var(--
 .skin-routine-timeline { position:relative; padding-left:28px; }
 .skin-routine-timeline::before { content:''; position:absolute; left:10px; top:8px; bottom:8px; width:1px; background:#ddd; }
 .skin-routine-step2 { position:relative; margin-bottom:14px; }
-.skin-routine-step2::before { content:attr(data-n); position:absolute; left:-28px; top:0; width:20px; height:20px; background:var(--black); color:#fff; font-family:'Bebas Neue',sans-serif; font-size:11px; display:flex; align-items:center; justify-content:center; }
+.skin-routine-step2::before { content:attr(data-n); position:absolute; left:-28px; top:0; width:20px; height:20px; background:var(--red); color:#fff; font-family:'Bebas Neue',sans-serif; font-size:11px; display:flex; align-items:center; justify-content:center; }
 .skin-routine-step-name2 { font-size:11px; font-weight:700; color:var(--black); margin-bottom:2px; }
 .skin-routine-step-desc2 { font-size:10px; color:#666; line-height:1.6; }
 
 /* Routine time tabs */
 .skin-time-tabs { display:flex; gap:6px; margin-bottom:12px; }
 .skin-time-tab { flex:1; padding:7px; background:#eee; border:none; font-family:'Bebas Neue',sans-serif; font-size:11px; letter-spacing:1px; color:#888; cursor:pointer; transition:all .15s; }
-.skin-time-tab.on { background:var(--black); color:#fff; }
+.skin-time-tab.on { background:var(--red); color:#fff; }
 .skin-concern-btn { background:#f0eeeb; border:2px solid transparent; border-radius:20px; padding:7px 14px; font-family:'Bebas Neue',sans-serif; font-size:12px; letter-spacing:1px; color:#555; cursor:pointer; transition:all .15s; }
-.skin-concern-btn.on { background:var(--black); color:#fff; border-color:var(--red); }
+.skin-concern-btn.on { background:var(--red); color:#fff; border-color:var(--red); }
 /* worry cards */
 .skin-worry-list { display:flex; flex-direction:column; gap:8px; margin-bottom:4px; }
 .skin-worry-card { display:flex; gap:10px; align-items:flex-start; background:#faf8f5; padding:10px 12px; border-left:3px solid var(--red); }
@@ -1368,6 +1378,11 @@ function renderSkinRoutine() {
 
 <!-- ══════ HAIR PAGE ══════ -->
 <div id="pg-hair" class="page">
+  <div class="back-result-bar" id="back-bar-hair" onclick="backToResult()">
+    <span class="back-result-arrow">←</span>
+    <span class="back-result-txt">診断結果に戻る</span>
+    <span class="back-result-sub">BACK TO RESULT</span>
+  </div>
   <div class="page-hd">
     <div class="page-hd-title" data-i18n="pg_hair">ヘアスタイル</div>
     <div class="seg-tabs">
@@ -1386,6 +1401,11 @@ function renderSkinRoutine() {
 
 <!-- ══════ MAKEUP PAGE ══════ -->
 <div id="pg-makeup" class="page">
+  <div class="back-result-bar" id="back-bar-makeup" onclick="backToResult()">
+    <span class="back-result-arrow">←</span>
+    <span class="back-result-txt">診断結果に戻る</span>
+    <span class="back-result-sub">BACK TO RESULT</span>
+  </div>
   <div class="page-hd">
     <div class="page-hd-title">メイク術</div>
     <div class="seg-tabs">
@@ -1405,6 +1425,11 @@ function renderSkinRoutine() {
 
 <!-- ══════ SKINCARE PAGE ══════ -->
 <div id="pg-skin" class="page">
+  <div class="back-result-bar" id="back-bar-skin" onclick="backToResult()">
+    <span class="back-result-arrow">←</span>
+    <span class="back-result-txt">診断結果に戻る</span>
+    <span class="back-result-sub">BACK TO RESULT</span>
+  </div>
   <div class="page-hd">
     <div class="page-hd-title">スキンケア</div>
     <div class="seg-tabs" style="flex-wrap:wrap;gap:4px">
@@ -1645,7 +1670,7 @@ function renderSkinRoutine() {
     <div id="diag-step-analyzing" style="display:none">
       <div class="modal-hd"><span class="modal-hd-t" data-i18n="analyzing">解析中...</span></div>
       <div class="modal-body" style="padding:32px 20px;text-align:center">
-        <canvas id="diag-canvas" style="max-width:100%;border:1px solid #1e1e1e;display:block;margin:0 auto 20px"></canvas>
+        <canvas id="diag-canvas" style="max-width:100%;border:1px solid #e8e4e0;display:block;margin:0 auto 20px"></canvas>
         <div class="analyze-steps">
           <div class="analyze-step" id="as1"><div class="as-dot"></div><span data-i18n="as1">顔を検出中...</span></div>
           <div class="analyze-step" id="as2"><div class="as-dot"></div><span data-i18n="as2">468点のランドマーク計測中...</span></div>
@@ -2084,8 +2109,9 @@ function hairSVG(type) {
 const PAGE_MAP = {home:'pg-home',celeb:'pg-celeb',hair:'pg-hair',makeup:'pg-makeup',quiz:'pg-quiz',skin:'pg-skin',record:'pg-record'};
 const TAB_IDX  = {home:0,celeb:2,makeup:3,hair:4,skin:5,record:6};
 let rendered = {};
+let navigatedFromResult = false; // track if user came from diagnosis result
 
-function goPage(name) {
+function goPage(name, fromResult) {
   // hide all pages
   document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
   // deactivate all tabs
@@ -2106,6 +2132,27 @@ function goPage(name) {
     if(name==='record') { rendered['record']=false; renderRecord(); }
   }
   if(name==='skin') renderSkinTypeDetail();
+
+  // show/hide back-to-result banners
+  navigatedFromResult = !!fromResult;
+  ['hair','makeup','skin'].forEach(pg => {
+    const bar = document.getElementById('back-bar-'+pg);
+    if(bar) bar.classList.toggle('show', navigatedFromResult && pg===name);
+  });
+}
+
+function backToResult() {
+  // hide back banners
+  ['hair','makeup','skin'].forEach(pg => {
+    const bar = document.getElementById('back-bar-'+pg);
+    if(bar) bar.classList.remove('show');
+  });
+  navigatedFromResult = false;
+  // reopen modal at result step
+  document.getElementById('modal-ov').classList.add('open');
+  document.body.style.overflow = 'hidden';
+  showStep('result');
+  window.scrollTo(0,0);
 }
 
 
@@ -3754,9 +3801,9 @@ function showResults(metrics, ai, previewDataUrl) {
           </div>
         </div>
       </div>
-      <div style="border-top:1px solid #222;padding-top:12px;margin-top:8px">
+      <div style="border-top:1px solid #e8e4e0;padding-top:12px;margin-top:8px">
         <div style="font-size:9px;letter-spacing:2px;color:var(--mid);margin-bottom:5px">IMPRESSION</div>
-        <div style="font-family:'Bebas Neue',sans-serif;font-size:26px;color:var(--white);letter-spacing:3px">${ai.impression||'—'}</div>
+        <div style="font-family:'Bebas Neue',sans-serif;font-size:26px;color:var(--black);letter-spacing:3px">${ai.impression||'—'}</div>
       </div>
       <div style="margin-top:10px;display:flex;flex-wrap:wrap;gap:5px">${strongHtml}</div>
     </div>
@@ -3779,19 +3826,19 @@ function showResults(metrics, ai, previewDataUrl) {
         <div class="res-rec-cat">💄 MAKEUP</div>
         <div class="res-rec-title">${BONE_JP[boneKey]}のメイクポイント</div>
         <div class="res-rec-desc">${ai.makeupTip||'—'}</div>
-        <button class="res-rec-link" onclick="goPage('makeup');closeModal()">詳しく見る →</button>
+        <button class="res-rec-link" onclick="goPage('makeup',true);closeModal()">詳しく見る →</button>
       </div>
       <div class="res-rec-item">
         <div class="res-rec-cat">💇 HAIR</div>
         <div class="res-rec-title">${FACE_JP[faceKey]}に合うヘアスタイル</div>
         <div class="res-rec-desc">${ai.hairTip||'—'}</div>
-        <button class="res-rec-link" onclick="goPage('hair');closeModal()">詳しく見る →</button>
+        <button class="res-rec-link" onclick="goPage('hair',true);closeModal()">詳しく見る →</button>
       </div>
       <div class="res-rec-item">
         <div class="res-rec-cat">🌿 SKINCARE</div>
         <div class="res-rec-title">スキンケアアドバイス</div>
         <div class="res-rec-desc">${ai.skincareTip||'—'}</div>
-        <button class="res-rec-link" onclick="goPage('skin');closeModal()">成分・商品を見る →</button>
+        <button class="res-rec-link" onclick="goPage('skin',true);closeModal()">成分・商品を見る →</button>
       </div>
     </div>
     ${skinHtml}
